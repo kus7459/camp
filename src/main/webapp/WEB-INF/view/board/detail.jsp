@@ -42,6 +42,7 @@
 		<a href="update?num=${board.num }">[수정]</a>
 		<a href="delete?num=${board.num }">[삭제]</a>
 		<a href="list?boardid=${board.boardid }">[게시물목록]</a>
+		<button>좋아요</button>
 	</td></tr>	
 </table>
 <%-- 댓글 등록 조회 삭제 --%>

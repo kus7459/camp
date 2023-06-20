@@ -16,16 +16,16 @@ public interface BoardMapper {
 	String select =" select num,writer,pass,"
 			+ "title,content,file1 fileurl,"
 			+ "regdate,readcnt,grp, grplevel, "
-			+ "grpstep,boardid from board";
+			+ "grpstep,boardid,secret from board";
 
 	@Select("select ifnull(max(num),0) from board")
 	int maxNum();
 
 	@Insert("insert into board"
 			+ " (num, writer,pass,title,content,file1,regdate,"
-			+ " readcnt, grp,grplevel,grpstep,boardid)"
+			+ " readcnt, grp,grplevel,grpstep,boardid,secret)"
 			+ " values (#{num}, #{writer},#{pass},#{title},#{content},#{fileurl},now(),"
-			+ "	#{readcnt}, #{grp},#{grplevel},#{grpstep},#{boardid})")
+			+ "	#{readcnt}, #{grp},#{grplevel},#{grpstep},#{boardid},#{secret})")
 	void insert( Board board);
 
 	@Select({"<script>",
@@ -51,7 +51,7 @@ public interface BoardMapper {
 	void updateGrpstep(Map<String, Object> param);
 
 	@Update("update board set writer=#{writer}, title=#{title},"
-				+ " content=#{content}, file1=#{fileurl} where num=#{num}")
+				+ " content=#{content}, file1=#{fileurl}, secret=#{secret} where num=#{num}")
 	void update(Board board);
 
 	@Delete("delete from board where num=#{num}")

@@ -41,6 +41,7 @@ public class BoardController {
 	public ModelAndView write() {
 		ModelAndView mav = new ModelAndView();
 		mav.addObject(new Board());
+		//mav.addObject(new User());
 		return mav;
 	}
 	/*
@@ -58,9 +59,11 @@ public class BoardController {
 			return mav;
 		}
 		String boardid = (String)request.getSession().getAttribute("boardid");
+//		int secret = board.getSecret();
 		if(boardid == null) boardid = "1";
 		request.getSession().setAttribute("boardid", boardid);
 		board.setBoardid(boardid);
+//		board.setSecret(secret);
 		service.boardWrite(board, request);
 		mav.setViewName("redirect:list?boardid="+boardid);
 		return mav;

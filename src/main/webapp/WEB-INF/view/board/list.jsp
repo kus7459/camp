@@ -35,7 +35,10 @@
     <i class="fa fa-eye fa-fw"></i>&nbsp; QnA</a>
     <br>
 <h2>${boardName}</h2>
+ ============================================= 
+<br><br><br><br><br>
 <div class="w3-center" style="border: 1px solid #333; border-radius: 10px; padding: 10px;">
+<h3>${boardName}목록</h3>
 <table class="w3-table w3-border">
 	<tr>
 	<form action="list" method="post" name="searchform">
@@ -72,14 +75,29 @@
 	<c:forEach var="board" items="${boardlist}"><%-- 게시물 목록 --%>
 		<tr><td>${boardno}</td><%-- 화면의 출력할 가상의 게시물 번호  --%>
 			<c:set var="boardno" value="${boardno-1}"/>
+			
 			<td class="w3-left">
+			<c:if test="${board.secret != 1 }">
+			
 			<c:if test="${! empty board.fileurl}">
 				<a href="file/${board.fileurl}">@</a></c:if>
 			<c:if test="${empty board.fileurl}">&nbsp;&nbsp;&nbsp;</c:if>
 			<c:forEach begin="1" end="${board.grplevel}">&nbsp;&nbsp;</c:forEach>
 			<c:if test="${board.grplevel >0 }">ㄴ</c:if>
 		<a href="detail?num=${board.num}">${board.title}</a>
+	
+			</c:if>
+			<c:if test="${board.secret == 1 }">
+			<a>비밀글입니다.</a>
+			<%--<c:choose>
+                <c:when test="${board. eq loginVO.id || admincode eq '1'}">
+                    <c:out value="${result.cs_title}"/>
+                </c:when>
+                <c:otherwise>비밀글은 작성자와 관리자만 볼 수 있습니다.</c:otherwise>
+            </c:choose> --%>
+			</c:if>
 			</td>
+			
 			<td>${board.writer}</td>
 			<td><fmt:formatDate value="${board.regdate}" pattern="yyyyMMdd" var="rdate"/>
 				<c:if test="${today == rdate}">
@@ -90,7 +108,7 @@
 				</c:if>
 			</td>
 			<td>${board.readcnt}</td>
-			<td>${board.readcnt}</td>
+			<td>${board.readcnt}</td><%--좋아요 수 --%>
 		</tr>		
 	</c:forEach>
 		<tr><td colspan="5" class="w3-center">

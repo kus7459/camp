@@ -46,12 +46,12 @@ body, html {
       <!-- Right-sided navbar links -->
       <div class="w3-right w3-hide-small">
          <a href="${path}/user/main" class="w3-bar-item w3-button w3-hover-light-grey" style="padding:20px 16px"><i class="fa fa-home" style="color:plum"></i> 홈</a>
-            <a href="#work" class="w3-bar-item w3-button w3-hover-light-grey" style="padding:20px 16px"><i class="fa fa-th" style="color:#dae17c"></i> 캠핑장 찾기</a>
-            <a href="${path}/user/mypage" class="w3-bar-item w3-button w3-hover-light-grey" style="padding:20px 16px"><i class="fa fa-cloud" style="color:lightblue"></i> 날씨</a>
+            <a href="${path}/site/search" class="w3-bar-item w3-button w3-hover-light-grey" style="padding:20px 16px"><i class="fa fa-th" style="color:#dae17c"></i> 캠핑장 찾기</a>
+            <a href="${path}/weather/today" class="w3-bar-item w3-button w3-hover-light-grey" style="padding:20px 16px"><i class="fa fa-cloud" style="color:lightblue"></i> 날씨</a>
              <a href="${path}/board/list" class="w3-bar-item w3-button w3-hover-light-grey"
              style="margin-right:50px; padding:20px 16px"><i class="fa fa-heart" style="color:pink"></i> 커뮤니티</a>
              <c:if test="${empty sessionScope.loginUser }">
-            <a href="${path}/user/login" class="w3-bar-item w3-button w3-hover-light-grey" style="padding:20px 16px">
+            <a href="${path}/user/mypage" class="w3-bar-item w3-button w3-hover-light-grey" style="padding:20px 16px">
                <i class="fa fa-user"></i> 로그인
             </a>
             <a href="${path}/user/join" class="w3-bar-item w3-button w3-hover-light-grey" style="padding:20px 16px">
@@ -79,9 +79,9 @@ body, html {
 <nav class="w3-sidebar w3-bar-block w3-lime w3-card w3-animate-left w3-hide-medium w3-hide-large" style="display:none" id="mySidebar">
   <a href="javascript:void(0)" onclick="w3_close()" class="w3-bar-item w3-button w3-large w3-padding-16">Close &times;</a>
   <a href="${path}/user/main" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-light-grey">홈</a>
-  <a href="#team" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-light-grey">캠핑장 찾기</a>
+  <a href="${path}/site/search" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-light-grey">캠핑장 찾기</a>
   <a href="${path}/board/list" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-light-grey">커뮤니티</a>
-  <a href="#pricing" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-light-grey">날씨</a>
+  <a href="${path}/weather/today" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-light-grey">날씨</a>
   <a href="${path}/user/join" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-light-grey">회원가입</a>
 </nav>
 

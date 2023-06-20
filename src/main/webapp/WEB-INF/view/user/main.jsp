@@ -162,22 +162,26 @@
    </div>
    
    <!-- 테마별, 태그별 캠핑장 찾기 -->
-   <div class="page page4 w3-center">
-      <h3>테마별, 태그별 캠핑장 찾기</h3>
-      <div class="w3-center" style="padding-top:30px">
-         <button class="btn btn-white">#봄 꽃여행</button>
-         <button class="btn btn-white">#여름 물놀이</button>
-         <button class="btn btn-white">#가을 단풍명소</button>
-         <button class="btn btn-white">#겨울 눈꽃명소</button>
-         <button class="btn btn-white">#반려견 동반</button>
-      </div>
-      <div class="w3-center" style="padding:20px 0px">
-         <button class="btn btn-white">#일출명소</button>
-         <button class="btn btn-white">#일몰명소</button>
-         <button class="btn btn-white">#스키</button>
-         <button class="btn btn-white">#낚시</button>
-         <button class="btn btn-white">#산책로</button>
-      </div>
+	<div class="page page4 w3-center">
+		<h3>테마별, 태그별 캠핑장 찾기</h3>
+		<div class="w3-center" style="padding-top:30px">
+			<button class="btn btn-white" onclick="change_btn(event)">#봄 꽃여행</button>
+			<button class="btn btn-white" onclick="change_btn(event)">#여름 물놀이</button>
+			<button class="btn btn-white" onclick="change_btn(event)">#가을 단풍명소</button>
+			<button class="btn btn-white" onclick="change_btn(event)">#겨울 눈꽃명소</button>
+			<button class="btn btn-white" onclick="change_btn(event)">#반려견 동반</button>
+		</div>
+		<div class="w3-center" style="padding:20px 0px">
+			<button class="btn btn-white">#일출명소</button>
+			<button class="btn btn-white">#일몰명소</button>
+			<button class="btn btn-white">#스키</button>
+			<button class="btn btn-white">#낚시</button>
+			<button class="btn btn-white">#산책로</button>
+		</div>
+		<div class="w3-center" style="padding-top:20px">
+			<input type="submit" value="검색하기" class="btn btn-lime">
+			<input type="button" value="상세검색" class="btn w3-light-grey">
+		</div>
    </div>
    
    <!-- 게시물 -->
@@ -302,6 +306,7 @@
             }
          })
       }
+ 		
     </script>
 </body>
 </html>

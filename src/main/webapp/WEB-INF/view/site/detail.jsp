@@ -16,7 +16,7 @@
 	<br>
 	<br>
 
-	<div style="width:90%; margin: 0 auto; padding-bottom:80px">
+	<div style="width:90%; margin: 0 auto; padding-bottom:60px">
 		<div class="wrap">
 			<div class="mainImg">
 			
@@ -221,7 +221,6 @@
 			$("#etcInner").show();
 			$("#etcInner").siblings().hide();
 			$("#etc").addClass("select");
-			faci_btn();
 		})
 		
 		function btn_div(id, tab) {

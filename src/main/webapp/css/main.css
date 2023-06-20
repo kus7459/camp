@@ -11,8 +11,13 @@
         height: 100vh;
     }
     .btn-lime {background-color:#cddc39}
+   
     .btn-gray {background-color:#dedede}
 	.btn-white {background-color: #fff;}
+   	.btn-white.active {
+   		background-color: #cddc39;
+   	}
+   
     .slider_panel {
         width: 500%;
         position: relative;

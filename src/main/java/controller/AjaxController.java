@@ -39,7 +39,40 @@ public class AjaxController {
 			} catch (IOException e) {
 				e.printStackTrace();
 	            }
-		}
+		} else if (gu == null) {    // si 는 선택된 경우, si라는 파라미터가 존재 -> 시,도를 선택한 경우 시,도에 맞는 구,군값 전송할 것
+            si = si.trim();
+            try {
+                while ((data = fr.readLine()) != null) {
+                    String[] arr = data.split("\\s+");
+                    if (arr.length >= 3 && arr[0].equals(si) && !arr[1].contains(arr[0]))
+                        // 서울시 서울시 인 데이터 제거하고
+                        // arr[0]과 arr[1]의 내용이 중복된 것 제거
+                        set.add(arr[1].trim()); // 구,군 정보 설정
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else if (gu != null && si != null) {    // 시,도와 구,군 둘 다 선택된 경우 -> 동 값을 전송할 것
+            si = si.trim();        // si와
+            gu = gu.trim();        // gu를 다 가지고 와서
+            try {
+                while ((data = fr.readLine()) != null) {
+                    String[] arr = data.split("\\s+");
+                    if (arr.length >= 3 && arr[0].equals(si) && arr[1].equals(gu) &&
+                            !arr[0].equals(arr[1]) && !arr[2].contains(arr[1])) {
+                        // 시,도도 같고, 구, 군도 같은 것 중에 중복된 거 빼고, 남은 동 값들
+                        if (arr.length > 3) {
+                            if (arr[3].contains(arr[1])) continue;
+                            // 4개로 돼있는 것도 있어서, 중복되는 거 처리하고
+                            arr[2] += " " + arr[3];
+                        }
+                        set.add(arr[2].trim()); //동,리 정보 설정
+                    }
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
 		List<String> list = new ArrayList<>(set);    // Set 객체를 List 객체로 변경
 		return list.toString();    // 리스트 객체가 바로 브라우저에 전달 됨. view가 없음. data가 직접 내려감.
 		// pom.xml의 fasterxml.jackson... 설정에 의해서 브라우저는 배열로 인식함.

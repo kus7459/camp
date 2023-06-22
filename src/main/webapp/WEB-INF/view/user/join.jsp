@@ -13,78 +13,59 @@
 </style>
    <div class="w3-content" style="max-width: 600px;padding-top:100px">
       <h2 class="w3-center">회원가입</h2>
-      <form action="join" method="post" name="f"
-         onsubmit="return input_check(this)">
+      <form:form modelAttribute="user" method="post" action="join" 
+      		name="f" onsubmit="return inchk(this)">
+      	<spring:hasBindErrors name="user">
+			<font color="red">
+				<c:forEach items="${errors.globalErrors}" var="error">
+					<spring:message code="${error.code}" />
+					<br>
+				</c:forEach>
+			</font>
+		</spring:hasBindErrors>
          <input type="hidden" name="chkid" value="1" id="chkid">
          <table class="w3-table">
             <tr>
-               <td colspan="2"><input type="text" name="id" 
-                  placeholder="ID를 입력해주세요" class="form-control"></td>
-               <td><button type="button" onclick="idchk()"
-                     class="btn btn-dark" style="width: 100%;background-color:#cddc39;color:black;">중복확인</button></td>
+               <td colspan="3"><form:input path="id" 
+                  placeholder="ID를 입력해주세요" class="form-control"/>
+                  <font color="red"><form:errors path="id" /></font></td>
             </tr>
             <tr>
-               <td colspan="3"><input type="password" name="pass"
-                  placeholder="비밀번호 8~16자 숫자,영어 포함" class="form-control"></td>
+               <td colspan="3"><form:password path="pass"
+                  placeholder="비밀번호 8~16자 숫자,영어 포함" class="form-control"/>
+                  <font color="red"><form:errors path="pass" /></font></td>
             </tr>
             <tr>
-               <td colspan="3"><input type="password" name="chkpass"
-                  placeholder="비밀번호 재확인" class="form-control"></td>
+               <td colspan="3"><input type="password" name="chgpass" 
+               class="form-control" placeholder="비밀번호 재입력"></td>
             </tr>
             <tr>
-               <td colspan="3"><input type="text" name="name"
-                  placeholder="이름" class="form-control"></td>
+               <td colspan="3"><form:input path="name"
+                  placeholder="이름" class="form-control"/>
+                  <font color="red"><form:errors path="name" /></font></td>
             </tr>
             <tr>
-               <td style="width:33.3%">
-                  <select class="form-control" name="year">
-                       <option value="">태어난 년도</option>
-                     <c:forEach var="i" begin="1980" end="2010">
-                        <option value="${i}">${i}</option>
-                     </c:forEach>
-                  </select>
-               </td>
-               <td style="width:33.3%">
-                  <select class="form-control" name="month">
-                     <option value="">태어난 월</option>
-                     <c:forEach var="i" begin="1" end="12">
-                        <c:if test="${i<10}">
-                           <option value="0${i}">0${i}</option>
-                        </c:if>
-                        <c:if test="${i>=10}">
-                           <option value="${i}">${i}</option>
-                        </c:if>
-                     </c:forEach>
-                  </select>
-               </td>
-               <td style="width:33.3%">
-                  <select class="form-control" name="day">
-                     <option value="">태어난 일</option>
-                     <c:forEach var="i" begin="1" end="31">
-                        <c:if test="${i<10}">
-                           <option value="0${i}">0${i}</option>
-                        </c:if>
-                        <c:if test="${i>=10}">
-                           <option value="${i}">${i}</option>
-                        </c:if>
-                     </c:forEach>
-                  </select>               
+               <td colspan="3"><form:input path="birth"
+                  placeholder="생년월일" class="form-control"/>
+                  <font color="red"><form:errors path="birth" /></font>
                </td>
             </tr>
             <tr>
-               <td colspan="3"><input type="text" name="tel"
-                  placeholder="-을 포함한 전화번호 10자리 또는 11자리" class="form-control">
+               <td colspan="3"><form:input path="tel"
+                  placeholder="-을 제외한 전화번호 10자리 또는 11자리" class="form-control"/>
+                  <font color="red"><form:errors path="tel" /></font>
                </td>
             </tr>
             <tr>
                <td colspan="3">성별 &nbsp; 
-               <input type="radio" name="gender" value="1">남 &nbsp; 
+               <input type="radio" name="gender" value="1" checked>남 &nbsp; 
                <input type="radio" name="gender" value="2">여
             </tr>
             <tr>
                <td colspan="3">
-               		<input type="text" name="email" id="email"
-                  class="form-control" placeholder="email형식으로 입력해주세요.">
+               		<form:input path="email"
+                  class="form-control" placeholder="email형식으로 입력해주세요."/>
+                  <font color="red"><form:errors path="email" /></font>
                </td>
             </tr>
          </table>
@@ -92,80 +73,18 @@
             <button type="submit" style="background-color:#cddc39;color:black;" class="btn btn-dark" id="jobutton">회원가입</button>
             <button type="reset" style="background-color:#dedede" class="btn btn-outline-dark">다시 작성</button>
          </div>
-      </form>
+      </form:form>
    </div>
-   <script>  
-      function input_check(f) {
-         if (f.id.value.trim() == "") {
-            alert("아이디가 입력되지 않았습니다.");
-            f.id.focus();
-            return false;
-         }
-         if (f.pass.value.trim() == "") {
-            alert("비밀번호가 입력되지 않았습니다.");
-            f.pass.focus();
-            return false;
-         }
-         if (f.chkpass.value.trim() == "") {
-            alert("비밀번호를 다시 입력해주세요.");
-            f.chkpass.focus();
-            return false;
-         }
-         if (f.name.value.trim() == "") {
-            alert("이름이 입력되지 않았습니다.");
-            f.name.focus();
-            return false;
-         }
-         if (f.year.value.trim() == "") {
-            alert("생년월일이 입력되지 않았습니다.");
-            f.year.focus();
-            return false;
-         }
-         if (f.day.value.trim() == "") {
-            alert("생년월일이 입력되지 않았습니다.");
-            f.day.focus();
-            return false;
-         }
-         if (f.tel.value.trim() == "") {
-            alert("전화번호가 입력되지 않았습니다.");
-            f.tel.focus();
-            return false;
-         }
-         if (f.gender.value.trim() == "") {
-            alert("성별을 선택해주세요.");
-            return false;
-         }
-         if (f.email.value.trim() == "") {
-            alert("이메일을 입력해주세요.");
-            f.email.focus();
-            return false;
-         }
-         if (f.chkid.value.trim() == "1") {
-             alert("아이디 중복확인 해주세요.");
-             f.emailchk.focus();
-             return false;
-          }
-         if (f.pass.value.trim() != f.chkpass.value.trim() ) {
-             alert("비밀번호가 일치하지 않았습니다.");
-             f.chkpass.focus();
-             return false;
-          }
-         return true;
-      }
-      function win_open(page) {
-         let op = "width=500, height=400, left=50, top=150";
-         open(page, "", op)
-      }
-      function idchk() {
-         if (document.f.id.value == "") {
-            alert("아이디를 입력하세요");
-            f.id.focus();
-         }else{
-           document.getElementById("chkid").value = "2";
-            let op = "width=350, height=350, left=50, top=150"
-               open("idchk?id="+document.f.id.value,"",op)
-            }
-      }
-   </script>
+<script>
+	function inchk(f) {
+		if(f.pass.value != f.chgpass.value) {
+			alert("비밀번호와 비밀번호 재입력이 다릅니다.");
+			f.chgpass.value="";
+			f.chgpass.focus();
+			return false;
+		}
+		return true;
+	}
+</script>
 </body>
 </html>

@@ -16,17 +16,11 @@
 		<form action="id" method="post">
 			<table class="w3-table">
 				<tr>
-					<td width="48%"><input type="text" name="email" id="email"
-						class="form-control" placeholder="email"></td>
-					<td width="4%">@</td>
-					<td width="48%"><select class="form-control" name="com"
-						id="com">
-							<option value="">주소를 선택하세요</option>
-							<option value="naver.com">naver.com</option>
-							<option value="nate.com">nate.com</option>
-							<option value="gmail.com">gmail.com</option>
-					</select></td>
-				</tr>
+               <td colspan="3">
+               		<input type="text" name="email" id="email"
+                  class="form-control" placeholder="email형식으로 입력해주세요.">
+               </td>
+            </tr>
 				<tr>
 					<td colspan="3"><input type="text" name="tel"
 						placeholder="-을 포함한 전화번호 10자리 또는 11자리" class="form-control">

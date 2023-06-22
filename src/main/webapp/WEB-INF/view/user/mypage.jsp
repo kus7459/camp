@@ -5,32 +5,51 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>내정보</title>
-<script src="https://kit.fontawesome.com/21a6628c62.js"
-	crossorigin="anonymous"></script>
-	<link rel="stylesheet" href="../css/detail.css">
+<script src="https://kit.fontawesome.com/21a6628c62.js" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+<title>내정보</title>
 </head>
 <body>
-	<div class="w3-content" style="margin-top: 100px">
+<style>
+	.btnWrap {display: flex;    
+   		flex-direction: row;
+        justify-content: center;
+        margin: 50px 0px}
+   
+    .debtn {padding:10px 40px;
+    	background-color: #cddc39;
+    	cursor: pointer;
+    	border: 1px solid #cddc39;
+    	border-bottom:none}
+    	
+    .select {
+    	background-color: #fff;
+    }
+    .info-table>tr, .info-table>td, .info-table>th {border: 1px solid #dedede;
+		text-align: center}
+</style>
+	<br><br>
+	<div style="width:90%; margin: 0 auto; margin-top: 100px">
 		<h3>회원아이디</h3>
-		<div style="display: flex; align-items: center; margin-bottom: 10dpx;">
+		<div style="display: flex; align-items: center; margin-bottom: 10px;">
 			<div class="form-group">
 				<table class="w3-table">
 					<tr>
+						<th>이름</th>
 						<td>이름</td>
-						<td>이름</td>
 					</tr>
 					<tr>
+						<th>생년월일</th>
 						<td>생년월일</td>
-						<td>생년월일</td>
 					</tr>
 					<tr>
-						<td>전화번호</td>
+						<th>전화번호</th>
 						<td>전화번호</td>
 					</tr>
 					<tr>
-						<td>이메일</td>
+						<th>이메일</th>
 						<td>이메일</td>
 					</tr>
 				</table>
@@ -56,7 +75,7 @@
 			<h3 style="margin-bottom: 20px">
 				<i class="fas fa-duotone fa-check"></i>등록 게시글 목록
 			</h3>
-			<table class="w3-table info-tabl w3-centered">
+			<table class="w3-table info-table w3-centered">
 				<tr>
 					<th>제목</th>
 					<th>글쓴이</th>
@@ -71,7 +90,7 @@
 			<h3 style="margin-bottom: 20px">
 				<i class="fas fa-duotone fa-check"></i>등록 댓글 목록
 			</h3>
-			<table class="w3-table info-tabl w3-centered">
+			<table class="w3-table info-table w3-centered">
 				<tr>
 					<th>글쓴이</th>
 					<th>날짜</th>
@@ -99,7 +118,7 @@
 			<h3 style="margin-bottom: 20px">
 				<i class="fas fa-duotone fa-check"></i>게시글 좋아요 목록
 			</h3>
-			<table class="w3-table info-tabl w3-centered">
+			<table class="w3-table info-table w3-centered">
 				<tr>
 					<th>제목</th>
 					<th>글쓴이</th>

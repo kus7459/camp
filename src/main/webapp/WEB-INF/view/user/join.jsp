@@ -18,9 +18,9 @@
          <input type="hidden" name="chkid" value="1" id="chkid">
          <table class="w3-table">
             <tr>
-               <td colspan="2" width="60%"><input type="text" name="id" 
+               <td colspan="2"><input type="text" name="id" 
                   placeholder="ID를 입력해주세요" class="form-control"></td>
-               <td width="40%"><button type="button" onclick="idchk()"
+               <td><button type="button" onclick="idchk()"
                      class="btn btn-dark" style="width: 100%;background-color:#cddc39;color:black;">중복확인</button></td>
             </tr>
             <tr>
@@ -36,7 +36,7 @@
                   placeholder="이름" class="form-control"></td>
             </tr>
             <tr>
-               <td width="33%">
+               <td style="width:33.3%">
                   <select class="form-control" name="year">
                        <option value="">태어난 년도</option>
                      <c:forEach var="i" begin="1980" end="2010">
@@ -44,7 +44,7 @@
                      </c:forEach>
                   </select>
                </td>
-               <td width="33%">
+               <td style="width:33.3%">
                   <select class="form-control" name="month">
                      <option value="">태어난 월</option>
                      <c:forEach var="i" begin="1" end="12">
@@ -57,7 +57,7 @@
                      </c:forEach>
                   </select>
                </td>
-               <td width="34%">
+               <td style="width:33.3%">
                   <select class="form-control" name="day">
                      <option value="">태어난 일</option>
                      <c:forEach var="i" begin="1" end="31">
@@ -82,15 +82,10 @@
                <input type="radio" name="gender" value="2">여
             </tr>
             <tr>
-               <td width="40%"><input type="text" name="email" id="email" 
-                  class="form-control" placeholder="email"></td>
-               <td width="4%">@</td>
-               <td width="40%"><select class="form-control" name ="com" id="com">
-                     <option value="">주소를 선택하세요</option>
-                     <option value="naver.com">naver.com</option>
-                     <option value="nate.com">nate.com</option>
-                     <option value="gmail.com">gmail.com</option>
-               </select></td>               
+               <td colspan="3">
+               		<input type="text" name="email" id="email"
+                  class="form-control" placeholder="email형식으로 입력해주세요.">
+               </td>
             </tr>
          </table>
          <div class="w3-center" style="margin-top: 20px; margin-bottom:50px">

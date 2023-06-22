@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/view/jspHeader.jsp" %>
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -16,11 +15,10 @@
 </head>
 <body>
 <br><br><br><br><br>
-<form:form modelAttribute="board" action="update"
-			enctype="multipart/form-data" name="f">
+<form:form modelAttribute="board" action="update" enctype="multipart/form-data" name="f">
 	<form:hidden path="num"/>
 	<table>
-		<tr><td>글쓴이</td><td><form:input path="writer"/>
+		<tr><td>작성자</td><td><form:input path="writer"/>
 		<font color="red"><form:errors path="writer"/></font></td></tr>
 		<tr><td>비밀번호</td><td><form:password path="pass"/>
 		<font color="red"><form:errors path="pass"/></font></td></tr>

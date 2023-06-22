@@ -15,46 +15,25 @@
 <title>GOOD Camping 홈페이지</title>
 </head>
 <body>
-   <!-- main -->
-   <div class="animation_canvas">
-        <div class="slider_panel">
-            <img src="../img/main_1.jpg" alt="" class="slider_image">
-            <img src="../img/main_2.jpg" alt="" class="slider_image">
-            <img src="../img/main_3.jpg" alt="" class="slider_image">
-            <img src="../img/main_4.jpg" alt="" class="slider_image">
-            <img src="../img/main_5.jpg" alt="" class="slider_image">
-        </div>
+<style>
+	.on {background-color:#cddc39;}
+
+</style>
+	<!-- main -->
+	<div id="wrapper">
+		<div style="left:0"></div>
+		<div></div>
+		<div></div>
+		<div></div>
+		<div></div>
+	</div>
+	
+    <div class="w3-center" 
+    style="padding:15px 0px; font-size:16px; font-weight: bold; 
+    cursor: pointer; background-color: WhiteSmoke; color:#333"
+    onclick="location.href='../site/search'">
+    	캠핑장 더 보기
     </div>
-   <div class="slider_text_panel">
-        <div class="slider_text">
-            <h1>사막 이미지</h1>
-            <p>더운 사막</p>
-        </div>
-        <div class="slider_text">
-            <h1>수국 이미지</h1>
-            <p>물에서 자라는 수생식물</p>
-        </div>
-        <div class="slider_text">
-            <h1>해파리 이미지</h1>
-            <p>해파리는 독이 있다</p>
-        </div>
-        <div class="slider_text">
-            <h1>코알라 이미지</h1>
-            <p>코알라는 유칼리나무잎만 먹는다</p>
-        </div>
-        <div class="slider_text">
-            <h1>등대 이미지</h1>
-            <p>이건 그냥 등대 이미지</p>
-        </div>
-    </div>
-        <div class="control_panel">
-        <div class="control_button"></div>
-        <div class="control_button"></div>
-        <div class="control_button"></div>
-        <div class="control_button"></div>
-        <div class="control_button"></div>
-    </div>
-    
    <!-- 검색, 채팅 -->
    <div class="page page2">
       <div class="campsearch">
@@ -85,11 +64,15 @@
                      <th>입지 구분</th>
                      <td colspan="3">
                         <select class="w3-input w3-border w3-round-large">
-                           <option>선택하세요.</option>
-                           <option>산, 숲</option>
-                           <option>계곡, 강, 호수</option>
-                           <option>해변, 섬</option>
-                           <option>도심</option>
+							<option>선택하세요.</option>
+							<option>산</option>
+							<option>숲</option>
+							<option>계곡</option>
+							<option>강</option>
+                            <option>호수</option>
+							<option>해변</option>
+							<option>섬</option>
+							<option>도심</option>
                         </select>
                      </td>
                   </tr>
@@ -118,24 +101,11 @@
                         </select>
                      </td>
                   </tr>
-                  <tr>
-                     <th>가격대</th>
-                     <td colspan="3">
-                        <select class="w3-input w3-border w3-round-large">
-                           <option>선택하세요</option>
-                           <option>전체</option>
-                           <option>2만원 이하</option>
-                           <option>2만원 ~ 5만원</option>
-                           <option>5만원 ~ 8만원</option>
-                           <option>8만원 이상</option>
-                        </select>
-                     </td>
-                  </tr>
-               </table>
-               <div class="w3-center" style="padding-top:20px">
+				</table>
+				<div class="w3-center" style="padding-top:20px">
                   <input type="submit" value="검색하기" class="btn btn-white">
                   <input type="button" value="상세검색"   class="btn w3-light-grey">
-               </div>
+				</div>
             </form>
          </div>
       </div>
@@ -152,24 +122,23 @@
    </div>
    <!-- 인기 캠핑장 -->
    <div class="page3 w3-center">
-      <h3>회원들이 추천한 인기 캠핑장</h3>
+      <h3>인기 캠핑장 Best 3</h3>
       <div class="popWrap">
          <div class="popImg pImg1"></div>
          <div class="popImg pImg2"></div>
          <div class="popImg pImg3"></div>
       </div>
-      <input type="button" value="인기 캠핑장 더보기" class="btn btn-white">
    </div>
    
    <!-- 테마별, 태그별 캠핑장 찾기 -->
 	<div class="page page4 w3-center">
 		<h3>테마별, 태그별 캠핑장 찾기</h3>
 		<div class="w3-center" style="padding-top:30px">
-			<button class="btn btn-white" onclick="change_btn(event)">#봄 꽃여행</button>
-			<button class="btn btn-white" onclick="change_btn(event)">#여름 물놀이</button>
-			<button class="btn btn-white" onclick="change_btn(event)">#가을 단풍명소</button>
-			<button class="btn btn-white" onclick="change_btn(event)">#겨울 눈꽃명소</button>
-			<button class="btn btn-white" onclick="change_btn(event)">#반려견 동반</button>
+			<button class="btn btn-white">#봄 꽃여행</button>
+			<button class="btn btn-white">#여름 물놀이</button>
+			<button class="btn btn-white">#가을 단풍명소</button>
+			<button class="btn btn-white">#겨울 눈꽃명소</button>
+			<button class="btn btn-white">#반려견 동반</button>
 		</div>
 		<div class="w3-center" style="padding:20px 0px">
 			<button class="btn btn-white">#일출명소</button>
@@ -198,7 +167,7 @@
          </table>
       </div>
       <div>
-         <h3>자유 게시판<a href="" id="more">+</a></h3>
+         <h3>공지사항<a href="" id="more">+</a></h3>
          <table class="w3-table">
             <tr style="background-color: #cddc39;">
                <th>게시판</th>
@@ -212,36 +181,42 @@
    
    <script>
       $(function(){
-            $(".control_button").each(function(index){
-                $(this).attr("idx",index);  // 인덱스 추가
-            }).click(function(){
-                let index = $(this).attr("idx");    // idx 속성값 
-                moveSlider(index);      // -> index 0~4
-            })
-        
-            $(".slider_text").css("left",-300).each(function(index){
-                $(this).attr("idx",index);
-            });
-            moveSlider(0);  // index 0으로 시작 첫번째 이미지부터 보여줌
-            let idx = 0;
-            let inc = 1;
+    	   let winHeight = $(window).height();
+           let winWidth = $(window).width();
+           $("#wrapper").height(winHeight-80);
+           $("#wrapper").width(winWidth);
+           $("#wrapper>div").height(winHeight-80);
+           $("#wrapper>div").width(winWidth);
+
+            let i =0
             setInterval(function(){
-                if(idx >=4 ) {
-                    inc = -1;
-                }
-                if(idx <=0) {
-                    inc =1;
-                }
-                idx += inc;
-                moveSlider(idx);
-            },2000)
+            	let prev = $("#wrapper>div").eq(i);
+            	prev.css('left',0).stop().animate({"left":"-100%"})
+
+            	i++
+           		if(i==5)i=0;
+            	
+           		var next = $("#wrapper>div").eq(i);
+           		next.css('left',"100%").stop().animate({'left':0})
+
+            },3000)
             
+         
             getSido()
         })
         
+        $(".btn").click(function(){
+            if( $(this).hasClass("on") == true) {
+                $(this).removeClass("on")
+            } else if ( $(this).hasClass("on") == false) {
+                $(this).addClass("on")
+            }
+        })
+        
+
         function moveSlider(index) {
-             let winWidth = document.body.offsetWidth;
-         let moveLeft = -(index *winWidth);       // 0~2400까지
+            let winWidth = document.body.offsetWidth;
+         	let moveLeft = -(index *winWidth);       // 0~2400까지
             $(".slider_panel").animate({left:moveLeft},'slow'); 
             $(".control_button[idx ="+index +"]").addClass("select");    // 파란 점으로 표시
             $(".control_button[idx!="+index+"]").removeClass("select");

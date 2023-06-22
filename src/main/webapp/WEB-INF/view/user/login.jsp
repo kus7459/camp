@@ -21,10 +21,6 @@
 					<label for="pwd">Password</label>
 					<input type="password" class="form-control" id="pwd" name="pass" style="height:50px;">
 				</div>
-				<div style="width:70%; text-align: right; margin: 0 auto; margin-top:20px">
-					<button type="button" onclick="location.href='idForm'" style="background-color:#dedede;margin-right:10px;margin-left:5px;" class="btn btn-outline-dark">아이디 찾기</button>
-					<button type="button" onclick="location.href='pwForm'" style="background-color:#dedede" class="btn btn-outline-dark">비밀번호 찾기</button>
-				</div>
 				<div style="width:70%; text-align: center; margin: 0 auto; margin-top:30px">
 				<hr>
 					<button type="submit" class="btn btn-dark" 
@@ -33,7 +29,12 @@
 				<div style="width:70%; text-align: center; margin: 0 auto; margin-top:30px">
 				<hr>
 				<a href="#"><img height="50" src="http://static.nid.naver.com./oauth/small_g_in.PNG" style="margin-right:10px;margin-left:5px;"></a>
-				<a href="#"><img height="50" src="http://static.nid.naver.com./oauth/small_g_in.PNG"></a>
+				<a href="#"><img height="50" src="../img/kakao_login.jpg"></a>
+				
+				<div style="width:70%; margin: 0 auto; margin-top:20px">
+					<a href="idForm">아이디 찾기</a> │
+					<a href="pwForm">비밀번호 찾기</a>
+				</div>
 				</div>
 			</div>
 		</form>

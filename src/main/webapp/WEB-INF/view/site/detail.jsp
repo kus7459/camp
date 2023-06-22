@@ -67,28 +67,28 @@
 		<h3 style="margin-bottom:45px">부대시설</h3>
 		<div class="faciWrap">
 			<div>
-				<i class='fas fa-wifi' id="wifi"></i>
+				<i class='fas fa-wifi' id="wifi" style="color: #cddc39;"></i>
 				<p>와이파이</p>
 			</div>
 			<div>
-				<i class='far fa-lightbulb' id="light"></i>
+				<i class='far fa-lightbulb' id="light" style="color: #cddc39;"></i>
 				<p>전기</p>
 			</div>
 			<div>
-				<i class='fas fa-shopping-cart' id="shop"></i>	
+				<i class='fas fa-shopping-cart' id="shop" style="color: #cddc39;"></i>	
 				<p>마트,편의점</p>
 			</div>
 			<div>
-				<i class='fas fa-tint' id="tint"></i>
+				<i class='fas fa-tint' id="tint" style="color: #cddc39;"></i>
 				<p>온수</p>
 			</div>
 			<div>
-				<i class='fas fa-route' id="route"></i>
-				<p>산책로</p>
+				<i class='fas fa fa-free-code-camp' id="route"></i>
+				<p>장작 판매</p>
 			</div>
 			<div>
-				<i class='fas fa-swimming-pool' id="pool"></i>
-				<p>수영장</p>
+				<i class='fas fa-swimming-pool' id="pool" style="color: #cddc39;"></i>
+				<p>물놀이장</p>
 			</div>
 			<div>
 				<i class='fas fa-dog' id="dog"></i>
@@ -146,7 +146,7 @@
 		<!-- 이용 안내 -->
 		<div id="infoInner" class="inner">
 			<h3 style="margin-bottom:20px"><i class="far fa-calendar-alt"></i> 이용 안내</h3>
-			<table class="w3-table info-tabl w3-centered">
+			<table class="w3-table info-table w3-centered">
 				<tr style="background-color:#cddc39;">
 					<th rowspan="2" style="vertical-align: middle;">구분</th>
 					<th colspan="2">비수기</th>

@@ -60,6 +60,38 @@
     .control_button:hover {top: -16px;}
     .control_button.select {top: -31px}
         
+    #wrapper {position: relative;
+    			overflow: hidden;}
+	#wrapper>div {position: absolute;
+				left: 100%;
+				top: 0;
+				background-position: center bottom;
+				background-repeat: no-repeat;
+				background-size: cover;}
+	#wrapper div:nth-child(1){
+		background-image: url("../img/main_1.jpg")
+	}
+	#wrapper div:nth-child(2){
+		background-image: url("../img/main_2.jpg")
+	}
+	#wrapper div:nth-child(3){
+		background-image: url("../img/main_3.jpg")
+	}
+	#wrapper div:nth-child(4){
+		background-image: url("../img/main_4.jpg")
+	}
+	#wrapper div:nth-child(5){
+		background-image: url("../img/main_5.jpg")
+	}
+     
+    #newBtn {position: absolute;
+    	width: 16%;
+    	top: 60%;
+    	left: 42%;
+    	padding: 10px 0px;
+    	font-weight: bold;
+    	font-size: 18px;
+    	box-shadow: 0rem 0rem 0.2rem #fff} 
         
     /* page2 - 검색, 채팅 */
     .page2 {

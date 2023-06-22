@@ -1,5 +1,11 @@
 package util;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Exchanger;
@@ -10,110 +16,96 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.mariadb.jdbc.Connection;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.scheduling.annotation.Scheduled;
 
 import ch.qos.logback.core.recovery.ResilientSyslogOutputStream;
+import logic.Camp;
 import logic.CampService;
+
+
 
 public class CountScheduler {
 	
 	@Autowired
 	private CampService service;
 	
-	private int cnt;
-	/*	리눅스: 리틀 유닉스의 약자
-	 * 	cron : 리눅스 프로세스. Spring도 가지고 옴
-	 * 		1. 특정 시간이나, 주기적, 정기적으로 프로그램을 수행하는 프로세스. 유닉스(OS중 하나) 기반의 프로레스.
-	 * 		2. 리눅스에서 crontab 명령 설정 가능함.
-	 * 		3. 스프링에서는 cron 기능을 Scheduler라 한다.
-	 * 
-	 * 	리눅스 크론식 : 0/5 * * * * ? ; cron을 설정할 수 있는 형식
-	 * 	형식: 초, 분, 시, 일, 월 요일	[년도]
-	 * 	초, 분: 0~ 59초까지
-	 * 	시 : 0~ 23시로 처리
-	 * 	일 : 1~31
-	 * 	월 : 1~12, or (JAN,FEB,MAR,APR,...DEC)
-	 * 	요일 : 1~7 (MON, TUE, WED, THRR, FRI, SAT, SUN)
-	 *  
-	 * 표준 방식
-	 * 	*	: 매번
-	 * 	A/B	: 주기 A~마다 한 번씩 실행
-	 *  ?	: 설정 없음. (일, 요일에서 사용 됨)
-	 *  
-	 *  크론식 예시
-	 * 	 0/10 * * * * ? : 10초마다 한번씩
-	 * 	 0 0/1 * * * ? : 1분마다 한 번씩
-	 * 	 0 20,50 * * * ? : 매 시간 20, 50분마다 실행
-	 * 	 0 0 0/3 * * ? : 3시간마다 한 번씩
-	 * 	 0 0 12 ? * 1 : 월요일 12시에 실행 = 0 0 12 ? * MON
-	 * 	 0 0 10 ? * 6,7 : 주말 10시에 실행 = 0 0 10 ? * SAT,SUN
-	 * 
-	 * 	크론시 작성 사이트: http://www.cronmaker.com
-	 */
-//	@Scheduled(cron="0/5 * * * * ?")		// 0~5초마다 execute1() 메서드 실행
-	public void execute1() {		
-		System.out.println("cnt: "+cnt++);
-	}
-	
-//	@Scheduled(cron="0 10 15 14 6 ?")		// 6월 14일 15시 10분 실행
-	public void execute2() {
-		System.out.println("3시 10분입니다.");
-	}
-	
-	/*
-	 *	1. 평일 아침 10시에 환율 정보를 조회해서 db에 등록
-	 *	2. exchange 테이블 생성하기
-	 *	create table exchange (
-	 		enum int primary key,
-	 		code varchar(10),		#통화 코드
-	 		name varchar(50),		#통화명
-	 		primeamt float,			#매매기준율
-	 		sellamt float,			#매도율
-	 		buyamt	float,			#매입율
-	 		edate varchar(10)		#환율기준일
-	 	) 
-	 	# auto_increment 오라클에는 없는 기능. 보통 다른 데엔 있음
-		# 오라클: 시퀀스 사용
-		# auto_increment 기능 추가 : 자동으로 값을 생성
-		# 기존 테이블에 auto_increment 기능 추가
-	
-		ALTER TABLE exchange MODIFY  eno int NOT null AUTO_INCREMENT
-	 * 
-	 */
-	
-	@Scheduled(cron="0 10 10 * * ?")
-	public void execute3() {
-		System.out.println("환율 등록 시작");
-		Document doc = null;
-		List<List<String>> trlist = new ArrayList<>();
-		String url = "https://www.koreaexim.go.kr/wg/HPHKWG057M01";
-		String exdate = null;
-		try {
-			doc = Jsoup.connect(url).get();
-			Elements trs = doc.select("tr");
-			exdate = doc.select("p.table-unit").html();
-			exdate = exdate.substring(exdate.indexOf(":")+2);
-			System.out.println(exdate);
-			for(Element tr : trs) {
-				List<String> tdlist = new ArrayList<>();
-				Elements tds = tr.select("td");
-				for(Element td : tds) {
-					tdlist.add(td.html());
-				}
-				if(tdlist.size() > 0) {
-					trlist.add(tdlist);		// 전체 데이터 등록
+	@Scheduled(cron="0 31 15 * * ?")
+	public void campinsert() throws IOException {
+		String gongurl = "http://apis.data.go.kr/B551011/GoCamping/basedList"
+				+ "?serviceKey=nTEPXnPuEfFja%2B8NyIriI8RcoAj76sAB4Tl%2FW7vx2EEW1VjNsA8wczqlHhv6ocUsMNFbYnASilpAel15%2Fri3Jg%3D%3D"
+				+ "&numOfRows=1000&pageNo=1&MobileOS=ETC&MobileApp=AppTest";
+		URL url = new URL(gongurl);
+		HttpURLConnection conn = (HttpURLConnection) url.openConnection();	// 공공데이터 포털에 접속
+		conn.setRequestMethod("GET");
+		conn.setRequestProperty("Content-type","application/json");
+		System.out.println("Response code: "+conn.getResponseCode());
+		BufferedReader rd;
+		if(conn.getResponseCode() >= 200 && conn.getResponseCode() <=300) {	// 정상 처리
+			rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+		} else {
+			rd = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
+		}
+		StringBuilder sb = new StringBuilder();
+		String line;
+		while((line = rd.readLine()) != null) {
+			sb.append(line);
+		}
+		rd.close();
+		conn.disconnect();
+		System.out.println(sb.toString());
+		Document doc = Jsoup.parse(sb.toString());
+		Elements recodes = doc.select("items");
+			for(Element r : recodes) {	
+				for(Element i : r.select("item")) {	
+					Camp camp = new Camp();
+					camp.setContentId(Integer.parseInt(i.select("contentId").html()));
+					camp.setBrazierCl(i.select("brazierCl").html());
+					camp.setSbrsCl(i.select("sbrsCl").html());
+					camp.setPosblFcltyCl(i.select("posblFcltyCl").html());
+					camp.setHvofBgnde(i.select("hvofBgnde").html());
+					camp.setCaravAcmpnyAt(i.select("caravAcmpnyAt").html());
+					camp.setToiletCo(i.select("toiletCo").html());
+					camp.setSwrmCo(i.select("swrmCo").html());
+					camp.setHvofEnddle(i.select("hvofEnddle").html());
+					camp.setFeatureNm(i.select("featureNm").html());
+					camp.setInduty(i.select("induty").html());
+					camp.setLctCl(i.select("lctCl").html());
+					camp.setDoNm(i.select("doNm").html());
+					camp.setSigunguNm(i.select("sigunguNm").html());
+					camp.setAddr1(i.select("addr1").html());
+					camp.setTel(i.select("tel").html());
+					camp.setHomepage(i.select("homepage").html());
+					camp.setResveUrl(i.select("resveUrl").html());
+					camp.setGnrlSiteCo(i.select("gnrlSiteCo").html());
+					camp.setAutoSiteCo(i.select("autoSiteCo").html());
+					camp.setGlampSiteCo(i.select("glampSiteCo").html());
+					camp.setCaravSiteCo(i.select("caravSiteCo").html());
+					camp.setIndvdlCaravSiteCo(i.select("indvdlCaravSiteCo").html());
+					camp.setSiteBottomCl1(i.select("siteBottomCl1").html());
+					camp.setSiteBottomCl2(i.select("siteBottomCl2").html());
+					camp.setSiteBottomCl3(i.select("siteBottomCl3").html());
+					camp.setSiteBottomCl4(i.select("siteBottomCl4").html());
+					camp.setSiteBottomCl5(i.select("siteBottomCl5").html());
+					camp.setGlampInnerFclty(i.select("glampInnerFclty").html());
+					camp.setCaravInnerFclty(i.select("caravInnerFclty").html());
+					camp.setPrmisnDe(i.select("prmisnDe").html());
+					camp.setOperPdCl(i.select("operPdCl").html());
+					camp.setOperDeCl(i.select("operDeCl").html());
+					camp.setIntro(i.select("intro").html());
+					camp.setExtshrCo(i.select("extshrCo").html());
+					camp.setFrprvtWrppCo(i.select("frprvtWrppCo").html());
+					camp.setFireSensorCo(i.select("fireSensorCo").html());
+					camp.setThemaEnvrnCl(i.select("themaEnvrnCl").html());
+					camp.setEqpmnLendCl(i.select("eqpmnLendCl").html());
+					camp.setAnimalCmgCl(i.select("animalCmgCl").html());
+					camp.setFirstImageUrl(i.select("firstImageUrl").html());
+					camp.setFacltNm(i.select("facltNm").html());
+					camp.setLineIntro(i.select("lineIntro").html());
+					camp.setBizrno(i.select("bizrno").html());
+					camp.setFacltDivNm(i.select("facltDivNm").html());
+					service.campinsert(camp);
 				}
 			}
-		} catch(Exception e) {
-			e.printStackTrace();
 		}
-//		for(List<String> tds : trlist) {
-//			Exchange ex = new Exchange(0, tds.get(0), tds.get(1),
-//					Float.parseFloat(tds.get(4).replace(",", "")),
-//					Float.parseFloat(tds.get(2).replace(",", "")),
-//					Float.parseFloat(tds.get(3).replace(",", "")), exdate.trim());
-//					service.exchangeInsert(ex);
-//		}
-		System.out.println(exdate + ": 환율 등록 종료 ==========");
 	}
-}

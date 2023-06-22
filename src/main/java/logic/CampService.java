@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import dao.BoardDao;
+import dao.CampDao;
 import dao.CommentDao;
 import dao.UserDao;
 
@@ -24,6 +25,8 @@ public class CampService {
    private BoardDao boarddao;
    @Autowired
    private CommentDao commentdao;
+   @Autowired
+	private CampDao campDao;
    
    //파일 업로드 부분
       public void uploadFileCreate(MultipartFile file, String path) {
@@ -131,4 +134,8 @@ public class CampService {
    public Comment commSelectOne(int num, int seq) {
       return commentdao.selectOne(num, seq);
    }
+   public void campinsert(Camp camp) {
+		campDao.insert(camp);
+		
+	}
 }

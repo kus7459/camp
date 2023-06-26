@@ -49,7 +49,7 @@ body, html {
             <a href="${path}/weather/today" class="w3-bar-item w3-button w3-hover-light-grey" style="padding:20px 16px"><i class="fa fa-cloud" style="color:lightblue"></i> 날씨</a>
              <a href="${path}/board/list" class="w3-bar-item w3-button w3-hover-light-grey"
              style="margin-right:50px; padding:20px 16px"><i class="fa fa-heart" style="color:pink"></i> 커뮤니티</a>
-             <c:if test="${empty sessionScope.loginUser }">
+         <c:if test="${empty sessionScope.loginUser}">
             <a href="${path}/user/login" class="w3-bar-item w3-button w3-hover-light-grey" style="padding:20px 16px">
                <i class="fa fa-user"></i> 로그인
             </a>
@@ -57,12 +57,12 @@ body, html {
                <i class="fa fa-envelope"></i> 회원가입
             </a>
          </c:if>
-         <c:if test="${!empty sessionScope.loginUser }">
+         <c:if test="${!empty sessionScope.loginUser}">
             <a href="${path}/user/mypage" class="w3-bar-item w3-button w3-hover-light-grey" style="padding:20px 16px">
-               <i class="fa fa-user"></i> ${sessionScope.loginUser.username}<b>님</b>
+               <i class='fas fa-user-circle'></i> <b>${sessionScope.loginUser.name}님</b>
                </a>
             <a href="${path}/user/logout" class="w3-bar-item w3-button w3-hover-light-grey" style="padding:20px 16px">
-               <i class="fa fa-envelope"></i> 로그아웃
+               <i class='fas fa-sign-out-alt'></i> 로그아웃
             </a>
          </c:if>
       </div>

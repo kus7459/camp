@@ -23,7 +23,7 @@ public class SiteMeshFilter extends ConfigurableSiteMeshFilter {
 		if(url.contains("/url/")) url = "user";
 		else if (url.contains("/user/")) url = "user";
 		else if (url.contains("/board/")) url = "board";
-		else if (url.contains("/item/")) url = "item";
+		else if (url.contains("/admin/")) url = "user";
 		else if (url.contains("/cart/")) url = "item";
 		else if (url.contains("/chat/")) url = "chat";
 		else url = "";
@@ -34,7 +34,8 @@ public class SiteMeshFilter extends ConfigurableSiteMeshFilter {
 	@Override
 	protected void applyCustomConfiguration(SiteMeshFilterBuilder builder) {
 		builder.addDecoratorPath("/*", "/layout/camplayout.jsp")
-		.addExcludedPath("/user/idchk");
+		.addExcludedPath("/user/idchk")
+		.addExcludedPath("/user/*search");
 		
 	}
 

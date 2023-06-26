@@ -135,7 +135,34 @@ public class CampService {
 	public void campinsert(Camp camp) {
 		campDao.insert(camp);
 	}
+	
 	public void userInsert(User user) {
 		userDao.insert(user);
 	}
+
+	public User selectUserOne(String id) {
+		return userDao.selectUserOne(id);
+	}
+
+	public void userUpdate(User user) {
+		userDao.update(user);
+	}
+
+	public void chgpass(String id, String chgpass) {
+		userDao.chgpass(id, chgpass);
+	}
+
+	public void logupdate(String id) {
+		userDao.logupdate(id);
+	}
+
+	public void userDelete(String id) {
+		userDao.delete(id);
+	}
+
+	public String getSearch(User user) {
+		return userDao.search(user);
+	}
+
+	
 }

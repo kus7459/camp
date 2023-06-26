@@ -19,4 +19,44 @@ public class UserDao {
 		public void insert(User user) {
 			template.getMapper(cls).insert(user);			
 		}
+		
+		public User selectUserOne(String id) {
+			param.clear();
+			param.put("id", id);
+			return template.getMapper(cls).selectUserOne(id);
+		}
+
+		public void update(User user) {
+			template.getMapper(cls).update(user);
+		}
+
+		public void chgpass(String id, String chgpass){
+			param.clear();
+			param.put("id", id);
+			param.put("pass", chgpass);
+			template.getMapper(cls).chgpass(param);
+		}
+
+		public void logupdate(String id) {
+			template.getMapper(cls).logupdate(id);
+		}
+
+		public void delete(String id) {
+			param.clear();
+			param.put("id", id);
+			template.getMapper(cls).delete(param);
+		}
+
+		public String search(User user) {
+			String col = "id";
+			if(user.getId() != null) {	// 아이디 값이 있으면 => 비밀번호 찾기
+				col = "pass";
+			}
+			param.clear();
+			param.put("col", col);
+			param.put("id", user.getId());
+			param.put("email", user.getEmail());
+			param.put("tel", user.getTel());
+			return template.getMapper(cls).search(param);
+		}
 }

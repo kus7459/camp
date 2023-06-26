@@ -16,7 +16,7 @@
       <form:form modelAttribute="user" method="post" action="join" 
       		name="f" onsubmit="return inchk(this)">
       	<spring:hasBindErrors name="user">
-			<font color="red">
+			<font color="red" class="w3-center" style="display:block">
 				<c:forEach items="${errors.globalErrors}" var="error">
 					<spring:message code="${error.code}" />
 					<br>

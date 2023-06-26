@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>
-<title>내정보</title>
+<title>내 정보</title>
 </head>
 <body>
 <style>
@@ -29,32 +29,53 @@
     }
     .info-table>tr, .info-table>td, .info-table>th {border: 1px solid #dedede;
 		text-align: center}
+	.btn-lime {background-color: #cddc39}
+	.btn-gray {background-color: #d3d3d3}
+	header {position: relative;
+    		height:150px; 
+    		background-color:#cddc39;}
+	header>h3 {position:absolute;
+		bottom: 5px;
+		left: 5%;
+		font-weight: bold;}
 </style>
-	<br><br>
-	<div style="width:90%; margin: 0 auto; margin-top: 100px">
-		<h3>회원아이디</h3>
-		<div style="display: flex; align-items: center; margin-bottom: 10px;">
+	<header>
+		<h3>내 정보</h3>
+	</header>
+	<div style="width:90%; margin: 0 auto; margin-top: 40px; margin-bottom: 40px">
+		<div>
 			<div class="form-group">
-				<table class="w3-table">
+				<table class="w3-table-all" style="width:100%">
+					<tr>
+						<th>아이디</th>
+						<td>${user.id }</td>
+					</tr>
 					<tr>
 						<th>이름</th>
-						<td>이름</td>
+						<td>${user.name}</td>
 					</tr>
 					<tr>
 						<th>생년월일</th>
-						<td>생년월일</td>
+						<td><fmt:formatDate value="${user.birth}" pattern="yyyy-MM-dd"/></td>
 					</tr>
 					<tr>
 						<th>전화번호</th>
-						<td>전화번호</td>
+						<td>${user.tel}</td>
 					</tr>
 					<tr>
 						<th>이메일</th>
-						<td>이메일</td>
+						<td>${user.email}</td>
 					</tr>
 				</table>
 				<div style="margin-top:10px; text-align:left;">
-				<a href="update" style="text-decoration: none; color: #000;">내 정보 변경</a>
+				<c:if test="${loginUser.id != 'admin'}">
+					<a href="deleteForm?id=${user.id}" class="btn btn-gray" style="float:right; color:#000"">회원 탈퇴</a>
+				</c:if>
+				<c:if test="${loginUser.id == 'admin'}">
+					<a href="../admin/list" class="btn btn-gray" style="float:right; color:#000">회원 목록</a>
+				</c:if>
+				<a href="update?id=${user.id}" style="text-decoration: none; color: #000; float:right; margin-right:10px"
+					class="btn btn-lime">내 정보 변경</a>
 				</div>
 			</div>
 		</div>
@@ -73,7 +94,7 @@
 		<!-- 등록 게시글 목록 -->
 		<div id="etcInner" class="inner">
 			<h3 style="margin-bottom: 20px">
-				<i class="fas fa-duotone fa-check"></i>등록 게시글 목록
+				<i class='far fa-file-alt'></i> 등록 게시글 목록
 			</h3>
 			<table class="w3-table info-table w3-centered">
 				<tr>
@@ -88,7 +109,7 @@
 		<!-- 등록 댓글 목록 -->
 		<div id="infoInner" class="inner">
 			<h3 style="margin-bottom: 20px">
-				<i class="fas fa-duotone fa-check"></i>등록 댓글 목록
+				<i class='far fa-comment-dots'></i> 등록 댓글 목록
 			</h3>
 			<table class="w3-table info-table w3-centered">
 				<tr>
@@ -101,7 +122,7 @@
 		<!-- 캠핑장 찜 목록 -->
 		<div id="picInner" class="inner">
 			<h3 style="margin-bottom: 20px">
-				<i class="fas fa-duotone fa-check"></i>캠핑장 찜 목록
+				<i class="fa fa-heart"></i> 캠핑장 찜 목록
 			</h3>
 			<table class="w3-table info-tabl w3-centered">
 				<tr>
@@ -116,7 +137,7 @@
 		<!-- 게시글 좋아요 목록 -->
 		<div id="locInner" class="inner">
 			<h3 style="margin-bottom: 20px">
-				<i class="fas fa-duotone fa-check"></i>게시글 좋아요 목록
+				<i class="glyphicon glyphicon-thumbs-up"></i> 게시글 좋아요 목록
 			</h3>
 			<table class="w3-table info-table w3-centered">
 				<tr>

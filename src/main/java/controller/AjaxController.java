@@ -28,7 +28,7 @@ public class AjaxController {
 			e.printStackTrace();
 		}
 		
-		Set<String> set = new LinkedHashSet<>();
+		Set<String> set = new LinkedHashSet<String>();
 		String data = null;
 		if (si == null && gu == null) {
 			try {
@@ -73,7 +73,7 @@ public class AjaxController {
                 e.printStackTrace();
             }
         }
-		List<String> list = new ArrayList<>(set);    // Set 객체를 List 객체로 변경
+		List<String> list = new ArrayList<String>(set);    // Set 객체를 List 객체로 변경
 		return list.toString();    // 리스트 객체가 바로 브라우저에 전달 됨. view가 없음. data가 직접 내려감.
 		// pom.xml의 fasterxml.jackson... 설정에 의해서 브라우저는 배열로 인식함.
 		// ["서울특별시","경기도" ...]

@@ -43,7 +43,7 @@
 				<hr>
 				<a href="${apiURL}">
 					<img height="40" src="http://static.nid.naver.com./oauth/small_g_in.PNG" style="margin-right:10px;margin-left:5px;">
-					</a>
+				</a>
 				<a href="${kakaoApiURL}">
 					<img height="40" src="../img/kakao_login_medium.png">
 				</a>

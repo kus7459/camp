@@ -8,20 +8,25 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.security.SecureRandom;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StreamUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,6 +35,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.mchange.v2.cfg.PropertiesConfigSource.Parse;
 
 import exception.LoginException;
 import logic.CampService;
@@ -41,6 +53,8 @@ public class UserController {
 	
 	@Autowired
 	private CampService service;
+	
+//    ObjectMapper objectmapper = new ObjectMapper();
 	
 	@GetMapping("*")
 	public ModelAndView main() {
@@ -75,32 +89,33 @@ public class UserController {
 	@GetMapping("login")
 	public ModelAndView login(HttpSession session) {
 		ModelAndView mav = new ModelAndView();
-		String clientId = "jtLAQzVD33dfD_4IxaXV";	// 네이버
-		String client_Id = "79d4f0b8f1a64393195daac005b9ecef";	// 카카오
-
+		// 네이버
+		String clientId = "jtLAQzVD33dfD_4IxaXV";
 		String redirectURL = null;
-		String redirectURL2 = null;
 		try {
-			redirectURL = URLEncoder.encode("http://localhost:8080/camp/user/kakaologin","UTF-8");
-			redirectURL2 = URLEncoder.encode("http://localhost:8080/camp/user/naverlogin","UTF-8");
+			redirectURL = URLEncoder.encode("http://localhost:8080/camp/user/naverlogin","UTF-8");
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
-	
 		SecureRandom random = new SecureRandom();
 		String state = new BigInteger(130,random).toString();
-		
-		// 네이버
 		String apiURL = "http://nid.naver.com/oauth2.0/authorize?response_type=code";
 		apiURL += "&client_id="+clientId;
 		apiURL += "&redirect_uri="+redirectURL;
 		apiURL += "&state="+state;
 		
-		// 카카오 - 인가코드
+		// 카카오
+		String client_Id = "79d4f0b8f1a64393195daac005b9ecef";	// 카카오
+		String redirectURL2 = null;
+		try {
+			redirectURL2 = URLEncoder.encode("http://localhost:8080/camp/user/kakaologin","UTF-8");
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
 		String apiURL2 = "https://kauth.kakao.com/oauth/authorize?&response_type=code";
 		apiURL2 += "&client_id="+client_Id;
-		apiURL2 += "&redirect_uri="+redirectURL;
-		
+		apiURL2 += "&redirect_uri="+redirectURL2;
+
 		
 		mav.addObject(new User());	//user 객체 전달
 		mav.addObject("apiURL", apiURL);	// 네이버
@@ -109,6 +124,9 @@ public class UserController {
 		return mav;
 	}
 	
+
+	
+	// 네이버 로그인
 	@RequestMapping("naverlogin")
 	public String naverlogin(String code, String state, HttpSession session) {
 		System.out.println("2. session.id="+session.getId());
@@ -118,7 +136,6 @@ public class UserController {
 		try {
 			redirectURI = URLEncoder.encode("YOUR_CALLBACK_URL", "UTF-8");
 		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		String apiURL;
@@ -161,6 +178,7 @@ public class UserController {
 		} catch(Exception e) {
 			System.out.println(e);
 		}
+		
 		// json 형태의 문자열 데이터 => json 객체로 변경
 		JSONParser parser = new JSONParser();	// json-siple-1.1.1.jar 파일 설정 필요 -> pom.xml
 		JSONObject json = null;;
@@ -223,14 +241,17 @@ public class UserController {
 	}
 	
 	// 카카오 로그인
+	@SuppressWarnings("unused")
 	@RequestMapping("kakaologin")
 	public String kakaologin(String code, HttpSession session) {
 		System.out.println("2. session.id="+session.getId());
+		
+		HashMap<String, Object> userInfo = new HashMap<>();
 
 		String client_Id = "79d4f0b8f1a64393195daac005b9ecef";
 		String redirect_uri = null;
 		try {
-			redirect_uri = URLEncoder.encode("http://localhost:8080/camp/user/naverlogin", "UTF-8");
+			redirect_uri = URLEncoder.encode("http://localhost:8080/camp/user/kakaologin", "UTF-8");
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
@@ -241,31 +262,26 @@ public class UserController {
 		kakaoApiURL += "&redirect_uri="+redirect_uri;
 		kakaoApiURL += "&code="+code;	// 카카오에서 전달해준 코드값
 		
-		System.out.println("====kakaoApiURL===="+kakaoApiURL);
-		
 		// 내가 전달한 값을 다시 받음.
 		System.out.println("code="+code);
-		String access_token = "";
-		String refresh_token = "";	// 사용자 리프레스 토큰값
-		String token_type = "bearer"; // 토큰 타입
-		int expires_in = 1800;		// 엑세스 토큰, id 토근 만료 시간
-		int refresh_token_expires_in = 1800;	// 리프레시 토큰 만료 시간
-	
+		
 		StringBuffer res = new StringBuffer();
 		System.out.println("kakaoApiURL="+kakaoApiURL);
+	
 		try {
 			URL url = new URL(kakaoApiURL); 
 			// 카카오 접속 => 토큰 전달 
-			HttpURLConnection con = (HttpURLConnection)url.openConnection();
-			con.setRequestMethod("POST");
-			con.setDoOutput(true);
-			int responseCode = con.getResponseCode();
-			BufferedReader br;
+			HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+			conn.setRequestMethod("POST");
+			conn.setDoOutput(true);
+			int responseCode = conn.getResponseCode();
 			System.out.print("responseCode="+responseCode);
+			
+			BufferedReader br;
 			if(responseCode == 200) {	// 정상호출
-				br = new BufferedReader(new InputStreamReader(con.getInputStream()));
+				br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
 			} else {
-				br = new BufferedReader(new InputStreamReader(con.getErrorStream()));
+				br = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
 			}
 			
 			String inputLine;
@@ -280,66 +296,86 @@ public class UserController {
 		} catch(Exception e) {
 			System.out.println(e);
 		}
-
 		
 		// json 형태의 문자열 데이터 => json 객체로 변경
-		JSONParser parser = new JSONParser();	// json-siple-1.1.1.jar 파일 설정 필요 -> pom.xml
+		JSONParser parser = new JSONParser();
 		JSONObject json = null;
+		
 		try {
 			json = (JSONObject)parser.parse(res.toString());
-		} catch (ParseException e) {
+			
+		} catch(ParseException e) {
 			e.printStackTrace();
-		}	// res(응답 데이터)를 json 객체로 생성. - java에서도 쓸 수 있음
-		String token = (String)json.get("access_token");	// 정상적인 로그인 요청인 경우 네이버가 발생한 코드값
-		System.out.println("\n================token: "+token);
-		String header = "Bearer " + token ;	//Bearer 다음에 공백 추가 : 공백을 넣어야 인증 정보를 확인해줌
+		}
+		
+		String access_token = (String) json.get("access_token");
+		System.out.println("###### access_token: "+access_token);
+		String refresh_token = "";	// 사용자 리프레스 토큰값
+		String token_type = "bearer"; // 토큰 타입 (고정)
 		try {
-			kakaoApiURL = "https://openapi.naver.com/v1/nid/me";		// 2번째 요청 URL. 토큰값 전송
+			kakaoApiURL = "https://kapi.kakao.com/v2/user/me";
 			URL url = new URL(kakaoApiURL);
-			HttpURLConnection con = (HttpURLConnection) url.openConnection();
-			con.setRequestMethod("GET");
-			con.setRequestProperty("Authorization", header);	// header 값에 인증 정보 넣음
-			int responseCode = con.getResponseCode();
+			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+			conn.setRequestMethod("POST");
+			conn.setRequestProperty("Authorization", "Bearer " + access_token);
+			int responseCode = conn.getResponseCode();
+			System.out.println("responseCode: "+ responseCode);
 			BufferedReader br;
-			res = new StringBuffer();
+			
+			
+			
+			BufferedReader br2 = new BufferedReader(new InputStreamReader(conn.getInputStream()));			
+			
+			String inputLine;
+			String result = "";
+			
 			if(responseCode == 200) { // 정상 호출
 				System.out.println("로그인 정보 정상 수신");
-				br = new BufferedReader(new InputStreamReader(con.getInputStream()));
+				br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
 			} else { // 에러 발생
 				System.out.println("로그인 정보 오류 수신");
-				br = new BufferedReader(new InputStreamReader(con.getErrorStream()));
+				br = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
 			}
-			String inputLine;
 			while((inputLine = br.readLine()) != null) {
 				res.append(inputLine);
+				result += inputLine;
 			}
+			System.out.println("정상 정보: "+res.toString());
+			
+			System.out.println("response body : " + result);
+			JsonParser parser2 = new JsonParser();
+	        JsonElement element = parser2.parse(result);
+	        
+	        JsonObject properties = element.getAsJsonObject().get("properties").getAsJsonObject();
+	        JsonObject kakao_account = element.getAsJsonObject().get("kakao_account").getAsJsonObject();
+	        
+	        String id = element.getAsJsonObject().get("id").getAsString();
+	        String nickname = properties.getAsJsonObject().get("nickname").getAsString();
+	        String email = kakao_account.getAsJsonObject().get("email").getAsString();
+	        String gender = kakao_account.getAsJsonObject().get("gender").getAsString();
+	        userInfo.put("id", id);
+	        userInfo.put("nickname", nickname);
+	        userInfo.put("email", email);
+	        userInfo.put("gender", gender);
+			
 			br.close();
-			System.out.println(res.toString());
+			
+//			 == 카카오 정보를 얻어 온 부분  db에 ==
+			User user = service.selectUserOne((String)userInfo.get("id"));
+			if(user == null) {
+				user = new User();
+				user.setId((String)userInfo.get("id"));
+				user.setName((String)userInfo.get("nickname"));
+				user.setEmail((String)userInfo.get("email"));
+				user.setGender((String)userInfo.get("gender") =="female"?2:1);
+				service.userInsert(user);
+			}
+			session.setAttribute("loginUser", user);
 		} catch(Exception e) {
-			System.out.println(e);
-		}
-		try {
-			json = (JSONObject) parser.parse(res.toString());
-		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-		System.out.println(json);	// 네이버 사용자 정보 수신
-		JSONObject jsondetail = (JSONObject)json.get("response");
 		
-		// == naver로부터 정보를 얻어 온 부분 ↓ ==
-		String id = jsondetail.get("id").toString();
-		User user = service.selectUserOne(id);
-		if(user == null) {
-			user = new User();
-			user.setId(id);
-			user.setName(jsondetail.get("name").toString());
-			user.setEmail(jsondetail.get("email").toString());
-			user.setTel(jsondetail.get("mobile").toString());
-			user.setGender(jsondetail.get("gender").toString()=="f"?2:1);
-			service.userInsert(user);
-		}
-		session.setAttribute("loginUser", user);
-		return "redirect:mypage?id="+user.getId();
+		return "redirect:mypage?id=" + userInfo.get("id");
 	}
 
 	// 일반 로그인

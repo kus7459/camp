@@ -25,7 +25,7 @@ import logic.Board;
 public class BoardDao {
 	@Autowired
 	private SqlSessionTemplate template;
-	private Map<String, Object> param = new HashMap<>();
+	private Map<String, Object> param = new HashMap<String, Object>();
 	private Class<BoardMapper> cls = BoardMapper.class;
 
 	public int maxNum() {

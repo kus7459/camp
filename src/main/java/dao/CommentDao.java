@@ -18,7 +18,7 @@ import logic.Comment;
 public class CommentDao {
 	@Autowired
 	private SqlSessionTemplate template;
-	private Map<String, Object> param = new HashMap<>();
+	private Map<String, Object> param = new HashMap<String, Object>();
 	private Class<CommentMapper> cls = CommentMapper.class;
 	public int maxseq(int num) {
 		return template.getMapper(cls).maxseq(num);

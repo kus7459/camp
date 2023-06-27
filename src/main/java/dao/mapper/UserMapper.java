@@ -11,8 +11,8 @@ import logic.User;
 
 public interface UserMapper {
 
-	@Insert("insert into user(id,pass,name,gender,tel,email,birth)"
-			+ " values(#{id},#{pass},#{name},#{gender},#{tel},#{email},#{birth})")
+	@Insert("insert into user(id,pass,name,gender,tel,email,lastlog, birth)"
+			+ " values(#{id},#{pass},#{name},#{gender},#{tel},#{email}, now(), #{birth})")
 	void insert(User user);
 
 	@Select("select * from user where id = #{value}")

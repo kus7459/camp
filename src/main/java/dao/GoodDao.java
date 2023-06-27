@@ -13,6 +13,6 @@ import dao.mapper.GoodMapper;
 public class GoodDao {
 	@Autowired
 	private SqlSessionTemplate template;
-	private Map<String, Object> param = new HashMap<>();
+	private Map<String, Object> param = new HashMap<String, Object>();
 	private Class<GoodMapper> cls = GoodMapper.class;
 }

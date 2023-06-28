@@ -6,7 +6,10 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.concurrent.Exchanger;
 
@@ -22,6 +25,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import ch.qos.logback.core.recovery.ResilientSyslogOutputStream;
 import logic.Camp;
 import logic.CampService;
+import logic.User;
 
 
 
@@ -108,4 +112,25 @@ public class CountScheduler {
 				}
 			}
 		}
+	@Scheduled(cron="0 12 0 * * ?") 
+	public void usercount () {
+		// 로그
+		Calendar calendar = new GregorianCalendar();
+		SimpleDateFormat simpleDate = new SimpleDateFormat("yyyy-MM-dd");
+				
+		String now = simpleDate.format(calendar.getTime());		
+				
+		calendar.add(Calendar.DATE, -1);		
+		String yesterday = simpleDate.format(calendar.getTime());		
+				
+		// list
+		List<User> loglist = service.loglist();
+		for(int i = 0; i < loglist.size(); i++) {
+			String log = simpleDate.format(loglist.get(i).getLastlog());
+			if(yesterday.equals(log)) {
+				service.userRest(loglist.get(i).getId(), 2);
+			}
+		}
+		
 	}
+}

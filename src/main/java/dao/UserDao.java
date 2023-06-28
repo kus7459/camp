@@ -1,6 +1,7 @@
 package dao;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
@@ -59,4 +60,32 @@ public class UserDao {
 			param.put("tel", user.getTel());
 			return template.getMapper(cls).search(param);
 		}
+
+		public int count(String searchtype, String searchcontent) {
+			param.clear();
+			param.put("searchcontent", searchcontent);
+			param.put("searchtype", searchtype);
+			return template.getMapper(cls).count(param);
+		}
+
+		public List<User> userlist(Integer pageNum, int limit, String searchtype, String searchcontent) {
+			param.clear();
+			param.put("startrow", (pageNum-1)*limit);
+			param.put("limit", limit);
+			param.put("searchtype", searchtype);
+			param.put("searchcontent", searchcontent);
+			return template.getMapper(cls).userlist(param);
+		}
+
+		public void rest(String id, Integer restNum) {
+			param.clear();
+			param.put("id", id);
+			param.put("rest", restNum);
+			template.getMapper(cls).rest(param);
+		}
+
+		public List<User> loglist() {
+			return template.getMapper(cls).loglist();
+		}
+
 }

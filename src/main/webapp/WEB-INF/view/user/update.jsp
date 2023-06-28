@@ -71,7 +71,7 @@
 				</tr>
 				<tr>
 					<td colspan="4">
-						<a href="mypwForm" style="float:right" class="btn btn-lime">비밀번호 변경</a>
+						<a href="mypwForm?id=${user.id}" style="float:right" class="btn btn-lime">비밀번호 변경</a>
 					</td>
 				</tr>
 				<tr>

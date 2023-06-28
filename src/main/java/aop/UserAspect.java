@@ -22,7 +22,7 @@ public class UserAspect {
 		}
 		// 본인, 관리자 확인
 		if(!loginUser.getId().equals("admin") && !loginUser.getId().equals(id)) {
-			throw new LoginException("[UserCheck]본인만 가능합니다.", "mypage?id="+id);
+			throw new LoginException("[UserCheck]본인만 가능합니다.", "mypage?id="+loginUser.getId());
 		}
 	}
 	
@@ -34,5 +34,4 @@ public class UserAspect {
 			throw new LoginException("[loginCheck] 로그인이 필요합니다.", "login");
 		}
 	}
-
 }

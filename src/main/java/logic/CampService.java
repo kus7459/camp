@@ -178,6 +178,22 @@ public class CampService {
 		return userDao.search(user);
 	}
 
+	// admin - 회원 목록 조회
+	public int usercount(String searchtype, String searchcontent) {
+		return userDao.count(searchtype,searchcontent);
+	}
+
+	public List<User> userlist(Integer pageNum, int limit, String searchtype, String searchcontent) {
+		return userDao.userlist(pageNum,limit,searchtype,searchcontent);
+	}
+
+	public void userRest(String id, Integer restNum) {
+		userDao.rest(id,restNum);
+	}
+
+	public List<User> loglist() {
+		return userDao.loglist();
+	}
 	public List<Camp> camplist(Map<String, Object> param) {
 		return campDao.list(param);
 	}
@@ -185,10 +201,6 @@ public class CampService {
 	public int campcount(Map<String, Object> param) {
 		return campDao.count(param);
 	}
-
-	
-
-
 
 	
 }

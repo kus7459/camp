@@ -40,19 +40,19 @@
                class="form-control" placeholder="비밀번호 재입력"></td>
             </tr>
             <tr>
-               <td colspan="3"><form:input path="name"
-                  placeholder="이름" class="form-control"/>
+               <td colspan="3">
+               	<form:input path="name" placeholder="이름" class="form-control"/>
                   <font color="red"><form:errors path="name" /></font></td>
             </tr>
             <tr>
-               <td colspan="3"><form:input path="birth"
-                  placeholder="생년월일" class="form-control"/>
+               <td colspan="3">
+					<form:input path="birth" placeholder="생년월일" class="form-control"/>
                   <font color="red"><form:errors path="birth" /></font>
                </td>
             </tr>
             <tr>
-               <td colspan="3"><form:input path="tel"
-                  placeholder="-을 제외한 전화번호 10자리 또는 11자리" class="form-control"/>
+               <td colspan="3">
+               <form:input path="tel" placeholder="-을 포함한 전화번호 10자리 또는 11자리" class="form-control"/>
                   <font color="red"><form:errors path="tel" /></font>
                </td>
             </tr>

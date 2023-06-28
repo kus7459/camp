@@ -14,7 +14,7 @@
 		<input type="hidden" name="name" value="유효성">
 		<input type="hidden" name="birth" value="2023-06-23">
 		<input type="hidden" name="email" value="a@b.c">
-		<input type="hidden" name="tel" value="01012341234">
+		<input type="hidden" name="tel" value="010-1234-1234">
 			<div class="w3-container w3-content">
 				<h2 style="text-align:center; font-weight: bold;">Good Camping</h2>
 				<p style="text-align:center;">굿캠핑에 오신 걸 환영합니다.</p>

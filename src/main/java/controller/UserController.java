@@ -8,6 +8,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.security.SecureRandom;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,6 +25,7 @@ import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.format.datetime.joda.DateTimeParser;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -53,8 +56,6 @@ public class UserController {
 	
 	@Autowired
 	private CampService service;
-	
-//    ObjectMapper objectmapper = new ObjectMapper();
 	
 	@GetMapping("*")
 	public ModelAndView main() {
@@ -232,7 +233,21 @@ public class UserController {
 			user.setName(jsondetail.get("name").toString());
 			user.setEmail(jsondetail.get("email").toString());
 			user.setTel(jsondetail.get("mobile").toString());
-			user.setGender(jsondetail.get("gender").toString()=="f"?2:1);
+			String naver_birth =  jsondetail.get("birthyear").toString()+"-"+jsondetail.get("birthday").toString();
+			SimpleDateFormat dateParser = new SimpleDateFormat("yyyy-MM-dd");
+			Date date;
+			try {
+				date = dateParser.parse(naver_birth);
+				user.setBirth(date);
+			} catch (java.text.ParseException e) {
+				e.printStackTrace();
+			}
+			if(jsondetail.get("gender").toString().equals("F")) {
+				user.setGender(2);
+			} else {
+				user.setGender(1);
+			}
+			System.out.println("네이버 성별"+jsondetail.get("gender").toString());
 //			user.setChannel("naver");
 			service.userInsert(user);
 		}
@@ -322,10 +337,6 @@ public class UserController {
 			System.out.println("responseCode: "+ responseCode);
 			BufferedReader br;
 			
-			
-			
-			BufferedReader br2 = new BufferedReader(new InputStreamReader(conn.getInputStream()));			
-			
 			String inputLine;
 			String result = "";
 			
@@ -367,7 +378,12 @@ public class UserController {
 				user.setId((String)userInfo.get("id"));
 				user.setName((String)userInfo.get("nickname"));
 				user.setEmail((String)userInfo.get("email"));
-				user.setGender((String)userInfo.get("gender") =="female"?2:1);
+				if(userInfo.get("gender").equals("female")) {
+					user.setGender(2);
+				} else {
+					user.setGender(1);
+				}
+				System.out.println("카카오 성별: "+userInfo.get("gender"));
 				service.userInsert(user);
 			}
 			session.setAttribute("loginUser", user);
@@ -380,7 +396,7 @@ public class UserController {
 
 	// 일반 로그인
 	@PostMapping("login")
-	public ModelAndView login(@Valid User user, BindingResult bresult, HttpSession session) {
+	public ModelAndView login(@Valid User user, BindingResult bresult, HttpServletRequest request, HttpSession session) {
 		ModelAndView mav = new ModelAndView();
 		if(bresult.hasErrors()) {
 			mav.getModel().putAll(bresult.getModel());
@@ -394,12 +410,23 @@ public class UserController {
 			mav.getModel().putAll(bresult.getModel());
 			return mav;
 		}
+		
+		String id = user.getId();
+		int restNum = 1;
+		
 		// pw 조회
-		if(user.getPass().equals(dbUser.getPass())) {	//성공
-			session.setAttribute("loginUser", dbUser);
-			service.logupdate(user.getId());
-			mav.setViewName("redirect:mypage?id="+user.getId());
-			return mav;
+		if(user.getPass().equals(dbUser.getPass())) {
+			System.out.println(user.getPass());
+			System.out.println(dbUser.getPass());
+			if(dbUser.getRest() == 2) {	//성공, 휴면 계정
+				service.userRest(id, restNum);
+				throw new LoginException("휴면 계정이 해지되었습니다. 다시 로그인 해주세요.", "login");
+			} else {
+				session.setAttribute("loginUser", dbUser);
+				service.logupdate(user.getId());
+				mav.setViewName("redirect:mypage?id="+user.getId());
+				return mav;
+			}
 		} else {
 			bresult.reject("error.login.id");
 			mav.getModel().putAll(bresult.getModel());
@@ -414,7 +441,7 @@ public class UserController {
 	}
 	
 	@RequestMapping("mypage")
-	public ModelAndView loginCheckmypage(String id, HttpSession session) {
+	public ModelAndView idCheckmypage(String id, HttpSession session) {
 		ModelAndView mav = new ModelAndView();
 		User user = service.selectUserOne(id);
 		mav.addObject("user", user);

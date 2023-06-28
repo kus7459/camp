@@ -14,11 +14,13 @@ import org.springframework.web.multipart.MultipartFile;
 import dao.BoardDao;
 import dao.CampDao;
 import dao.CommentDao;
+import dao.GoodDao;
 import dao.UserDao;
 
 @Service
 public class CampService {
-
+	@Autowired
+	private GoodDao gooddao;
 	@Autowired
 	private UserDao userDao;
 	@Autowired
@@ -43,7 +45,18 @@ public class CampService {
 			e.printStackTrace();
 		}
 	}
-
+	public int goodselect(Good good) {
+		return gooddao.select(good);
+	}
+	public void goodinsert(Good good) {
+		gooddao.insert(good);
+	}
+	public void gooddelete(Good good) {
+		gooddao.delete(good);
+	}
+	public int goodcount(Good good) {
+		return gooddao.count(good);
+	}
 	public void boardWrite(@Valid Board board, HttpServletRequest request) {
 		int maxnum = boarddao.maxNum(); // 등록된 게시물의 최대 num값을 리턴
 		board.setNum(++maxnum);
@@ -163,6 +176,10 @@ public class CampService {
 	public String getSearch(User user) {
 		return userDao.search(user);
 	}
+
+	
+
+
 
 	
 }

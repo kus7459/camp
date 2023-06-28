@@ -13,7 +13,8 @@
 	<table class="w3-table" style="width:90%; margin: 0 auto">
 		<tr>
 			<th>작성자</th>
-			<td><form:input path="writer" class="w3-input" />
+			<td><form:input path="writer" readonly="true" 
+				class="w3-input" value="${loginUser.id}" />
 				<font color="red"><form:errors path="writer"/></font>
 			</td>
 		</tr>

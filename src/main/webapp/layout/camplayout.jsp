@@ -12,6 +12,9 @@
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+<script type="text/javascript" src= 
+"https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js">
+</script>
 <script type="text/javascript" src=
 "http://cdn.ckeditor.com/4.5.7/standard/ckeditor.js"></script>
 <style>

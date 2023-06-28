@@ -8,7 +8,7 @@ import lombok.ToString;
 @Getter
 @ToString
 public class Good {
-	private int gno;
-	private int boardNo;
+	private int goodno;
 	private String userId;
+	private int goodtype;
 }

@@ -119,13 +119,12 @@
 		
 				</c:if>
 				<c:if test="${board.secret == 1 }">
-				<a>비밀글입니다.</a>
-				<%--<c:choose>
-	                <c:when test="${board. eq loginVO.id || admincode eq '1'}">
-	                    <c:out value="${result.cs_title}"/>
+				<c:choose>
+	                <c:when test="${board.writer eq loginUser.id || loginUser.id == 'admin'}">
+	                    <a href="detail?num=${board.num}">${board.title}</a>
 	                </c:when>
 	                <c:otherwise>비밀글은 작성자와 관리자만 볼 수 있습니다.</c:otherwise>
-	            </c:choose> --%>
+	            </c:choose> 
 				</c:if>
 				</td>
 				
@@ -139,7 +138,7 @@
 					</c:if>
 				</td>
 				<td>${board.readcnt}</td>
-				<td>${board.readcnt}</td><%--좋아요 수 --%>
+				<td>${board.likecnt}</td><%--좋아요 수 --%>
 			</tr>		
 		</c:forEach>
 			<tr><td colspan="6" class="w3-center">

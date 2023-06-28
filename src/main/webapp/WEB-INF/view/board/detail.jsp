@@ -24,6 +24,8 @@
 </head>
 <body>
 <br><br><br><br><br>
+		<input type="hidden" id="boardNum" value="${board.num}">
+		<input type="hidden" id="userId" value="${loginUser.id}">
 	<h3>${boardName}</h3>
 	<div class="w3-center" 
 		style="width:90%; margin: 0 auto">
@@ -56,7 +58,26 @@
 					<a href="update?num=${board.num }">[수정]</a>
 					<a href="delete?num=${board.num }">[삭제]</a>
 					<a href="list?boardid=${board.boardid }">[게시물목록]</a>
-					<button class="btn btn-white"><i class="glyphicon glyphicon-thumbs-up" style="color:blue"></i> <b>추천</b></button>
+				
+					<c:choose>
+  						<c:when test="${goodselect == 0 }"> <!-- count가0이면 빈하트-->
+        					<button class="btn btn-white"onclick="changeLike()" >
+							<i class="fas fa-heart" style="font-size:30px; color:blue;" id="btn_like"></i>
+							</button>
+   						</c:when>
+    					<c:otherwise> <!-- count가1이면 빨간 하트-->
+       						<button class="btn btn-white"onclick="changeLike()" >
+							<i class="fas fa-heart" style="font-size:30px; color:red;" id="btn_like"></i>
+							</button>
+    					</c:otherwise>
+					</c:choose>
+					<input type="text"  id="count" readonly="true" value="${count}">			
+					<%-- 
+					<button class="btn btn-white"onclick="changeLike()" >
+					<i class="glyphicon glyphicon-thumbs-up" id="btn_like" style="color:blue"></i>
+					<b>추천</b>
+					</button>
+					--%>
 				</td>
 			</tr>	
 		</table>
@@ -98,7 +119,7 @@
 								<input type="hidden" name="num" value="${param.num}">
 								<input type="hidden" name="seq" value="${c.seq}">
 								<input type="password" name="pass" placeholder="비밀번호"/>
-								<a class="w3-btn w3-border w3-blue"
+								<a class="w3-btn w3-border w3-blue" 
 								href="javascript:document.commdel${stat.index}.submit()">삭제</a>
 							</form>
 						</td>
@@ -108,5 +129,49 @@
 		</div>
 	</div> 
 	<br><br><br>
+<script type="text/javascript">
+
+
+function changeLike(){
+	let boardNum = $("#boardNum").val();
+	let userId = $("#userId").val();
+	console.log('here')
+	console.log(boardNum)
+	console.log(userId)
+	$.ajax({
+		type : "post",
+		url : "boardLike",
+		//dataType : "json",
+		data : "boardNum="+boardNum+"&userId="+userId,
+		success : function(jdata){
+			console.log(jdata)
+			console.log(jdata.count)
+			if(jdata.likecheck == 1){ // 좋아요
+				$("#btn_like").attr("style","font-size:30px;color:blue;");				
+			} 
+			if(jdata.likecheck == 0){ //안좋아요
+				$("#btn_like").attr("style","font-size:30px;color:red;");				
+			}
+			$("#count").val(jdata.count);
+		}
+	})
+}
+</script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

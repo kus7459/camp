@@ -1,9 +1,11 @@
 package controller;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.annotation.RequestScope;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
@@ -26,6 +29,7 @@ import exception.BoardException;
 import logic.Board;
 import logic.CampService;
 import logic.Comment;
+import logic.Good;
 import logic.User;
 import util.CipherUtil;
 
@@ -41,7 +45,7 @@ public class BoardController {
 	public ModelAndView write() {
 		ModelAndView mav = new ModelAndView();
 		mav.addObject(new Board());
-		//mav.addObject(new User());
+		mav.addObject(new User());
 		return mav;
 	}
 	/*
@@ -52,7 +56,7 @@ public class BoardController {
 	 */
 	@PostMapping("write")
 	public ModelAndView writePost(@Valid Board board, BindingResult bresult,
-			HttpServletRequest request) {
+			HttpServletRequest request, HttpSession session) {
 		ModelAndView mav = new ModelAndView();
 		if(bresult.hasErrors()) {
 			mav.getModel().putAll(bresult.getModel());
@@ -116,6 +120,12 @@ public class BoardController {
 		int listcount = service.boardcount(boardid,column,find); //등록된 게시물 건수
 		// boardlist : 현재 페이지에 보여줄 게시물 목록
 		List<Board> boardlist = service.boardlist(pageNum,limit,boardid,column,find);
+		for(Board b : boardlist) {
+			Good good = new Good();
+			good.setGoodno(b.getNum());
+			int bcnt=service.goodcount(good);
+			b.setLikecnt(bcnt);
+		}
 		//페이징 처리를 위한 값들
 		int maxpage = (int)((double)listcount/limit+0.95); //등록 건수에 따른 최대 페이지 수
 		int startpage = (int)((pageNum/10.0 +0.9)-1) *10 +1; // 페이지의 시작 번호
@@ -123,6 +133,7 @@ public class BoardController {
 		if(endpage > maxpage) endpage = maxpage;	// 페이지의 끝 번호는 최대 페이지보다 작다.
 		int boardno = listcount - (pageNum-1)*limit; //화면에 보여지는 게시물 번호 
 		String today = new SimpleDateFormat("yyyyMMdd").format(new Date());// 오늘 날짜를 문자열로 저장
+
 		mav.addObject("boardid",boardid);
 		mav.addObject("boardName",boardName);
 		mav.addObject("pageNum",pageNum);
@@ -137,9 +148,28 @@ public class BoardController {
 	}
 	
 	@RequestMapping("detail")
-	public ModelAndView detail (Integer num){
+	public ModelAndView detail (Integer num, HttpServletRequest request,HttpSession session){
 		ModelAndView mav = new ModelAndView();
 		Board board = service.getBoard(num);
+		User loginUser = (User)session.getAttribute("loginUser");
+		Good good = new Good();
+		good.setGoodno(num);
+		good.setUserId(loginUser.getId());
+		good.setGoodtype(1);
+		System.out.println(good.getGoodno());
+		System.out.println(good.getUserId());
+		System.out.println(good.getGoodtype());
+		
+		int goodselect = service.goodselect(good); // 좋아요눌렀는지 확인
+		int goodcount = service.goodcount(good); 
+		System.out.println(goodselect);
+		System.out.println(goodcount);
+		mav.addObject("count",goodcount);
+		if(goodselect == 0) {
+			mav.addObject("goodselect",0);
+		}else {
+			mav.addObject("goodselect",1);
+		}
 		mav.addObject("board",board);
 		service.addReadcnt(num); // 조회수 1증가
 		if(board.getBoardid() ==null || board.getBoardid().equals("1")) {
@@ -158,7 +188,27 @@ public class BoardController {
 		mav.addObject("comment",comm);
 		return mav;
 	}
-	
+	@RequestMapping("boardLike")
+	@ResponseBody
+	public Map<String,Integer> boardLike(Integer boardNum, String userId,HttpServletRequest request) {
+		Map<String, Integer> map = new HashMap<String, Integer>();
+		System.out.println(boardNum);
+		System.out.println(userId);
+		Good good = new Good();
+		good.setGoodno(boardNum);
+		good.setUserId(userId);
+		good.setGoodtype(1);
+		try {
+			service.goodinsert(good);
+			map.put("likecheck", 0);
+			map.put("count",service.goodcount(good));
+		} catch (Exception e) {
+			service.gooddelete(good);
+			map.put("likecheck", 1);
+			map.put("count",service.goodcount(good));
+		}
+		return map;
+	}
 	@GetMapping({"reply","update","delete"})
 	public ModelAndView replyform(Integer num) {
 		ModelAndView mav = new ModelAndView();
@@ -350,4 +400,5 @@ public class BoardController {
 		}
 			return "redirect:detail?num="+num+"#comment";
 	}
+
 }

@@ -20,16 +20,18 @@ import dao.UserDao;
 
 @Service
 public class CampService {
-	@Autowired
-	private GoodDao gooddao;
+
 	@Autowired
 	private UserDao userDao;
-	@Autowired
-	private BoardDao boarddao;
-	@Autowired
-	private CommentDao commentdao;
+
 	@Autowired
 	private CampDao campDao;
+
+
+
+	public void campinsert(Camp camp) {
+		campDao.insert(camp);
+	}
 	
 	public void userInsert(User user) {
 		userDao.insert(user);
@@ -58,6 +60,7 @@ public class CampService {
 	public String getSearch(User user) {
 		return userDao.search(user);
 	}
+
 	// admin - 회원 목록 조회
 	public int usercount(String searchtype, String searchcontent) {
 		return userDao.count(searchtype,searchcontent);
@@ -75,12 +78,12 @@ public class CampService {
 		return userDao.loglist();
 	}
 
-	public List<User> getUserlist(String tel, String email) {
-		return userDao.idsearch(tel, email);
-	}
 	public void userPasschg(String id, String passwordHash) {
 		userDao.chgpass(id, passwordHash);
 	}
 
+	public List<User> getUserlist(String tel, String email) {
+		return userDao.idsearch(email, tel);
+	}
 	
 }

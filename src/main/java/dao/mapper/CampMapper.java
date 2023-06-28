@@ -59,5 +59,29 @@ public interface CampMapper {
 			+ " </script>")
 	int count(Map<String, Object> param2);
 
+	@Select("<script>"
+			+ "select * from campdetail where themaEnvrnCl regexp #{themelist} "
+			+ " and posblFcltyCl regexp #{aroundlist} "
+			+ " <if test ='pet != null'> and animalCmgCl like '${pet}%' </if>"
+			+ " limit #{startrow},#{limit}"
+			+ "</script>")
+	List<Camp> list2(@Param("themelist") String themelist,@Param("pet") String pet, @Param("aroundlist") String aroundlist,
+			@Param("pageNum") Integer pageNum,@Param("limit") int limit, @Param("startrow") int startrow);
+
+	@Select("<script>"
+			+ "select count(*) from campdetail where themaEnvrnCl regexp #{themelist} "
+			+ " and posblFcltyCl regexp #{aroundlist} "
+			+ " <if test ='pet != null'> and animalCmgCl like '${pet}%' </if>"
+			+ "</script>")
+	int count2(@Param("themelist") String themelist,@Param("pet") String pet, @Param("aroundlist") String aroundlist);
+
+//	@Select("<script>"
+//			+ "select * from campdetail where themaEnvrnCl regexp #{themelist} "
+//			+ " and posblFcltyCl regexp #{aroundlist} "
+//			+ " <if test ='pet != null'> and animalCmgCl like '${pet}%' </if>"
+//			+ " limit 0,10"
+//			+ "</script>")
+//	List<Camp> list2(Map<String, Object> param);
+
 
 }

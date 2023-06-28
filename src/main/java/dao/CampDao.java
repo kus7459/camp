@@ -32,4 +32,22 @@ public class CampDao {
 	public int count(Map<String, Object> param2) {
 		return template.getMapper(cls).count(param2);
 	}
+
+
+	public List<Camp> list2(String themelist, String pet, String aroundlist, Integer pageNum, int limit, int startrow) {
+		param.clear();
+		param.put("themelist", themelist);
+		param.put("pet", pet);
+		param.put("aroundlist", aroundlist);
+		param.put("pageNum", pageNum);
+		param.put("limit", limit);
+		param.put("startrow", startrow);
+		return template.getMapper(cls).list2(themelist,pet,aroundlist,pageNum,limit,startrow);
+	}
+
+
+	public int count2(String themelist, String pet, String aroundlist) {
+		return template.getMapper(cls).count2(themelist,pet,aroundlist);
+	}
+
 }

@@ -10,12 +10,6 @@
 <link rel="stylesheet" href="../css/search.css">
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>
 <title>캠핑장 찾기</title>
-<script type="text/javascript">
-	function listpage(page){
-		document.f.pageNum.value=page;
-		document.f.submit();
-	}
-</script>
 </head>
 <body>
 	<header>
@@ -144,7 +138,9 @@
 		<!-- 테마,태그별 검색 -->
 		<!-- 테마별, 태그별 캠핑장 찾기 -->
 		<form action="search2" method="post" name="f2">
-		<input type="hidden" value="" name="themelist">
+		<input type="hidden" value="${themelist}" name="themelist">
+		<input type="hidden" value="${aroundlist}" name="aroundlist">
+		<input type="hidden" name="pageNum" value="1">
 		<div class="page page4 w3-center">
 			<h3>테마별, 태그별 캠핑장 찾기</h3>
 			<div class="w3-center" style="padding-top: 30px">
@@ -162,11 +158,11 @@
 				<button type="button" class="btn btn-white" onclick="func(this)" value="수상레저">#수상레저</button>
 				<button type="button" class="btn btn-white" onclick="func(this)" value="액티비티">#액티비티</button>
 
-				<button type="button" class="btn btn-white" onclick="func(this)" value="반려견">#반려견 동반</button>
+				<button type="button" class="btn btn-white" onclick="func(this)" value="반려동물">#반려동물 동반</button>
 
-				<button type="button" class="btn btn-white" onclick="func(this)" value="농어촌체험시설">#농촌체험</button>
-				<button type="button" class="btn btn-white" onclick="func(this)" value="해수욕">#해수욕</button>
-				<button type="button" class="btn btn-white" onclick="func(this)" value="어린이놀이시설">#어린이 놀이시설</button>
+				<button type="button" class="btn btn-white" onclick="func2(this)" value="농어촌체험시설">#농촌체험</button>
+				<button type="button" class="btn btn-white" onclick="func2(this)" value="해수욕">#해수욕</button>
+				<button type="button" class="btn btn-white" onclick="func2(this)" value="어린이놀이시설">#어린이 놀이시설</button>
 			</div>
 			<div class="w3-center" style="padding-top: 20px">
 				<input type="submit" value="검색하기" class="btn btn-lime">
@@ -271,16 +267,16 @@
 		</c:forEach>
 		<tr><td colspan="6" class="w3-center">
 			<c:if test="${pageNum > 1 }">
-				<a href="javascript:listpage('${pageNum-1})">[이전]</a>
+				<a href="javascript:listpage('${pageNum-1}','${search}')">[이전]</a>
 			</c:if>
 			<c:if test="${pageNum <=1 }">[이전]</c:if>
 			<c:forEach var="a" begin="${startpage}" end="${endpage}">
 				<c:if test="${a==pageNum }">[${a}]</c:if>
 				<c:if test="${a != pageNum }">
-				<a href="javascript:listpage('${a}')">[${a}]</a></c:if>
+				<a href="javascript:listpage('${a}','${search}')">[${a}]</a></c:if>
 			</c:forEach>
 			<c:if test="${pageNum < maxpage }">
-				<a href="javascript:listpage('${pageNum+1 }')">[다음]</a>
+				<a href="javascript:listpage('${pageNum+1 }','${search}')">[다음]</a>
 			</c:if>
 			<c:if test="${pageNum >= maxpage}">[다음]</c:if>	
 			</td></tr>
@@ -293,6 +289,20 @@
 		})
 
 		$(".page4").hide();
+		$(function(){
+			if(${search} == 2){
+				$(".page4").show();
+				$(".campsearch").hide();
+				$("#theBtn").addClass("btn-lime")
+				$("#theBtn").siblings().removeClass("btn-lime")
+			}
+			if(${search} == 1){
+				$(".page4").hide();
+				$(".campsearch").show();
+				$("#deBtn").addClass("btn-lime")
+				$("#deBtn").siblings().removeClass("btn-lime")
+			}
+		})
 		$("#deBtn").click(function() {
 			$(".campsearch").show();
 			$(".page4").hide();
@@ -314,11 +324,34 @@
 			}
 		})
 		let theme = "";
+		let around ="";
 		function func(val){
-			console.log(val.value)
-			theme += val.value+","
-			console.log(theme)
+			if(!theme.includes(val.value)){
+				theme += val.value+","
+			}else if(theme.includes(val.value)){
+				theme = theme.replace(val.value+",",'')
+			}
 			document.f2.themelist.value=theme
+			console.log(theme)
+		}
+		function func2(val){
+			if(!around.includes(val.value)){
+				around += val.value+","
+			}else if(around.includes(val.value)){
+				around = around.replace(val.value+",",'')
+			}
+			document.f2.aroundlist.value=around
+			console.log(around)
+		}
+		function listpage(page,search){
+			if(search == 1){
+				document.f.pageNum.value=page;
+				document.f.submit();
+			}
+			if(search == 2){
+				document.f2.pageNum.value=page;
+				document.f2.submit();
+			}	
 		}
 	</script>
 </body>

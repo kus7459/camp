@@ -16,6 +16,10 @@
 		document.searchform.pageNum.value=page;
 		document.searchform.submit();
 	}
+	function cntpage(kind){
+		
+	}
+	
 </script>
 </head>
 <body>
@@ -62,9 +66,10 @@
 	<table class="w3-table">
 		<tr>
 			<form action="list" method="post" name="searchform">
+		
 			<td>
 				<input type="hidden" name="pageNum" value="1">
-				<input type="hidden" name="boardid" value="${param.boradid}">
+				<input type="hidden" name="boardid" value="${param.boardid}">
 				<select name="searchtype"  class="form-control" style="border: 1px solid #333;">
 					<option value="">선택하세요</option>
 					<option value="title">제목</option>
@@ -83,6 +88,11 @@
 				<input type="submit" value="검색" class="btn btn-lime">
 				<input type="button" value="전체게시물보기" class="btn btn-gray"
 				onclick="location.href='list?boardid=${boardid}'">
+				<button name="cnt" value="read">조회수</button>
+				<button name="cnt" value="like">좋아요</button>
+				<script type="text/javascript">
+						searchform.cnt.value="${param.cnt}";
+				</script>
 			</td>
 		</form>
 		</tr>
@@ -110,14 +120,14 @@
 				<td class="w3-left">
 				<c:if test="${board.secret != 1 }">
 				
-				<c:if test="${! empty board.fileurl}">
-					<a href="file/${board.fileurl}">@</a></c:if>
-				<c:if test="${empty board.fileurl}">&nbsp;&nbsp;&nbsp;</c:if>
-				<c:forEach begin="1" end="${board.grplevel}">&nbsp;&nbsp;</c:forEach>
-				<c:if test="${board.grplevel >0 }">ㄴ</c:if>
-			<a href="detail?num=${board.num}">${board.title}</a>
-		
+					<c:if test="${! empty board.fileurl}">
+						<a href="file/${board.fileurl}">@</a></c:if>
+					<c:if test="${empty board.fileurl}">&nbsp;&nbsp;&nbsp;</c:if>
+					<c:forEach begin="1" end="${board.grplevel}">&nbsp;&nbsp;</c:forEach>
+					<c:if test="${board.grplevel >0 }">ㄴ</c:if>
+				<a href="detail?num=${board.num}">${board.title}</a>
 				</c:if>
+				
 				<c:if test="${board.secret == 1 }">
 				<c:choose>
 	                <c:when test="${board.writer eq loginUser.id || loginUser.id == 'admin'}">
@@ -162,7 +172,14 @@
 		</c:if>
 		<tr>
 			<td colspan="6">
-		 		<button onclick="location.href='write'" class="btn btn-lime w3-right">글쓰기</button>
+				<c:choose>
+	                <c:when test="${boardid == 1 && loginUser.id == 'admin'}">
+	            	<button onclick="location.href='write'" class="btn btn-lime w3-right">글쓰기</button>        
+	                </c:when>
+	                <c:when test="${boardid != 1 }">
+	                <button onclick="location.href='write'" class="btn btn-lime w3-right">글쓰기</button>
+	                </c:when>
+	            </c:choose> 	
 		 	</td>
 		</tr>
 	</table>

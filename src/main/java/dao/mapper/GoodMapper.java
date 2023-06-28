@@ -7,7 +7,6 @@ import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Select;
 
 import logic.Good;
-import lombok.Delegate;
 
 public interface GoodMapper {
 

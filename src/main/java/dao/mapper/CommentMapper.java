@@ -18,15 +18,15 @@ public interface CommentMapper {
 	int maxseq(int num);
 	
 	@Insert("insert into comment"
-			+" (num, seq, writer, pass, content, regdate) "
-			+ "values (#{num}, #{seq}, #{writer}, #{pass}, #{content}, now())")
+			+" (num, seq, writer, pass, content, regdate, secret) "
+			+ "values (#{num}, #{seq}, #{writer}, #{pass}, #{content}, now() ,#{secret})")
 	void insert(Comment comm);
 
 	@Select("select * from comment where num=#{num} order by seq desc" )
 	List<Comment> list(Integer num);
 
-	@Delete("delete from comment where num=#{num} and seq=#{seq} and pass=#{pass}")
-	void delete(@Param("num")int num,@Param("seq")int seq, @Param("pass")String pass);
+	@Delete("delete from comment where num=#{num} and seq=#{seq}")
+	void delete(@Param("num")int num,@Param("seq")int seq);
 
 	@Select("select * from comment where num=#{num} and seq=#{seq}")
 	Comment selectOne(@Param("num")int num,@Param("seq")int seq);

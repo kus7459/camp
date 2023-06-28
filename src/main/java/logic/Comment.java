@@ -20,5 +20,6 @@ public class Comment {
 	private String pass;
 	@NotEmpty(message="내용 입력하세요")
 	private String content;
-	private Date regdate; 
+	private Date regdate;
+	private int secret;
 }

@@ -14,6 +14,7 @@
 <head>
 <meta charset="UTF-8">
 <title>게시물 상세보기</title>
+
 <style type="text/css">
 	.leftcol{text-align: left; vertical-align: top;}
 	.lefttoptable{ height: 250px; border-width: 0px;
@@ -23,6 +24,8 @@
 </style>
 </head>
 <body>
+<script src="http://code.jquery.com/jquery-3.5.1.min.js"></script>
+
 <br><br><br><br><br>
 		<input type="hidden" id="boardNum" value="${board.num}">
 		<input type="hidden" id="userId" value="${loginUser.id}">
@@ -54,7 +57,7 @@
 			</tr>
 			<tr>
 				<td colspan="2">
-					<a href="reply?num=${board.num }">[답변]</a>
+				<%--<a href="reply?num=${board.num }">[답변]</a>--%>
 					<a href="update?num=${board.num }">[수정]</a>
 					<a href="delete?num=${board.num }">[삭제]</a>
 					<a href="list?boardid=${board.boardid }">[게시물목록]</a>
@@ -62,7 +65,7 @@
 					<c:choose>
   						<c:when test="${goodselect == 0 }"> <!-- count가0이면 빈하트-->
         					<button class="btn btn-white"onclick="changeLike()" >
-							<i class="fas fa-heart" style="font-size:30px; color:blue;" id="btn_like"></i>
+							<i class="fas fa-heart" style="font-size:30px; color:white;" id="btn_like"></i>
 							</button>
    						</c:when>
     					<c:otherwise> <!-- count가1이면 빨간 하트-->
@@ -88,7 +91,8 @@
 		<form:hidden path="num"/>
 			<div class="w3-row">
 				<div class="w3-col s2 w3-center">
-					<p><form:input path="writer" class="form-control" placeholder="작성자"/>
+					<p><form:input path="writer" class="form-control" placeholder="작성자"
+						readonly="true" value="${loginUser.id}"/>
 						<font color="red"><form:errors path="writer"/></font>
 					</p>
 				</div>
@@ -97,7 +101,7 @@
 						<font color="red"><form:errors path="pass"/></font>
 					</p>
 				</div>
-				<div class="w3-col s7 w3-center">
+				<div class="w3-col s6 w3-center">
 					<p><form:input path="content"  class="form-control" placeholder="내용"/>
 						<font color="red"><form:errors path="content"/></font>
 					</p>
@@ -105,14 +109,28 @@
 				<div class="w3-col s1 w3-center">
 					<p><button type="submit" class="btn btn-lime">댓글 등록</button></p>
 				</div>
+				<div class="w3-col s1 w3-center">
+				비밀<input type="checkbox" name="secret" value="1"/>
+				</div>
 			</div>
 		</form:form>
 		<div class="w3-container">
 			<table class="w3-table-all">
 				<c:forEach var="c" items="${commlist}" varStatus="stat">
 					<tr>
-						<td>${c.seq}</td><td>${c.writer }</td>
-						<td>${c.content }</td>
+						<td>${c.seq}</td>
+						<td>${c.writer }</td>
+				<c:if test="${c.secret == 1 }">
+				<c:choose>
+	                <c:when test="${c.writer eq loginUser.id || loginUser.id == 'admin'}">
+	                    <td>${c.content }</td>
+	                </c:when>
+	                <c:otherwise><td>비밀댓글입니다요.</td></c:otherwise>
+	            </c:choose> 
+				</c:if>
+				<c:if test="${c.secret != 1 }">
+					<td>${c.content }</td>
+				</c:if>		
 						<td><fmt:formatDate value="${c.regdate }" pattern="yyyy-MM-dd HH:mm:ss"/> </td>
 						<td class="w3-right">
 							<form action="commdel" method="post" name="commdel${stat.index}">
@@ -147,7 +165,7 @@ function changeLike(){
 			console.log(jdata)
 			console.log(jdata.count)
 			if(jdata.likecheck == 1){ // 좋아요
-				$("#btn_like").attr("style","font-size:30px;color:blue;");				
+				$("#btn_like").attr("style","font-size:30px;color:white;");				
 			} 
 			if(jdata.likecheck == 0){ //안좋아요
 				$("#btn_like").attr("style","font-size:30px;color:red;");				

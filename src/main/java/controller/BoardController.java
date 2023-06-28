@@ -2,6 +2,9 @@ package controller;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -27,7 +30,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import exception.BoardException;
 import logic.Board;
-import logic.CampService;
+import logic.BoardService;
 import logic.Comment;
 import logic.Good;
 import logic.User;
@@ -37,7 +40,7 @@ import util.CipherUtil;
 @RequestMapping("board")
 public class BoardController {
 	@Autowired
-	private CampService service;
+	private BoardService service;
 	@Autowired
 	private CipherUtil cipher;
 	
@@ -54,8 +57,15 @@ public class BoardController {
 	 * 3. 등록 성공 : list 요청
 	 *    등록 실패 : write 요청
 	 */
+	@GetMapping("write")
+	public ModelAndView loginCheckwrite(HttpSession session) {
+		ModelAndView mav = new ModelAndView();
+		mav.addObject(new Board());
+		mav.addObject(new User());
+		return mav;
+	}
 	@PostMapping("write")
-	public ModelAndView writePost(@Valid Board board, BindingResult bresult,
+	public ModelAndView loginCheckwritePost(@Valid Board board, BindingResult bresult,
 			HttpServletRequest request, HttpSession session) {
 		ModelAndView mav = new ModelAndView();
 		if(bresult.hasErrors()) {
@@ -87,6 +97,8 @@ public class BoardController {
 		System.out.println(param);
 		String column = param.get("searchtype");
 		String find = param.get("searchcontent");
+		String cnt = param.get("cnt");
+		
 		System.out.println("찾기 : "+column + find);
 		// 검색타입 단어 여부판단
 		if(column == null || column.trim().equals("")) {
@@ -109,6 +121,7 @@ public class BoardController {
 		if(boardid == null || boardid.equals("")) {
 			boardid = "1";
 		}
+		
 		session.setAttribute("boardid", boardid);
 		String boardName = null;
 		switch(boardid) {
@@ -125,6 +138,13 @@ public class BoardController {
 			good.setGoodno(b.getNum());
 			int bcnt=service.goodcount(good);
 			b.setLikecnt(bcnt);
+		}
+		if(cnt != null) {	
+			if(cnt.equals("read") ) {
+				Collections.sort(boardlist,new readcntComparator());
+			}else if(cnt.equals("like")) {
+				Collections.sort(boardlist,new likecntComparator());
+			}
 		}
 		//페이징 처리를 위한 값들
 		int maxpage = (int)((double)listcount/limit+0.95); //등록 건수에 따른 최대 페이지 수
@@ -146,9 +166,30 @@ public class BoardController {
 		mav.addObject("today",today);
 		return mav;
 	}
-	
+	class readcntComparator implements Comparator<Board> {
+	    @Override
+	    public int compare(Board b1, Board b2) {
+	        if (b1.getReadcnt() < b2.getReadcnt()) {
+	            return 1;
+	        } else if (b1.getReadcnt() > b2.getReadcnt()) {
+	            return -1;
+	        }
+	        return 0;
+	    }
+	}
+	class likecntComparator implements Comparator<Board> {
+	    @Override
+	    public int compare(Board b1, Board b2) {
+	        if (b1.getLikecnt() < b2.getLikecnt()) {
+	            return 1;
+	        } else if (b1.getLikecnt() > b2.getLikecnt()) {
+	            return -1;
+	        }
+	        return 0;
+	    }
+	}
 	@RequestMapping("detail")
-	public ModelAndView detail (Integer num, HttpServletRequest request,HttpSession session){
+	public ModelAndView loginCheckdetail (Integer num, HttpServletRequest request,HttpSession session){
 		ModelAndView mav = new ModelAndView();
 		Board board = service.getBoard(num);
 		User loginUser = (User)session.getAttribute("loginUser");
@@ -210,7 +251,7 @@ public class BoardController {
 		return map;
 	}
 	@GetMapping({"reply","update","delete"})
-	public ModelAndView replyform(Integer num) {
+	public ModelAndView loginCheckreplyform(Integer num) {
 		ModelAndView mav = new ModelAndView();
 		Board board = service.getBoard(num);
 		if(board.getBoardid() ==null || board.getBoardid().equals("1")) {
@@ -255,7 +296,7 @@ public class BoardController {
 		return mav;
 	}*/
 	@PostMapping("reply")
-	public ModelAndView reply(@Valid Board board, BindingResult bresult) {
+	public ModelAndView loginCheckreply(@Valid Board board, BindingResult bresult) {
 		ModelAndView mav = new ModelAndView();
 		
 		if(board.getBoardid() ==null || board.getBoardid().equals("1")) {
@@ -291,7 +332,7 @@ public class BoardController {
 	 * 	  수정실패 : 수정실패 메시지 출력후 update로 이동
 	 */
 	@PostMapping("update")
-	public ModelAndView update(@Valid Board board, BindingResult bresult,
+	public ModelAndView loginCheckupdate(@Valid Board board, BindingResult bresult,
 			HttpServletRequest request) {
 		ModelAndView mav = new ModelAndView();
 		//1
@@ -325,7 +366,7 @@ public class BoardController {
 	 * 		삭제실패 :
 	 */
 	@PostMapping("delete")
-	public ModelAndView delete(Board board, BindingResult bresult) {
+	public ModelAndView loginCheckdelete(Board board, BindingResult bresult) {
 		ModelAndView mav = new ModelAndView();
 		if(board.getPass() == null || board.getPass().trim().equals("")) {
 			bresult.reject("error.required.password");
@@ -373,7 +414,7 @@ public class BoardController {
 	}
 	
 	@RequestMapping("comment")
-	public ModelAndView comment(@Valid Comment comm,BindingResult bresult) {
+	public ModelAndView loginCheckcomment(@Valid Comment comm,BindingResult bresult) {
 		ModelAndView mav = new ModelAndView("board/detail");
 		if(bresult.hasErrors()) {
 			mav.getModel().putAll(bresult.getModel());
@@ -388,13 +429,16 @@ public class BoardController {
 		return mav;
 	}
 	@RequestMapping("commdel")
-	public String commdel(int num, int seq, String pass) {
+	public String commdel(int num, int seq, String pass,
+			HttpSession session) {
 		// 현재 모든 댓글을 아무나 삭제가능=> 수정 필요
 		// 업무요건1 : 회원만 댓글 작성 가능 => 작성한 글만 삭제가능
 		// 업무요건2 : 로그아웃 상태에서 댓글 작성가능 => 비밀번호 추가. 비밀번호 검증필요
 		Comment dbcomm = service.commSelectOne(num,seq);
-		if(pass.equals(dbcomm.getPass())) {
-			service.commdel(num,seq,pass);
+		User loginUser = (User)session.getAttribute("loginUser");
+		if(pass.equals(dbcomm.getPass()) 
+				|| loginUser.getId().equals("admin")) {
+			service.commdel(num,seq);
 		}else {
 			throw new BoardException("댓글삭제 실패", "detail?num="+num+"#comment");
 		}

@@ -29,8 +29,8 @@ public class CommentDao {
 	public List<Comment> list(Integer num){
 		return template.getMapper(cls).list(num);
 	}
-	public void delete(int num, int seq, String pass) {
-		template.getMapper(cls).delete(num, seq, pass);
+	public void delete(int num, int seq) {
+		template.getMapper(cls).delete(num, seq);
 		
 	}
 	public Comment selectOne(int num, int seq) {

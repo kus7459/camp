@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ include file = "/WEB-INF/view/jspHeader.jsp" %>
 <c:set var="path" value="${pageContext.request.contextPath}" />
 <!DOCTYPE html>
 <html>
@@ -12,8 +13,8 @@
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
-<script type="text/javascript" src=
-"http://cdn.ckeditor.com/4.5.7/standard/ckeditor.js"></script>
+<script type="text/javascript" src="http://cdn.ckeditor.com/4.5.7/standard/ckeditor.js"></script>
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
 <style>
 body,h1,h2,h3,h4,h5,h6 {font-family: "Raleway", sans-serif}
 
@@ -43,13 +44,14 @@ body, html {
    <div class="w3-bar w3-white w3-card" id="myNavbar">
       <a href="${path}/user/main" class="w3-bar-item w3-button w3-hover-light-grey" style="padding:20px 16px"><b>GUDEE</b> camping</a>
       <!-- Right-sided navbar links -->
-      <div class="w3-right w3-hide-small">
-         <a href="${path}/user/main" class="w3-bar-item w3-button w3-hover-light-grey" style="padding:20px 16px"><i class="fa fa-home" style="color:plum"></i> 홈</a>
-            <a href="${path}/site/search" class="w3-bar-item w3-button w3-hover-light-grey" style="padding:20px 16px"><i class="fa fa-th" style="color:#dae17c"></i> 캠핑장 찾기</a>
-            <a href="${path}/weather/today" class="w3-bar-item w3-button w3-hover-light-grey" style="padding:20px 16px"><i class="fa fa-cloud" style="color:lightblue"></i> 날씨</a>
-             <a href="${path}/board/list" class="w3-bar-item w3-button w3-hover-light-grey"
-             style="margin-right:50px; padding:20px 16px"><i class="fa fa-heart" style="color:pink"></i> 커뮤니티</a>
-         <c:if test="${empty sessionScope.loginUser}">
+	<div class="w3-right w3-hide-small">
+		<a href="${path}/user/main" class="w3-bar-item w3-button w3-hover-light-grey" style="padding:20px 16px"><i class="fa fa-home" style="color:plum"></i> 홈</a>
+		<a href="${path}/site/search" class="w3-bar-item w3-button w3-hover-light-grey" style="padding:20px 16px"><i class="fa fa-th" style="color:#dae17c"></i> 캠핑장 찾기</a>
+		<a href="${path}/weather/today" class="w3-bar-item w3-button w3-hover-light-grey" style="padding:20px 16px"><i class="fa fa-cloud" style="color:lightblue"></i> 날씨</a>
+		<a href="${path}/board/list" class="w3-bar-item w3-button w3-hover-light-grey" style="padding:20px 16px"><i class="fa fa-heart" style="color:pink"></i> 커뮤니티</a>
+		<a href="${path}/board/shop" class="w3-bar-item w3-button w3-hover-light-grey"
+             style="margin-right:50px; padding:20px 16px"><i class='fas fa-shopping-cart' style="color:gold "></i> 쇼핑</a>
+		<c:if test="${empty sessionScope.loginUser}">
             <a href="${path}/user/login" class="w3-bar-item w3-button w3-hover-light-grey" style="padding:20px 16px">
                <i class="fa fa-user"></i> 로그인
             </a>

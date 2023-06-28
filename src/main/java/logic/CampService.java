@@ -2,6 +2,7 @@ package logic;
 
 import java.io.File;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -175,6 +176,14 @@ public class CampService {
 
 	public String getSearch(User user) {
 		return userDao.search(user);
+	}
+
+	public List<Camp> camplist(Map<String, Object> param) {
+		return campDao.list(param);
+	}
+
+	public int campcount(Map<String, Object> param) {
+		return campDao.count(param);
 	}
 
 	

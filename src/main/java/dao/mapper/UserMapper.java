@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
@@ -60,6 +61,9 @@ public interface UserMapper {
 
 	@Select("select id, lastlog from user")
 	List<User> loglist();
+
+	@Select("select id from user where tel=#{tel} and email=#{email}")
+	List<User> idsearch(@Param("tel") String tel, @Param("email") String email);
 
 	
 }

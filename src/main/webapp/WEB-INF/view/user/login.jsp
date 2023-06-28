@@ -20,7 +20,7 @@
 				<p style="text-align:center;">굿캠핑에 오신 걸 환영합니다.</p>
 				<div class="form-group" style="width:70%; margin:0 auto">
 					<label for="id">ID</label>
-					<form:input path="id" class="form-control" id="userId" style="height:50px;" />
+					<form:input path="id" class="form-control" id="userId" style="height:50px;" value="${param.id}"/>
 					<font color="red"><form:errors path="id"/></font>
 					<br>
 					<label for="pwd">Password</label>

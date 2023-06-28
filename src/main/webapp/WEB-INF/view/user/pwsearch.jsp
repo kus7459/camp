@@ -5,40 +5,49 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 <title>비밀번호 찾기</title>
-<link rel="stylesheet"
-	href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
-
 </head>
 <body>
-	<div class="w3-content" style="max-width: 600px; padding-top: 100px">
+	<div class="w3-content" style="max-width: 600px; padding:150px 0px">
 		<h3 class="w3-center">비밀번호 찾기</h3>
-		<form action="pw" method="post">
+		<form:form modelAttribute="user" action="pwsearch" method="post">
+			<spring:hasBindErrors name="user">
+				<font color="red">
+					<c:forEach items="${errors.globalErrors}" var="error">
+						<spring:message code="${error.code}"/>
+					</c:forEach>				
+				</font>
+			</spring:hasBindErrors>
 			<table class="w3-table">
 				<tr>
-					<td colspan="3" width="60%"><input type="text" name="id"
-						placeholder="ID를 입력해주세요" class="form-control"></td>
+					<td>
+	               		<input type="text" name="id" id="userid" class="form-control" placeholder="id를 입력하세요.">
+	               		<font color="red"><form:errors path="id"/></font>
+	               </td>
 				</tr>
 				<tr>
-               <td colspan="3">
-               		<input type="text" name="email" id="email"
-                  class="form-control" placeholder="email형식으로 입력해주세요.">
-               </td>
-            </tr>
+	               <td>
+	               		<input type="text" name="email" id="email" class="form-control" placeholder="email형식으로 입력해주세요.">
+	               		<font color="red"><form:errors path="email"/></font>
+	               </td>
+	            </tr>
 				<tr>
-					<td colspan="3"><input type="text" name="tel"
-						placeholder="-을 포함한 전화번호 10자리 또는 11자리" class="form-control">
+					<td>
+						<input type="text" name="tel" placeholder="-을 포함한 전화번호 10자리 또는 11자리" class="form-control">
+						<font color="red"><form:errors path="tel"/></font>
 					</td>
 				</tr>
 				<tr>
-					<td colspan="3"><div
-							style="margin-bottom: 50px; margin-top: 25px; text-align: center">
-							<input type="submit" value="비밀번호 찾기" class="btn btn-dark"
-								style="background-color: #cddc39; color: black;">
-						</div></td>
+					<td class="w3-center">
+						<input type="submit" value="비밀번호 찾기" class="btn" style="background-color:#cddc39; color:black;">
+					</td>
 				</tr>
 			</table>
-		</form>
+		</form:form>
 	</div>
 </body>
 </html>

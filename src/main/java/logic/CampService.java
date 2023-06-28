@@ -201,6 +201,12 @@ public class CampService {
 	public int campcount(Map<String, Object> param) {
 		return campDao.count(param);
 	}
+	public List<User> getUserlist(String tel, String email) {
+		return userDao.idsearch(tel, email);
+	}
+	public void userPasschg(String id, String passwordHash) {
+		userDao.chgpass(id, passwordHash);
+	}
 
 	
 }

@@ -104,7 +104,7 @@
 				</tr>
 			</c:forEach>
 			<tr>
-				<td colspan="7" class="w3-center">d
+				<td colspan="7" class="w3-center">
 					<c:if test="${pageNum > 1 }">
 						<a href="javascript:listpage('${pageNum-1 }')">[이전]</a>
 					</c:if>
@@ -116,7 +116,7 @@
 						</c:if>
 					</c:forEach>
 					<c:if test="${pageNum < maxpage }">
-						<a href="javascript:listpage('${pageNum+1})">[다음]]</a>
+						<a href="javascript:listpage('${pageNum+1})">[다음]</a>
 					</c:if>
 					<c:if test="${pageNum >= maxpage}">[다음]</c:if>
 				</td>
@@ -141,7 +141,6 @@
 			    return false;
 			 }
 		}
-		
 		function restclear(id) {
 			console.log(id)
 			if(confirm("휴면 계정입니다. 해제하시겠습니까?") == true){  

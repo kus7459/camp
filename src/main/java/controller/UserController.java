@@ -7,6 +7,7 @@ import java.math.BigInteger;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -49,6 +50,7 @@ import com.mchange.v2.cfg.PropertiesConfigSource.Parse;
 import exception.LoginException;
 import logic.CampService;
 import logic.User;
+import util.CipherUtil;
 
 @Controller
 @RequestMapping("user")
@@ -56,6 +58,18 @@ public class UserController {
 	
 	@Autowired
 	private CampService service;
+	
+	@Autowired
+	private CipherUtil util;
+	
+	private String passwordHash(String pass) {
+		try {
+			return util.makehash(pass, "SHA-512");
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 	
 	@GetMapping("*")
 	public ModelAndView main() {
@@ -74,6 +88,7 @@ public class UserController {
 			return mav;
 		}
 		try {
+			user.setPass(passwordHash(user.getPass()));
 			service.userInsert(user); //db에 insert
 			mav.addObject("user",user);
 		} catch(DataIntegrityViolationException e) {
@@ -415,7 +430,7 @@ public class UserController {
 		int restNum = 1;
 		
 		// pw 조회
-		if(user.getPass().equals(dbUser.getPass())) {
+		if(passwordHash(user.getPass()).equals(dbUser.getPass())) {
 			System.out.println(user.getPass());
 			System.out.println(dbUser.getPass());
 			if(dbUser.getRest() == 2) {	//성공, 휴면 계정
@@ -467,7 +482,7 @@ public class UserController {
 		}
 		// 비밀번호 비교
 		User loginUser = (User)session.getAttribute("loginUser");
-		if(!loginUser.getPass().equals(user.getPass())) {
+		if(!loginUser.getPass().equals(this.passwordHash(user.getPass()))) {
 			bresult.reject("error.login.password");
 			mav.getModel().putAll(bresult.getModel());
 			return mav;
@@ -489,13 +504,13 @@ public class UserController {
 	@PostMapping("mypwForm")
 	public String loginCheckPw(String pass, String chgpass, HttpSession session) {
 		User loginUser = (User)session.getAttribute("loginUser");
-		if(!pass.equals(loginUser.getPass())) {
+		if(!passwordHash(pass).equals(loginUser.getPass())) {
 			throw new LoginException("비밀번호가 틀렸습니다.", "mypwForm");
 		}
 		// 일치
 		try {
-			service.chgpass(loginUser.getId(), chgpass);
-			loginUser.setPass(chgpass);
+			service.chgpass(loginUser.getId(), passwordHash(chgpass));
+			loginUser.setPass(passwordHash(chgpass));
 		} catch(Exception e) {
 			e.printStackTrace();
 			throw new LoginException("비밀번호 수정 시 오류 발생", "mypwForm?id="+loginUser.getId());
@@ -511,7 +526,7 @@ public class UserController {
 		}
 		// 세션 비밀번호 값과 비교
 		User loginUser = (User)session.getAttribute("loginUser");
-		if(!pass.equals(loginUser.getPass())) {
+		if(!passwordHash(pass).equals(loginUser.getPass())) {
 			throw new LoginException("비밀번호가 틀렸습니다.", "deleteForm?id="+loginUser.getId());
 		}
 		
@@ -533,7 +548,7 @@ public class UserController {
 			return "redirect:login";
 		}
 	}
-/*	
+
 	@PostMapping("{url}search")
 	public ModelAndView search(User user, BindingResult bresult, @PathVariable String url) {
 		ModelAndView mav = new ModelAndView();
@@ -543,7 +558,7 @@ public class UserController {
 			title = "비밀번호";
 			code = "error.password.search";
 			if(user.getId() == null || user.getId().trim().equals("")) {
-				bresult.rejectValue("userid","error.required");
+				bresult.rejectValue("id","error.required");
 			}
 		}
 		//  email 없는 경우
@@ -564,22 +579,49 @@ public class UserController {
 		}
 		
 		// 아이디 찾기
-		String result;
+		String result = null;
 		if(user.getId() == null) {	// 아이디 없는 경우 => 아이디 찾기
-			try {
-				result = service.getSearch(user);
-			} catch(EmptyResultDataAccessException e) {
-				bresult.reject(code);
-				mav.getModel().putAll(bresult.getModel());
-				return mav;
+			List<User> list = service.getUserlist(user.getTel(), user.getEmail());
+			System.out.println("아이디 찾기 list: "+list);
+			for(User u : list) {
+				if(u != null) {
+					result = u.getId();
+				}
 			}
-			mav.addObject("result",result);
-			mav.addObject("title",title);
-			mav.setViewName("search");
+		} else {	// 아이디 있는 경우 => 비밀번호 초기화 하기
+			result = service.getSearch(user);
+			if(result != null) {
+				String pass = null;
+			}
+			service.userPasschg(user.getId(), passwordHash(result));
+			mav.addObject("result");
+			mav.addObject("title", title);
+			mav.addObject("id", user.getId());
+			mav.setViewName("loginpass");
+			return mav;
 		}
-		
-	
+		if(result == null) {	// 아이디 또는 비밀번호 검색 실패
+			bresult.reject(code);
+			mav.getModel().putAll(bresult.getModel());
+			return mav;
+		}
+		mav.addObject("result");
+		mav.addObject("title", title);
+		mav.setViewName("search");
 		return mav;
 	}
-	*/
+	
+	@RequestMapping("loginpass")
+	public String loginpass(String id, String pass) {
+		User dbUser = service.selectUserOne(id);
+		System.out.println(dbUser.getPass());
+		System.out.println(passwordHash(pass));
+		if(dbUser.getPass().equals(passwordHash(pass))) {
+			throw new LoginException("현재 비밀번호와 새로운 비밀번호가 같습니다.", "redirect:loginpass");
+		} else {
+			service.userPasschg(id, passwordHash(pass));
+			throw new LoginException("비밀번호가 변경 되었습니다.","login");
+		}
+	}
+	
 }

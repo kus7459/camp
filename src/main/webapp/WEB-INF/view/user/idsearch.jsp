@@ -31,7 +31,7 @@
 	            </tr>
 				<tr>
 					<td>
-						<input type="text" name="tel" placeholder="-을 제외한 전화번호 10자리 또는 11자리" class="form-control">
+						<input type="text" name="tel" placeholder="-을 포함한 전화번호 10자리 또는 11자리" class="form-control">
 						<font color="red"><form:errors path="tel"/></font>
 					</td>
 				</tr>

@@ -88,4 +88,8 @@ public class UserDao {
 			return template.getMapper(cls).loglist();
 		}
 
+		public List<User> idsearch(String email, String tel) {
+			return template.getMapper(cls).idsearch(email, tel);
+		}
+
 }

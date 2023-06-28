@@ -82,16 +82,5 @@ public class CipherUtil {
 		}
 		return new String(plainMsg).trim();
 	}
-
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 }

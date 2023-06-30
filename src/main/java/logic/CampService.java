@@ -14,8 +14,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import dao.BoardDao;
 import dao.CampDao;
+import dao.CartDao;
 import dao.CommentDao;
 import dao.GoodDao;
+import dao.ItemDao;
 import dao.UserDao;
 
 @Service
@@ -26,7 +28,15 @@ public class CampService {
 
 	@Autowired
 	private CampDao campDao;
-
+	
+	@Autowired
+	private ItemDao itemDao;
+	
+	@Autowired
+	private CartDao cartDao;
+	
+	@Autowired
+	private BoardDao boardDao;
 
 
 	public void campinsert(Camp camp) {
@@ -85,5 +95,71 @@ public class CampService {
 	public List<User> getUserlist(String tel, String email) {
 		return userDao.idsearch(email, tel);
 	}
-	
+
+	// 쇼핑몰
+	public void itemadd(Item item, HttpServletRequest request) {
+		if(item.getPicture() != null && !item.getPicture().isEmpty()) { 
+			// 사진이 없는 경우 경로 설정
+			String path = request.getServletContext().getRealPath("/") +"img/";
+			uploadFileCreate(item.getPicture(), path);
+			item.setPictureUrl(item.getPicture().getOriginalFilename());
+		}
+		int maxid = itemDao.maxId();
+		item.setId(maxid+1);
+		itemDao.insert(item);
+	}
+
+	private void uploadFileCreate(MultipartFile file, String path) {
+		String orgFile = file.getOriginalFilename();
+		File f = new File(path);
+		if(!f.exists()) f.mkdir();
+		try {
+			file.transferTo(new File(path+orgFile));
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public List<Item> itemlist() {
+		return itemDao.list();
+	}
+
+	public Item itemOne(Integer id) {
+		return itemDao.getItem(id);
+	}
+
+	public void itemUpdate(Item item, HttpServletRequest request) {
+		// 사진이 없는 경우
+		if(item.getPicture() != null && !item.getPicture().isEmpty()) {
+			String path = request.getServletContext().getRealPath("/") +"img/";
+			uploadFileCreate(item.getPicture(), path);
+			item.setPictureUrl(item.getPicture().getOriginalFilename());
+		}
+		itemDao.update(item);
+	}
+
+	public void itemDelete(Integer id) {
+		itemDao.delete(id);
+	}
+
+	public int itemcount() {
+		return itemDao.itemcount();
+	}
+
+	public void cartadd(Integer itemid, Item item, String userid, Integer quantity) {
+		cartDao.insert(itemid, item, userid, quantity);
+	}
+
+	public List<Cart> getuserCart(String userid, Integer itemid) {
+		return cartDao.select(userid, itemid);
+	}
+
+	public void cartupdate(Integer itemid, Integer quan, String id) {
+		cartDao.update(itemid, id, quan);
+	}
+
+	public void cartdelete(Integer itemid, String userid) {
+		cartDao.delete(itemid, userid);
+	}
+
 }

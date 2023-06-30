@@ -48,7 +48,9 @@ import com.google.gson.JsonParser;
 import com.mchange.v2.cfg.PropertiesConfigSource.Parse;
 
 import exception.LoginException;
+import logic.Board;
 import logic.CampService;
+import logic.Cart;
 import logic.User;
 import util.CipherUtil;
 
@@ -263,7 +265,6 @@ public class UserController {
 				user.setGender(1);
 			}
 			System.out.println("네이버 성별"+jsondetail.get("gender").toString());
-//			user.setChannel("naver");
 			service.userInsert(user);
 		}
 		session.setAttribute("loginUser", user);
@@ -431,8 +432,6 @@ public class UserController {
 		
 		// pw 조회
 		if(passwordHash(user.getPass()).equals(dbUser.getPass())) {
-			System.out.println(user.getPass());
-			System.out.println(dbUser.getPass());
 			if(dbUser.getRest() == 2) {	//성공, 휴면 계정
 				service.userRest(id, restNum);
 				throw new LoginException("휴면 계정이 해지되었습니다. 다시 로그인 해주세요.", "login");
@@ -458,7 +457,27 @@ public class UserController {
 	@RequestMapping("mypage")
 	public ModelAndView idCheckmypage(String id, HttpSession session) {
 		ModelAndView mav = new ModelAndView();
+		Cart cart = (Cart)session.getAttribute("CART");
+	
 		User user = service.selectUserOne(id);
+		User loginUser = (User) session.getAttribute("loginUser");
+		
+		// 게시판 등록 글
+//		List<Board> boardlist = service.boardlist(id);
+		
+		// 등록 댓글
+		
+		// 좋아요
+		
+		// 장바구니
+		List<Cart> cartlist = service.getuserCart(id, 0);
+		Integer total = 0;
+		// 총 금액
+		for(Cart c : cartlist) {
+			total += (c.getPrice() * c.getQuantity());
+		}
+		mav.addObject("total", total);
+		mav.addObject("cartlist", cartlist);
 		mav.addObject("user", user);
 		return mav;
 	}

@@ -42,7 +42,7 @@
 					</td>
 					<td colspan="5">
 						<input type="text" name="searchcontent"
-						value="${param.searchcontent}"  class="form-control">
+						value="${param.searchcontent}" class="form-control">
 					</td>
 					<td>
 						<input type="submit" value="검색" class="btn btn-lime">

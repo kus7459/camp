@@ -22,7 +22,7 @@ public class Item {
 	@Max(value=1000000, message="100만원을 초과할 수 없습니다.")
 	private int price;
 	@NotEmpty(message="상품에 대한 설명을 입력하세요.")
-	private String descrip;
+	private String description;
 	private String pictureUrl;
 	private MultipartFile picture;
 }

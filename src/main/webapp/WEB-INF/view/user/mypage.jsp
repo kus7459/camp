@@ -89,6 +89,8 @@
 			onclick="javascript:btn_div('picInner','pic')">캠핌장 찜</div>
 		<div id="loc" class="debtn"
 			onclick="javascript:btn_div('locInner','loc')">게시글 좋아요</div>
+		<div id="cart" class="debtn"
+			onclick="javascript:btn_div('cartInner','cart')">장바구니</div>
 	</div>
 	<div style="width: 90%; margin: 0 auto; margin-bottom: 80px">
 		<!-- 등록 게시글 목록 -->
@@ -104,6 +106,15 @@
 					<th>좋아요</th>
 					<th>조회수</th>
 				</tr>
+				<c:forEach items="${boardlist}" var="b">
+					<tr>
+						<td>${b.title}</td>
+						<td>${b.writer}</td>
+						<td>${b.regdate}</td>
+						<td></td>
+						<td>${b.readcnt}</td>
+					</tr>
+				</c:forEach>
 			</table>
 		</div>
 		<!-- 등록 댓글 목록 -->
@@ -117,6 +128,13 @@
 					<th>날짜</th>
 					<th>내용</th>
 				</tr>
+				<c:forEach items="${commentlist}" var="com">
+					<tr>
+						<td>${com.writer}</td>
+						<td>${com.regdate}</td>
+						<td>${com.content}</td>
+					</tr>
+				</c:forEach>
 			</table>
 		</div>
 		<!-- 캠핑장 찜 목록 -->
@@ -132,6 +150,15 @@
 					<th>찜</th>
 					<th>조회수</th>
 				</tr>
+				<c:forEach items="${camplist}" var="cam">
+					<tr>
+						<td>${cam.facltNm}</td>
+						<td>${cam.tel}</td>
+						<td>${cam.addr1}</td>
+						<td>${cam.regdate}</td>
+						<td>${cam.content}</td>
+					</tr>
+				</c:forEach>
 			</table>
 		</div>
 		<!-- 게시글 좋아요 목록 -->
@@ -141,16 +168,76 @@
 			</h3>
 			<table class="w3-table info-table w3-centered">
 				<tr>
+					<th>좋아요</th>
 					<th>제목</th>
 					<th>글쓴이</th>
 					<th>날짜</th>
-					<th>좋아요</th>
 					<th>조회수</th>
 				</tr>
+				<c:forEach items="${goodlist}" var="g">
+					<tr>
+						<td>${g.goodtype}</td>
+				</c:forEach>
+				<c:forEach items="${boardlist}" var="b">
+						<td>${g.title}</td>
+						<td>${b.writer}</td>
+						<td>${b.readcnt}</td>
+						<td>${b.regdate}</td>
+					</tr>
+				</c:forEach>
+				
 			</table>
+		</div>
+		<!-- 게시글 좋아요 목록 -->
+		<div id="cartInner" class="inner">
+			<h3 style="margin-bottom: 20px">
+				<i class='fas fa-shopping-cart'></i> 장바구니
+			</h3>
+			<table class="w3-table info-table w3-centered">
+				<tr>
+					<th>목록</th>
+					<th>상품 이름</th>
+					<th>상품 가격</th>
+					<th>구매 수량</th>
+					<th>주문하기</th>
+					<th>삭제</th>
+				</tr>
+				<form action="../cart/delete" name="deleteform" method="GET">
+					<input type="hidden" name="id" value="">
+				</form>
+				<c:forEach items="${cartlist}" var="cart">
+					<tr id="del${cart.itemid}">
+						<td style="width:10%">
+							<img src="../img/${cart.pictureUrl}" style="width:90%">
+						</td>
+						<td><a href="../shop/detail?id=${cart.itemid}">
+								<b style="color:#333">${cart.name}</b>
+							</a>
+						</td>
+						<td><fmt:formatNumber value="${cart.price}" pattern="###,###"/></td>
+						<td>${cart.quantity}</td>
+						<td><button class="btn btn-lime">주문하기</button></td>
+						<td>
+							<button value="${cart.itemid}" class="btn btn-gray"
+								onclick="javascript:deletecart(${cart.itemid})" id="btn-del">삭제</button>
+						</td>
+					</tr>
+				</c:forEach>
+				<tr>
+					<th colspan="6">
+						총 구매 금액: <fmt:formatNumber value="${total}" pattern="###,###"/>원
+						&emsp; <button>전체 주문하기</button>
+					</th>
+				</tr>
+			</table>
+		</div>
 	</div>
-</div>
 	<script>
+		function deletecart(itemid) {
+			console.log(itemid);
+			document.deleteform.id.value=itemid;
+			document.deleteform.submit();
+		}
 		$(function() {
 			$("#etcInner").show();
 			$("#etcInner").siblings().hide();

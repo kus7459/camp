@@ -49,7 +49,7 @@ body, html {
 		<a href="${path}/site/search" class="w3-bar-item w3-button w3-hover-light-grey" style="padding:20px 16px"><i class="fa fa-th" style="color:#dae17c"></i> 캠핑장 찾기</a>
 		<a href="${path}/weather/today" class="w3-bar-item w3-button w3-hover-light-grey" style="padding:20px 16px"><i class="fa fa-cloud" style="color:lightblue"></i> 날씨</a>
 		<a href="${path}/board/list" class="w3-bar-item w3-button w3-hover-light-grey" style="padding:20px 16px"><i class="fa fa-heart" style="color:pink"></i> 커뮤니티</a>
-		<a href="${path}/board/shop" class="w3-bar-item w3-button w3-hover-light-grey"
+		<a href="${path}/shop/list" class="w3-bar-item w3-button w3-hover-light-grey"
              style="margin-right:50px; padding:20px 16px"><i class='fas fa-shopping-cart' style="color:gold "></i> 쇼핑</a>
 		<c:if test="${empty sessionScope.loginUser}">
             <a href="${path}/user/login" class="w3-bar-item w3-button w3-hover-light-grey" style="padding:20px 16px">

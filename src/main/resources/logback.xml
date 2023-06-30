@@ -12,7 +12,7 @@
     <appender name="rolling" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!-- 파일의 위치, 이름 지정 -->
-            <fileNamePattern>c:/log/shop1.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <fileNamePattern>c:/log/camp.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
             <!-- d:/log 에 log 파일을 알아서 만들어줌 -->
             <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
                 <maxFileSize>5kb</maxFileSize>    <!-- 5kb씩 파일 분리 -->

@@ -11,18 +11,6 @@
   .btn-gray {background-color:#dedede} 
 </style>
 <title>${boardName}</title>
-<script type="text/javascript">
-	function listpage(page){
-		document.searchform.pageNum.value=page;
-		document.searchform.submit();
-	}
-	function cntpage(kind){
-		
-	}
-	
-</script>
-</head>
-<body>
 <style>
  	* {margin: 0; padding: 0;}
     a {text-decoration: none;}
@@ -38,6 +26,17 @@
 	.btn-lime {background-color: #cddc39;
 		color: #333}
 </style>
+<script type="text/javascript">
+	function listpage(page){
+		document.searchform.pageNum.value=page;
+		document.searchform.submit();
+	}
+	
+</script>
+
+</head>
+<body>
+
 <header>
 	<h3>커뮤니티</h3>
 </header>
@@ -67,7 +66,7 @@
 		<tr>
 			<form action="list" method="post" name="searchform">
 		
-			<td>
+			<td colspan="1">
 				<input type="hidden" name="pageNum" value="1">
 				<input type="hidden" name="boardid" value="${param.boardid}">
 				<select name="searchtype"  class="form-control" style="border: 1px solid #333;">
@@ -76,9 +75,9 @@
 					<option value="writer">작성자</option>
 					<option value="content">내용</option>
 				</select>
-					<script type="text/javascript">
-						searchform.searchtype.value="${param.searchtype}";
-					</script>	
+				<script type="text/javascript">
+					searchform.searchtype.value="${param.searchtype}";
+				</script>	
 			</td>
 			<td colspan="3">
 				<input type="text" name="searchcontent"
@@ -88,13 +87,16 @@
 				<input type="submit" value="검색" class="btn btn-lime">
 				<input type="button" value="전체게시물보기" class="btn btn-gray"
 				onclick="location.href='list?boardid=${boardid}'">
-				<button name="cnt" value="read">조회수</button>
-				<button name="cnt" value="like">좋아요</button>
-				<script type="text/javascript">
+				<select name="cnt" class="form-control" style="border: 1px solid #333;">
+					<option value="">날짜순</option>
+					<option value="readcnt">조회순</option>
+					<option value="likecnt">좋아요</option>
+				</select>
+					<script type="text/javascript">
 						searchform.cnt.value="${param.cnt}";
-				</script>
+					</script>
 			</td>
-		</form>
+			</form>
 		</tr>
 		<c:if test="${listcount>0}"> <!-- 등록된 게시물 건수  -->
 			<tr>
@@ -153,9 +155,10 @@
 		</c:forEach>
 			<tr><td colspan="6" class="w3-center">
 			<c:if test="${pageNum > 1 }">
-				<a href="javascript:listpage('${pageNum-1})">[이전]</a>
+				<a href="javascript:listpage('${pageNum-1}')">[이전]</a>
 			</c:if>
 			<c:if test="${pageNum <=1 }">[이전]</c:if>
+			
 			<c:forEach var="a" begin="${startpage}" end="${endpage}">
 				<c:if test="${a==pageNum }">[${a}]</c:if>
 				<c:if test="${a != pageNum }">

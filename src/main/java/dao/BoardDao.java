@@ -46,13 +46,14 @@ public class BoardDao {
 	
 	
 	public List<Board> list(Integer pageNum, int limit, String boardid
-			,String column, String find) {
+			,String column, String find, String cnt) {
 		param.clear();
 		param.put("startrow", (pageNum-1)*limit); //1페이지 :0 , 2페이지 :10
 		param.put("limit", limit);
 		param.put("boardid", boardid);
 		param.put("column", column);
 		param.put("find", find);
+		param.put("cnt", cnt);
 		return template.getMapper(cls).select(param);
 	}
 	public Board selectOne(Integer num) {
@@ -86,6 +87,19 @@ public class BoardDao {
 
 	public List<Map<String, Object>> graph2(String id) {
 		return template.getMapper(cls).graph2(id);
+	}
+
+	public void likecntUp(Integer boardNum) {
+		template.getMapper(cls).likecntUp(boardNum);
+	}
+
+	public Integer likecount(Integer boardNum) {
+		return template.getMapper(cls).likecount(boardNum);
+	}
+
+	public void likecntDown(Integer boardNum) {
+		template.getMapper(cls).likecntDown(boardNum);
+		
 	}
 	
 }

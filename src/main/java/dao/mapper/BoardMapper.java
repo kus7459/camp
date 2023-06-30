@@ -16,7 +16,7 @@ public interface BoardMapper {
 	String select =" select num,writer,pass,"
 			+ "title,content,file1 fileurl,"
 			+ "regdate,readcnt,grp, grplevel, "
-			+ "grpstep,boardid,secret from board";
+			+ "grpstep,boardid,secret,likecnt from board";
 
 	@Select("select ifnull(max(num),0) from board")
 	int maxNum();
@@ -36,11 +36,16 @@ public interface BoardMapper {
 
 	@Select({"<script>",
 	select ,
-	"<if test='num !=null '> where num = #{num}</if>",
-	"<if test='boardid != null'> where boardid =#{boardid}</if>",
-	"<if test='column != null'> and ${column} like '%${find}%' </if> ",
-	"<if test ='limit !=null'> order by grp desc, grpstep asc limit #{startrow}, #{limit}</if>",
-	"</script>"})
+	" <if test='num !=null '> where num = #{num}</if>",
+	" <if test='boardid != null'> where boardid =#{boardid}</if>",
+	" <if test='column != null'> and ${column} like '%${find}%' </if> ",
+	//"<if test ='limit !=null'> grpstep asc limit #{startrow}, #{limit}</if>",
+	//" <if test ='cnt == null'> order by regdate desc </if>",
+	" <if test ='cnt != null '> order by ${cnt} desc </if>",
+	" <if test ='cnt == null '> order by regdate desc </if>",
+	" <if test ='limit !=null'> limit #{startrow}, #{limit} </if>",
+	//"<if test ='cnt == '좋아요''> order by likecnt desc </if>", 
+	" </script>"})
 	List<Board> select(Map<String, Object> param);
 
 	@Update("update board set readcnt=readcnt+1 where num =#{num}")
@@ -77,4 +82,13 @@ public interface BoardMapper {
     		+ " where boardid=${value} group by date_format(regdate,'%Y-%m-%d')"
     		+ " order by day desc limit 0,7")
 	List<Map<String, Object>> graph2(String id);
+	
+	@Update("update board set likecnt = ifnull(likecnt,0)+1 where num = #{value}")
+	void likecntUp(Integer boardNum);
+	
+	@Select("select likecnt from board where num = #{value} ")
+	Integer likecount(Integer boardNum);
+	
+	@Update("update board set likecnt = ifnull(likecnt,0)-1 where num = #{value}")
+	void likecntDown(Integer boardNum);
 }

@@ -98,8 +98,11 @@ public class BoardController {
 		String column = param.get("searchtype");
 		String find = param.get("searchcontent");
 		String cnt = param.get("cnt");
-		
-		System.out.println("찾기 : "+column + find);
+		if(cnt == null || cnt.trim().equals("")) {
+			cnt = null;
+		}
+
+		System.out.println("찾기 : "+column + find + cnt);
 		// 검색타입 단어 여부판단
 		if(column == null || column.trim().equals("")) {
 	    	column = null;
@@ -132,20 +135,14 @@ public class BoardController {
 		int limit = 10; // 한페이지당 보여줄 게시물 건수
 		int listcount = service.boardcount(boardid,column,find); //등록된 게시물 건수
 		// boardlist : 현재 페이지에 보여줄 게시물 목록
-		List<Board> boardlist = service.boardlist(pageNum,limit,boardid,column,find);
-		for(Board b : boardlist) {
-			Good good = new Good();
-			good.setGoodno(b.getNum());
-			int bcnt=service.goodcount(good);
-			b.setLikecnt(bcnt);
-		}
-		if(cnt != null) {	
-			if(cnt.equals("read") ) {
-				Collections.sort(boardlist,new readcntComparator());
-			}else if(cnt.equals("like")) {
-				Collections.sort(boardlist,new likecntComparator());
-			}
-		}
+	
+		List<Board> boardlist = service.boardlist(pageNum,limit,boardid,column,find,cnt);
+		/*
+		 * for(Board b : boardlist) { Good good = new Good();
+		 * good.setGoodno(b.getNum()); good.setGoodtype(1); int
+		 * bcnt=service.goodcount(good); b.setLikecnt(bcnt); }
+		 */
+
 		//페이징 처리를 위한 값들
 		int maxpage = (int)((double)listcount/limit+0.95); //등록 건수에 따른 최대 페이지 수
 		int startpage = (int)((pageNum/10.0 +0.9)-1) *10 +1; // 페이지의 시작 번호
@@ -191,7 +188,9 @@ public class BoardController {
 	@RequestMapping("detail")
 	public ModelAndView loginCheckdetail (Integer num, HttpServletRequest request,HttpSession session){
 		ModelAndView mav = new ModelAndView();
+		System.out.println("겟보드실패?");
 		Board board = service.getBoard(num);
+		System.out.println("겟보드");
 		User loginUser = (User)session.getAttribute("loginUser");
 		Good good = new Good();
 		good.setGoodno(num);
@@ -213,6 +212,7 @@ public class BoardController {
 		}
 		mav.addObject("board",board);
 		service.addReadcnt(num); // 조회수 1증가
+		System.out.println("조회수증가");
 		if(board.getBoardid() ==null || board.getBoardid().equals("1")) {
 			mav.addObject("boardName","공지사항");
 		}else if(board.getBoardid().equals("2")) {
@@ -242,11 +242,13 @@ public class BoardController {
 		try {
 			service.goodinsert(good);
 			map.put("likecheck", 0);
-			map.put("count",service.goodcount(good));
+			service.likecntUp(boardNum);
+			map.put("count",service.likecount(boardNum));
 		} catch (Exception e) {
 			service.gooddelete(good);
 			map.put("likecheck", 1);
-			map.put("count",service.goodcount(good));
+			service.likecntDown(boardNum);
+			map.put("count",service.likecount(boardNum));
 		}
 		return map;
 	}

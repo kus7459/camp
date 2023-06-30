@@ -74,7 +74,7 @@
 							</button>
     					</c:otherwise>
 					</c:choose>
-					<input type="text"  id="count" readonly="true" value="${count}">			
+					<input type="text"  id="count" readonly="true" value="${board.likecnt}">			
 					<%-- 
 					<button class="btn btn-white"onclick="changeLike()" >
 					<i class="glyphicon glyphicon-thumbs-up" id="btn_like" style="color:blue"></i>

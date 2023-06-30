@@ -74,8 +74,9 @@ public class BoardService {
 		return boarddao.count(boardid, column, find);
 	}
 
-	public List<Board> boardlist(Integer pageNum, int limit, String boardid, String column, String find) {
-		return boarddao.list(pageNum, limit, boardid, column, find);
+	public List<Board> boardlist(Integer pageNum, int limit, String boardid, 
+									String column, String find, String cnt) {
+		return boarddao.list(pageNum, limit, boardid, column, find, cnt);
 	}
 
 	public Board getBoard(Integer num) {
@@ -134,6 +135,16 @@ public class BoardService {
 
 	public void campinsert(Camp camp) {
 		campDao.insert(camp);
+	}
+	public void likecntUp(Integer boardNum) {
+		boarddao.likecntUp(boardNum);
+	}
+	public Integer likecount(Integer boardNum) {
+		return boarddao.likecount(boardNum);
+	}
+	public void likecntDown(Integer boardNum) {
+		boarddao.likecntDown(boardNum);
+		
 	}
 	
 	

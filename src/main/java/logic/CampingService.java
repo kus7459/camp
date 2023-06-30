@@ -39,4 +39,8 @@ public class CampingService {
 		
 	}
 
+	public List<Camp> lovelist(Map<String, Object> param) {
+		return campDao.lovelist(param);
+	}
+
 }

@@ -195,9 +195,9 @@
 				<option value="추천순">추천순</option>
 			</c:if>
 			<c:if test="${sort == '추천순' }">
-				<option value="조회순">추천순</option>
+				<option value="추천순">추천순</option>
 				<option value="기본순">기본순</option>
-				<option value="추천순">조회순</option>
+				<option value="조회순">조회순</option>
 			</c:if>
 			</select>
 		</div>
@@ -225,7 +225,7 @@
 							</button>
 						</li>
 						<li>
-								<i class="fa fa-heart" style="color: red;"></i> <b>찜&nbsp;&nbsp;</b>
+								<i class="fa fa-heart" style="color: red;"></i> <b>찜 ${c.lovecnt}&nbsp;&nbsp;</b>
 						</li>
 						<li>
 							<b>조회수 : ${c.cnt}</b>	

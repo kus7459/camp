@@ -53,7 +53,6 @@ public class CampController {
 	@RequestMapping("search")
 	public ModelAndView search(@RequestParam Map<String, Object> param, HttpSession session, HttpServletRequest request)
 			throws Exception {
-		System.out.println(param);
 		try {
 			if(param.get("sort").equals("")) {
 				param.put("sort", null);
@@ -137,21 +136,22 @@ public class CampController {
 		param.put("limit", limit);
 		param.put("startrow", (pageNum - 1) * limit);
 		camplist = service.camplist(param);
-		for(Camp c : camplist) {
-			Good good = new Good();
-			good.setGoodno(c.getContentId());
-			int lovecnt=bservice.goodcount(good);
-			c.setLovecnt(lovecnt);
-		}
+		
+		System.out.println(param);
 		try {
 			if(param.get("sort").equals("추천순")) {
-				Collections.sort(camplist,new lovecntComparator());
-				System.out.println("정렬완료");
-				System.out.println(camplist);
+				System.out.println(param);
+				camplist = service.lovelist(param);
 			}
 		}catch(NullPointerException e) {
 			e.printStackTrace();
-			System.out.println("정렬실패");
+		}
+		for(Camp c : camplist) {
+			Good good = new Good();
+			good.setGoodno(c.getContentId());
+			good.setGoodtype(3);
+			int lovecnt=bservice.goodcount(good);
+			c.setLovecnt(lovecnt);
 		}
 		mav.addObject("camplist", camplist);
 		mav.addObject("pageNum", pageNum);
@@ -229,17 +229,6 @@ public class CampController {
 		return mav;
 	}
 	
-	class lovecntComparator implements Comparator<Camp> {
-	    @Override
-	    public int compare(Camp c1, Camp c2) {
-	        if (c1.getLovecnt() < c2.getLovecnt()) {
-	            return 1;
-	        } else if (c1.getLovecnt() > c2.getLovecnt()) {
-	            return -1;
-	        }
-	        return 0;
-	    }
-	}
 	
 	@RequestMapping("detail")
 	public ModelAndView detail(int contentId, HttpSession session) {

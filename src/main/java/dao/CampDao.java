@@ -66,4 +66,9 @@ public class CampDao {
 		template.getMapper(cls).addcnt(contentId);
 	}
 
+
+	public List<Camp> lovelist(Map<String, Object> param) {
+		return template.getMapper(cls).lovelist(param);
+	}
+
 }

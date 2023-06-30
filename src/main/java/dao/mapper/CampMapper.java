@@ -83,6 +83,22 @@ public interface CampMapper {
 	@Update("update campdetail set cnt = ifnull(cnt,0)+1 where contentId =#{value}")
 	void addcnt(int contentId);
 
+	@Select("<script>"
+			+ " SELECT * FROM campdetail t1 left outer JOIN"
+			+ " (SELECT goodno,ifnull(count(*),0) cnt FROM good WHERE goodtype=3 group by goodno) t2 "
+			+ " on t1.contentId = t2.goodno "
+			+ " where t1.lctCl regexp #{loc} and t1.induty like '%${csite}%' "
+			+ " <if test='bot != null '> and ${bot} != '0' </if> "
+			+ " <if test='operlist != null '> and t1.facltDivNm REGEXP #{operlist} </if> "
+			+ " <if test='themelist != null '> and t1.themaEnvrnCl REGEXP #{themelist} </if> "
+			+ " <if test='addlist != null '> and t1.sbrsCl REGEXP #{addlist} </if>"
+			+ " <if test='carav != null '> and t1.caravAcmpnyAt = #{carav} </if> "
+			+ " <if test='pet != null '> and t1.animalCmgCl like '${pet}%' </if>"
+			+ " order by t2.cnt desc "
+			+ "limit #{startrow},#{limit}"
+			+ " </script>")
+	List<Camp> lovelist(Map<String, Object> param);
+
 //	@Select("<script>"
 //			+ "select * from campdetail where themaEnvrnCl regexp #{themelist} "
 //			+ " and posblFcltyCl regexp #{aroundlist} "

@@ -30,4 +30,13 @@ public class CampingService {
 		return campDao.list2(themelist,pet,aroundlist,pageNum,limit,startrow);
 	}
 
+	public Camp selectOne(int contentId) {
+		return campDao.selectOne(contentId);
+	}
+
+	public void addcnt(int contentId) {
+		campDao.addcnt(contentId);
+		
+	}
+
 }

@@ -6,6 +6,7 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import logic.Camp;
 
@@ -74,6 +75,12 @@ public interface CampMapper {
 			+ " <if test ='pet != null'> and animalCmgCl like '${pet}%' </if>"
 			+ "</script>")
 	int count2(@Param("themelist") String themelist,@Param("pet") String pet, @Param("aroundlist") String aroundlist);
+
+	@Select("select * from campdetail where contentId = #{value}")
+	Camp selectOne(int contentId);
+
+	@Update("update campdetail set cnt = ifnull(cnt,0)+1 where contentId =#{value}")
+	void addcnt(int contentId);
 
 //	@Select("<script>"
 //			+ "select * from campdetail where themaEnvrnCl regexp #{themelist} "

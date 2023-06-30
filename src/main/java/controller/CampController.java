@@ -185,5 +185,14 @@ public class CampController {
 		mav.addObject("aroundlist",aroundlist);
 		return mav;
 	}
+	
+	@RequestMapping("detail")
+	public ModelAndView detail(int contentId) {
+		ModelAndView mav = new ModelAndView();
+		Camp camp = service.selectOne(contentId);
+		service.addcnt(contentId);
+		mav.addObject("camp", camp);
+		return mav;
+	}
 
 }

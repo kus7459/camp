@@ -50,4 +50,14 @@ public class CampDao {
 		return template.getMapper(cls).count2(themelist,pet,aroundlist);
 	}
 
+
+	public Camp selectOne(int contentId) {
+		return template.getMapper(cls).selectOne(contentId);
+	}
+
+
+	public void addcnt(int contentId) {
+		template.getMapper(cls).addcnt(contentId);
+	}
+
 }

@@ -197,15 +197,16 @@
 							</button>
 						</li>
 						<li>
-							<button class="btn btn-white">
-								<i class="fa fa-heart" style="color: red"></i> <b>찜하기</b>
-							</button>
+								<i class="fa fa-heart" style="color: red;"></i> <b>찜&nbsp;&nbsp;</b>
+						</li>
+						<li>
+							<b>조회수 : ${c.cnt}</b>	
 						</li>
 					</ul>
 				</div>
 				<div class="campInfo">
 					<h4>
-						<a href="${path}/site/detail?">[${c.doNm} ${c.sigunguNm} │
+						<a href="${path}/site/detail?contentId=${c.contentId}">[${c.doNm} ${c.sigunguNm} │
 							${c.facltNm}]</a>
 					</h4>
 					<b>${c.lineIntro}</b>

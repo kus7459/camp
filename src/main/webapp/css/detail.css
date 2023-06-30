@@ -4,13 +4,7 @@
     a {text-decoration: none;}
     ol, ul {list-style: none}
 		h3 {font-weight: bold;}
-	.mainImg {
-		background-image: url("../img/main_1.jpg");
-		background-position: center;
-    	background-repeat: no-repeat;
-    	background-size: cover;
-   		width: 48%;
-   		height: 52vh}
+
    	.wrap {display: flex;    
    		flex-direction: row;
         justify-content: space-between;}

@@ -28,6 +28,7 @@
 			<div class="searchWrap">
 				<form action="search" method="post" name="f">
 					<input type="hidden" name="pageNum" value="1">
+					<input type="hidden" name="sort" value="${sort}">
 					<table class="w3-table" style="margin-bottom: 10px">
 						<tr>
 							<th>지역</th>
@@ -141,6 +142,7 @@
 		<input type="hidden" value="${themelist}" name="themelist">
 		<input type="hidden" value="${aroundlist}" name="aroundlist">
 		<input type="hidden" name="pageNum" value="1">
+		<input type="hidden" name="sort" value="${sort}">
 		<div class="page page4 w3-center">
 			<h3>테마별, 태그별 캠핑장 찾기</h3>
 			<div class="w3-center" style="padding-top: 30px">
@@ -174,6 +176,32 @@
 	<div class="campAll"
 		style="width: 90%; margin: 0 auto; margin-top: 50px">
 		<h3>캠핑장 목록(${listcount}건)</h3>
+		<hr>
+		<div>
+			<select id="sort" name="sortselect">
+			<c:if test="${sort == null }">
+				<option value="기본순">기본순</option>
+				<option value="조회순">조회순</option>
+				<option value="추천순">추천순</option>
+			</c:if>
+			<c:if test="${sort == '기본순' }">
+				<option value="기본순">기본순</option>
+				<option value="조회순">조회순</option>
+				<option value="추천순">추천순</option>
+			</c:if>
+			<c:if test="${sort == '조회순' }">
+				<option value="조회순">조회순</option>
+				<option value="기본순">기본순</option>
+				<option value="추천순">추천순</option>
+			</c:if>
+			<c:if test="${sort == '추천순' }">
+				<option value="조회순">추천순</option>
+				<option value="기본순">기본순</option>
+				<option value="추천순">조회순</option>
+			</c:if>
+			</select>
+		</div>
+		<hr>
 		<c:if test="${empty camplist}">
 			<div class="w3-center" style="margin-bottom:20px">
 			검색 결과과 없습니다.
@@ -323,7 +351,7 @@
 			} else if ($(this).hasClass("on") == false) {
 				$(this).addClass("on")
 			}
-		})
+		})	
 		let theme = "";
 		let around ="";
 		function func(val){
@@ -354,6 +382,35 @@
 				document.f2.submit();
 			}	
 		}
+		$("#sort").change(function(){
+			if(${search}==1){
+				if($(this).val() == '조회순'){
+					document.f.sort.value='조회순';
+					document.f.submit();
+				}
+				if($(this).val() == '기본순'){
+					document.f.sort.value='';
+					document.f.submit();
+				}
+				if($(this).val() == '추천순'){
+					document.f.sort.value='추천순';
+					document.f.submit();
+				}
+			}
+			if(${search}==2){
+				if($(this).val() == '조회순'){
+					document.f2.sort.value='조회순';
+					document.f2.submit();
+				}
+				if($(this).val() == '기본순'){
+					document.f2.sort.value='';
+					document.f2.submit();
+				}
+				if($(this).val() == '추천순'){
+					document.f2.sort.value='추천순';
+				}
+			}
+		})
 	</script>
 </body>
 </html>

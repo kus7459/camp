@@ -1,5 +1,6 @@
 package dao;
 
+import java.nio.file.spi.FileSystemProvider;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,19 +31,24 @@ public class CampDao {
 
 
 	public int count(Map<String, Object> param2) {
+		System.out.println();
 		return template.getMapper(cls).count(param2);
 	}
 
 
-	public List<Camp> list2(String themelist, String pet, String aroundlist, Integer pageNum, int limit, int startrow) {
+	public List<Camp> list2(String themelist, String pet, String aroundlist, Integer pageNum, int limit, int startrow, Object object) {
 		param.clear();
 		param.put("themelist", themelist);
 		param.put("pet", pet);
+		System.out.println(pet);
 		param.put("aroundlist", aroundlist);
 		param.put("pageNum", pageNum);
 		param.put("limit", limit);
 		param.put("startrow", startrow);
-		return template.getMapper(cls).list2(themelist,pet,aroundlist,pageNum,limit,startrow);
+		System.out.println(object);
+		param.put("sort", object);
+		param.put("test", "조회순");
+		return template.getMapper(cls).list2(param);
 	}
 
 

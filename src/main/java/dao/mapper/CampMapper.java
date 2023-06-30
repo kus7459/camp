@@ -38,6 +38,7 @@ public interface CampMapper {
 			+ " <if test='addlist != null '> and sbrsCl REGEXP #{addlist} </if>"
 			+ " <if test='carav != null '> and caravAcmpnyAt = #{carav} </if> "
 			+ " <if test='pet != null '> and animalCmgCl like '${pet}%' </if>"
+			+ " <if test='sort == test'> order by cnt desc </if>"
 //			+ " <if test='#{oper1}!= null'> and (facltDivNm like '%${oper1}%'"
 //			+ " <if test='#{oper2}!= null'> or facltDivNm like '%${oper2}%'</if>"
 //			+ " <if test='#{oper3}!= null'> or facltDivNm like '%${oper3}%'</if>"
@@ -64,10 +65,10 @@ public interface CampMapper {
 			+ "select * from campdetail where themaEnvrnCl regexp #{themelist} "
 			+ " and posblFcltyCl regexp #{aroundlist} "
 			+ " <if test ='pet != null'> and animalCmgCl like '${pet}%' </if>"
+			+ " <if test ='sort == test'> order by cnt desc </if>"
 			+ " limit #{startrow},#{limit}"
 			+ "</script>")
-	List<Camp> list2(@Param("themelist") String themelist,@Param("pet") String pet, @Param("aroundlist") String aroundlist,
-			@Param("pageNum") Integer pageNum,@Param("limit") int limit, @Param("startrow") int startrow);
+	List<Camp> list2(Map<String, Object> param);
 
 	@Select("<script>"
 			+ "select count(*) from campdetail where themaEnvrnCl regexp #{themelist} "

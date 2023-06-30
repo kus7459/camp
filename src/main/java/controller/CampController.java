@@ -3,6 +3,9 @@ package controller;
 import java.nio.file.spi.FileSystemProvider;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Spliterator;
@@ -15,16 +18,24 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import controller.BoardController.readcntComparator;
+import logic.Board;
+import logic.BoardService;
 import logic.Camp;
 import logic.CampingService;
+import logic.Good;
+import logic.User;
 
 @Controller
 @RequestMapping("site")
 public class CampController {
 	@Autowired
 	private CampingService service;
+	@Autowired
+	private BoardService bservice;
 
 //	@GetMapping("search")
 //	public ModelAndView search1() {
@@ -43,6 +54,13 @@ public class CampController {
 	public ModelAndView search(@RequestParam Map<String, Object> param, HttpSession session, HttpServletRequest request)
 			throws Exception {
 		System.out.println(param);
+		try {
+			if(param.get("sort").equals("")) {
+				param.put("sort", null);
+			}
+		}catch(NullPointerException e) {
+			e.printStackTrace();
+		}
 		ModelAndView mav = new ModelAndView();
 		if (param.get("bot") != null) {
 			if (param.get("bot").equals("잔디")) {
@@ -60,7 +78,6 @@ public class CampController {
 			}
 		}
 		if (param.size() == 0) {
-			System.out.println("아무것도 없다");
 			param.put("loc", "");
 			param.put("ciste", "");
 			param.put("bot", null);
@@ -101,6 +118,7 @@ public class CampController {
 		} catch (NullPointerException e) {
 			e.printStackTrace();
 		}
+		param.put("test", "조회순");
 		Integer pageNum = null;
 		if (param.get("pageNum") != null) {
 			pageNum = Integer.parseInt((String) param.get("pageNum"));
@@ -119,6 +137,22 @@ public class CampController {
 		param.put("limit", limit);
 		param.put("startrow", (pageNum - 1) * limit);
 		camplist = service.camplist(param);
+		for(Camp c : camplist) {
+			Good good = new Good();
+			good.setGoodno(c.getContentId());
+			int lovecnt=bservice.goodcount(good);
+			c.setLovecnt(lovecnt);
+		}
+		try {
+			if(param.get("sort").equals("추천순")) {
+				Collections.sort(camplist,new lovecntComparator());
+				System.out.println("정렬완료");
+				System.out.println(camplist);
+			}
+		}catch(NullPointerException e) {
+			e.printStackTrace();
+			System.out.println("정렬실패");
+		}
 		mav.addObject("camplist", camplist);
 		mav.addObject("pageNum", pageNum);
 		mav.addObject("maxpage", maxpage);
@@ -126,13 +160,21 @@ public class CampController {
 		mav.addObject("endpage", endpage);
 		mav.addObject("search","1");
 		mav.addObject("listcount", listcount);
+		mav.addObject("sort", param.get("sort"));
 		return mav;
 	}
-
+	
 	@PostMapping("search2")
 	public ModelAndView search2(@RequestParam Map<String, Object> param, HttpSession session, HttpServletRequest request) throws Exception {
 		ModelAndView mav = new ModelAndView("/site/search");
 		System.out.println(param);
+		try {
+			if(param.get("sort").equals("")) {
+				param.put("sort", null);
+			}
+		}catch(NullPointerException e) {
+			e.printStackTrace();
+		}
 		String[] theme =null;
 		List<String> list = new ArrayList<>();
 		String themelist = "";
@@ -172,7 +214,7 @@ public class CampController {
 		mav.addObject("endpage", endpage);
 		mav.addObject("search","2");
 		mav.addObject("listcount", listcount);
-		List<Camp> camplist = service.camplist2(themelist,pet,aroundlist,pageNum,limit,startrow);
+		List<Camp> camplist = service.camplist2(themelist,pet,aroundlist,pageNum,limit,startrow,param.get("sort"));
 		mav.addObject("camplist", camplist);
 		System.out.println(themelist);
 		System.out.println(aroundlist);
@@ -183,16 +225,81 @@ public class CampController {
 		System.out.println(themelist);
 		mav.addObject("themelist", themelist);
 		mav.addObject("aroundlist",aroundlist);
+		mav.addObject("sort", param.get("sort"));
 		return mav;
 	}
 	
+	class lovecntComparator implements Comparator<Camp> {
+	    @Override
+	    public int compare(Camp c1, Camp c2) {
+	        if (c1.getLovecnt() < c2.getLovecnt()) {
+	            return 1;
+	        } else if (c1.getLovecnt() > c2.getLovecnt()) {
+	            return -1;
+	        }
+	        return 0;
+	    }
+	}
+	
 	@RequestMapping("detail")
-	public ModelAndView detail(int contentId) {
+	public ModelAndView detail(int contentId, HttpSession session) {
 		ModelAndView mav = new ModelAndView();
 		Camp camp = service.selectOne(contentId);
 		service.addcnt(contentId);
+		System.out.println(contentId);
+		try{
+			User loginUser = (User)session.getAttribute("loginUser");
+			System.out.println(loginUser);
+			Good like = new Good();
+			like.setGoodno(contentId);
+			like.setUserId(loginUser.getId());
+			like.setGoodtype(2);
+			int likeselect = bservice.goodselect(like); // 좋아요눌렀는지 확인
+			if(likeselect == 0) {
+				mav.addObject("likeselect",0);
+			}else {
+				mav.addObject("likeselect",1);
+			}
+			Good love = new Good();
+			love.setGoodno(contentId);
+			love.setUserId(loginUser.getId());
+			love.setGoodtype(3);
+			int loveselect = bservice.goodselect(love); // 좋아요눌렀는지 확인
+			if(loveselect == 0) {
+				mav.addObject("loveselect",0);
+			}else {
+				mav.addObject("loveselect",1);
+			}
+		}catch(NullPointerException e) {
+			e.printStackTrace();
+			mav.addObject("likeselect", 0);
+			mav.addObject("loveselect", 0);
+		}
 		mav.addObject("camp", camp);
 		return mav;
+	}
+	@RequestMapping("change")
+	@ResponseBody
+	public Map<String,Integer> change(Integer contentId, String userId, String type,HttpServletRequest request) {
+		Map<String, Integer> map = new HashMap<String, Integer>();
+		System.out.println(contentId);
+		System.out.println(userId);
+		int ty =0;
+		if(type.equals("like")) { ty=2;}
+		if(type.equals("love")) { ty=3;}
+		Good good = new Good();
+		good.setGoodno(contentId);
+		good.setUserId(userId);
+		good.setGoodtype(ty);
+		try {
+			bservice.goodinsert(good);
+			map.put("check", 0);
+		} catch (Exception e) {
+			bservice.gooddelete(good);
+			map.put("check", 1);
+		}
+		map.put("type", ty);
+		return map;
 	}
 
 }

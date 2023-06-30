@@ -54,5 +54,6 @@ public class Camp {
 	private String bizrno;
 	private String facltDivNm;
 	private int cnt;
+	private int lovecnt;
 
 }

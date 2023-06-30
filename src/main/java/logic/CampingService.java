@@ -26,8 +26,8 @@ public class CampingService {
 	}
 
 	public List<Camp> camplist2(String themelist, String pet, String aroundlist, Integer pageNum, int limit,
-			int startrow) {
-		return campDao.list2(themelist,pet,aroundlist,pageNum,limit,startrow);
+			int startrow, Object object) {
+		return campDao.list2(themelist,pet,aroundlist,pageNum,limit,startrow,object);
 	}
 
 	public Camp selectOne(int contentId) {

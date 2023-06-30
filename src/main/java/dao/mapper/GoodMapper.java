@@ -15,15 +15,15 @@ public interface GoodMapper {
 			+ "values(#{goodno},#{userId},#{goodtype})")
 	void insert(Good good);
 
-	@Select("select count(*) from good"
+	@Select("select ifnull(count(*),0) from good"
 			+ " where goodno=#{goodno} and userId=#{userId} and goodtype=#{goodtype}")
 	int select(Good good);
 
 	@Delete("delete from good"
 			+ " where goodno=#{goodno} and userId=#{userId} and goodtype=#{goodtype}")
 	void delete(Good good);
-	@Select("select count(*) from good"
-			+ "	where goodno=#{goodno} and goodtype=1")
+	@Select("select ifnull(count(*),0) from good"
+			+ "	where goodno=#{goodno} and goodtype=#{goodtype}")
 	int count(Good good);
 
 	

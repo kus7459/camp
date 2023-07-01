@@ -86,6 +86,7 @@
 		</table>
 		<hr>
 		<%-- 댓글 등록 조회 삭제 --%>
+		<c:if test="${loginUser.id != null }">
 		<span id="comment"></span>
 		<form:form  modelAttribute="comment" action="comment" method="post" name="commForm">
 		<form:hidden path="num"/>
@@ -96,12 +97,7 @@
 						<font color="red"><form:errors path="writer"/></font>
 					</p>
 				</div>
-					<div class="w3-col s2 w3-center">
-					<p><form:input path="pass" class="form-control" placeholder="비밀번호"/>
-						<font color="red"><form:errors path="pass"/></font>
-					</p>
-				</div>
-				<div class="w3-col s6 w3-center">
+				<div class="w3-col s8 w3-center">
 					<p><form:input path="content"  class="form-control" placeholder="내용"/>
 						<font color="red"><form:errors path="content"/></font>
 					</p>
@@ -114,6 +110,7 @@
 				</div>
 			</div>
 		</form:form>
+		</c:if>
 		<div class="w3-container">
 			<table class="w3-table-all">
 				<c:forEach var="c" items="${commlist}" varStatus="stat">
@@ -136,9 +133,10 @@
 							<form action="commdel" method="post" name="commdel${stat.index}">
 								<input type="hidden" name="num" value="${param.num}">
 								<input type="hidden" name="seq" value="${c.seq}">
-								<input type="password" name="pass" placeholder="비밀번호"/>
+								<c:if test="${loginUser.id == c.writer || loginUser.id eq 'admin'}">
 								<a class="w3-btn w3-border w3-blue" 
 								href="javascript:document.commdel${stat.index}.submit()">삭제</a>
+								</c:if>
 							</form>
 						</td>
 					</tr>		
@@ -150,30 +148,39 @@
 <script type="text/javascript">
 
 
-function changeLike(){
-	let boardNum = $("#boardNum").val();
-	let userId = $("#userId").val();
-	console.log('here')
-	console.log(boardNum)
-	console.log(userId)
-	$.ajax({
-		type : "post",
-		url : "boardLike",
-		//dataType : "json",
-		data : "boardNum="+boardNum+"&userId="+userId,
-		success : function(jdata){
-			console.log(jdata)
-			console.log(jdata.count)
-			if(jdata.likecheck == 1){ // 좋아요
-				$("#btn_like").attr("style","font-size:30px;color:white;");				
-			} 
-			if(jdata.likecheck == 0){ //안좋아요
-				$("#btn_like").attr("style","font-size:30px;color:red;");				
-			}
-			$("#count").val(jdata.count);
+
+	function changeLike() {
+		let boardNum = $("#boardNum").val();
+		let userId = $("#userId").val();
+		console.log('here')
+		console.log(boardNum)
+		console.log(userId)
+		if ('${loginUser.id}' == '') {
+			alert("로그인한 유저만 가능합니다.")
+		} else {
+			$.ajax({
+				type : "post",
+				url : "boardLike",
+				//dataType : "json",
+				data : "boardNum=" + boardNum + "&userId=" + userId,
+				success : function(jdata) {
+					console.log(jdata)
+					console.log(jdata.count)
+					if (jdata.likecheck == 1) { // 좋아요
+						$("#btn_like").attr("style",
+								"font-size:30px;color:white;");
+						alert("@@싫어요@@")
+					}
+					if (jdata.likecheck == 0) { //안좋아요
+						$("#btn_like").attr("style",
+								"font-size:30px;color:red;");
+						alert("@@좋아요@@")
+					}
+					$("#count").val(jdata.count);
+				}
+			})
 		}
-	})
-}
+	}
 </script>
 </body>
 </html>

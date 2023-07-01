@@ -18,8 +18,8 @@ public interface CommentMapper {
 	int maxseq(int num);
 	
 	@Insert("insert into comment"
-			+" (num, seq, writer, pass, content, regdate, secret) "
-			+ "values (#{num}, #{seq}, #{writer}, #{pass}, #{content}, now() ,#{secret})")
+			+" (num, seq, writer,  content, regdate, secret) "
+			+ "values (#{num}, #{seq}, #{writer}, #{content}, now() ,#{secret})")
 	void insert(Comment comm);
 
 	@Select("select * from comment where num=#{num} order by seq desc" )

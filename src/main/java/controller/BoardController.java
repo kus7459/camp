@@ -185,30 +185,33 @@ public class BoardController {
 	        return 0;
 	    }
 	}
+	
 	@RequestMapping("detail")
-	public ModelAndView loginCheckdetail (Integer num, HttpServletRequest request,HttpSession session){
+	public ModelAndView detail (Integer num, HttpServletRequest request,HttpSession session){
 		ModelAndView mav = new ModelAndView();
 		System.out.println("겟보드실패?");
 		Board board = service.getBoard(num);
 		System.out.println("겟보드");
-		User loginUser = (User)session.getAttribute("loginUser");
-		Good good = new Good();
-		good.setGoodno(num);
-		good.setUserId(loginUser.getId());
-		good.setGoodtype(1);
-		System.out.println(good.getGoodno());
-		System.out.println(good.getUserId());
-		System.out.println(good.getGoodtype());
-		
-		int goodselect = service.goodselect(good); // 좋아요눌렀는지 확인
-		int goodcount = service.goodcount(good); 
-		System.out.println(goodselect);
-		System.out.println(goodcount);
-		mav.addObject("count",goodcount);
-		if(goodselect == 0) {
+		try {
+			User loginUser = (User)session.getAttribute("loginUser");
+			Good good = new Good();
+			good.setGoodno(num);
+			good.setUserId(loginUser.getId());
+			good.setGoodtype(1);
+			System.out.println(good.getGoodno());
+			System.out.println(good.getUserId());
+			System.out.println(good.getGoodtype());
+
+			int goodselect = service.goodselect(good); // 좋아요눌렀는지 확인
+			System.out.println(goodselect);
+			if (goodselect == 0) {
+				mav.addObject("goodselect", 0);
+			} else {
+				mav.addObject("goodselect", 1);
+			}
+		} catch (NullPointerException e) {
+			e.printStackTrace();
 			mav.addObject("goodselect",0);
-		}else {
-			mav.addObject("goodselect",1);
 		}
 		mav.addObject("board",board);
 		service.addReadcnt(num); // 조회수 1증가
@@ -431,14 +434,13 @@ public class BoardController {
 		return mav;
 	}
 	@RequestMapping("commdel")
-	public String commdel(int num, int seq, String pass,
-			HttpSession session) {
+	public String commdel(int num, int seq,HttpSession session) {
 		// 현재 모든 댓글을 아무나 삭제가능=> 수정 필요
 		// 업무요건1 : 회원만 댓글 작성 가능 => 작성한 글만 삭제가능
 		// 업무요건2 : 로그아웃 상태에서 댓글 작성가능 => 비밀번호 추가. 비밀번호 검증필요
 		Comment dbcomm = service.commSelectOne(num,seq);
 		User loginUser = (User)session.getAttribute("loginUser");
-		if(pass.equals(dbcomm.getPass()) 
+		if(loginUser.getId().equals(dbcomm.getWriter()) 
 				|| loginUser.getId().equals("admin")) {
 			service.commdel(num,seq);
 		}else {

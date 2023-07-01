@@ -42,7 +42,7 @@
 	<header>
 		<h3>내 정보</h3>
 	</header>
-	<div style="width:90%; margin: 0 auto; margin-top: 40px; margin-bottom: 40px">
+	<div style="width:90%; margin: 0 auto; padding:50px 0px">
 		<div>
 			<div class="form-group">
 				<table class="w3-table-all" style="width:100%">
@@ -205,6 +205,10 @@
 				<form action="../cart/delete" name="deleteform" method="GET">
 					<input type="hidden" name="id" value="">
 				</form>
+				<form action="../cart/saleitem" name="saleform" method="post">
+					<input type="hidden" name="id" value="">
+					<input type="hidden" name="userid" value="${user.id}">
+				</form>
 				<c:forEach items="${cartlist}" var="cart">
 					<tr id="del${cart.itemid}">
 						<td style="width:10%">
@@ -216,7 +220,8 @@
 						</td>
 						<td><fmt:formatNumber value="${cart.price}" pattern="###,###"/></td>
 						<td>${cart.quantity}</td>
-						<td><button class="btn btn-lime">주문하기</button></td>
+						<td><button class="btn btn-lime"
+							onclick="javascript:salelist('${cart.itemid}','${user.id}')">주문하기</button></td>
 						<td>
 							<button value="${cart.itemid}" class="btn btn-gray"
 								onclick="javascript:deletecart(${cart.itemid})" id="btn-del">삭제</button>
@@ -226,15 +231,22 @@
 				<tr>
 					<th colspan="6">
 						총 구매 금액: <fmt:formatNumber value="${total}" pattern="###,###"/>원
-						&emsp; <button>전체 주문하기</button>
+						&emsp; <button class="btn btn-lime" onclick="javascript:allsale('${user.id}')">전체 주문하기</button>
 					</th>
 				</tr>
 			</table>
 		</div>
 	</div>
 	<script>
+		function allsale(userid) {
+			document.saleform.id.value=0;
+			document.saleform.submit();
+		}
+		function salelist(itemid, userid) {
+			document.saleform.id.value=itemid;
+			document.saleform.submit();
+		}
 		function deletecart(itemid) {
-			console.log(itemid);
 			document.deleteform.id.value=itemid;
 			document.deleteform.submit();
 		}

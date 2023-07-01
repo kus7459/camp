@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
 
 import javax.servlet.http.HttpSession;
 
@@ -12,6 +13,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import exception.ItemException;
@@ -95,5 +98,96 @@ public class CartController {
 		User loginUser = (User)session.getAttribute("loginUser");
 		service.cartdelete(id, loginUser.getId());
 		return "redirect:/user/mypage?id="+loginUser.getId();
+	}
+	// 주문 
+	@RequestMapping("saleitem")
+	public ModelAndView loginChecksaleitem(String userid, Integer id, HttpSession session) {
+		ModelAndView mav = new ModelAndView();
+		User loginUser = (User)session.getAttribute("loginUser");
+		List<Cart> cartlist = service.getuserCart(loginUser.getId(), id);
+		User user = service.selectUserOne(userid);
+		Integer total = 0;
+		if(cartlist.size() > 0) {
+			for(Cart c : cartlist) {
+				if(cartlist.size() == 1) { // 한 개의 아이템
+					total += c.getQuantity() * c.getPrice();
+					mav.addObject("itemid",1);
+				} else {	// 아이템 여러개
+					total += c.getQuantity() * c.getPrice();
+					mav.addObject("itemid", 0);
+				}
+			}
+		}
+		mav.addObject("total", total);
+		mav.addObject("user", user);
+		mav.addObject("cartlist", cartlist);
+		return mav;
+	}
+	
+	@RequestMapping("order")
+	public ModelAndView loginCheckorder(@RequestParam Map<String, String> param, HttpSession session) {
+		ModelAndView mav = new ModelAndView();
+		User loginUser = (User) session.getAttribute("loginUser");
+		
+		Integer max = service.getMax();
+		Integer saleid;
+		if(max == 0 || max == null || max.toString().trim().equals("")) {
+			saleid = 1;
+		} else {
+			saleid = max+1;
+		}
+		
+		System.out.println(param);
+		Integer pitemid = Integer.parseInt(param.get("itemid"));
+		System.out.println("itemid: "+pitemid);
+		// 여러개인 경우
+		int sum = 0;
+		if(pitemid == 0) {
+			List<Cart> citemid = service.getuserCart(loginUser.getId(), 0);
+			System.out.println(citemid);
+			for(Cart c : citemid) {
+				saleid ++;
+				sum += c.getPrice() * c.getQuantity();
+				service.saleinsert(saleid, loginUser.getId(), c.getItemid(), c.getQuantity(), c.getPrice() * c.getQuantity(),
+					Integer.parseInt(param.get("postcode")), param.get("address"), param.get("detailAddress"));
+			}
+			service.cartdelete(0, loginUser.getId());
+		} else {
+			List<Cart> cart = service.getuserCart(loginUser.getId(), pitemid);
+			for(Cart c : cart) {
+				service.saleinsert(saleid, loginUser.getId(), c.getItemid(), c.getQuantity(), c.getPrice() * c.getQuantity(), 
+						Integer.parseInt(param.get("postcode")), param.get("address"), param.get("detailAddress"));
+				service.cartdelete(c.getItemid(), loginUser.getId());
+			}
+		}
+		mav.addObject("sum", sum);
+		return mav;
+	}
+	
+	@RequestMapping("kakao")
+	@ResponseBody
+	public Map<String, Object> kakao(HttpSession session) {
+		Map<String, Object> map = new HashMap<>();
+		
+		User loginUser = (User)session.getAttribute("loginUser");
+		List<Cart> cartlist = service.getuserCart(loginUser.getId(), 0);
+		System.out.println(cartlist);
+		// 주문 정보
+		map.put("merchant_uid", loginUser.getId()+"-"+session.getId()); // 주문 번호
+		map.put("name", cartlist.get(2).getName()+"외"+(cartlist.size()-1));	// 상품명
+		int sum = 0;
+		for(Cart c : cartlist) {
+			sum += c.getPrice() * c.getQuantity();
+		}
+		map.put("amount", sum);
+		// ↓ 주문자 정보
+//		map.put("uid", cart.getItemSetList());
+		map.put("buyer_userid", loginUser.getName());
+		map.put("buyer_email", loginUser.getEmail());
+		map.put("buyer_tel", loginUser.getTel());
+//		map.put("buyer_addr", );
+//		map.put("buyer_postcode", loginUser.getPostcode());
+		
+		return map;		// 클라이언트는 json 객체로 전달
 	}
 }

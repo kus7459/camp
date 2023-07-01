@@ -12,12 +12,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import ch.qos.logback.core.recovery.ResilientSyslogOutputStream;
 import dao.BoardDao;
 import dao.CampDao;
 import dao.CartDao;
 import dao.CommentDao;
 import dao.GoodDao;
 import dao.ItemDao;
+import dao.SaleDao;
 import dao.UserDao;
 
 @Service
@@ -37,6 +39,9 @@ public class CampService {
 	
 	@Autowired
 	private BoardDao boardDao;
+	
+	@Autowired
+	private SaleDao saleDao;
 
 
 	public void campinsert(Camp camp) {
@@ -161,5 +166,15 @@ public class CampService {
 	public void cartdelete(Integer itemid, String userid) {
 		cartDao.delete(itemid, userid);
 	}
+
+	public Integer getMax() {
+		return saleDao.maxId();
+	}
+
+	public void saleinsert(Integer saleid, String userid, Integer itemid, Integer quantity, Integer total,
+			Integer postcode, String address, String detailaddress) {
+		saleDao.insert(saleid, userid, itemid, quantity, total, postcode, address, detailaddress);
+	}
+
 
 }

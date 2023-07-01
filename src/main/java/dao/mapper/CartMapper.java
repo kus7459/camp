@@ -19,13 +19,16 @@ public interface CartMapper {
 
 	@Select({"<script>",
 			"select * from cart where userid = #{userid} ",
-			"<if test='itemid != 0'> and itemid = #{itmeid}</if>",
+			"<if test='itemid != 0'> and itemid = #{itemid}</if>",
 			"</script>"})
 	List<Cart> select(Map<String, Object> param);
 
 	@Update("update cart set quantity = #{quantity} where userid=#{userid} and itemid=#{itemid}")
 	void update(Map<String, Object> param);
 
-	@Delete("delete from cart where itemid=#{itemid} and userid=#{userid}")
+	@Delete({"<script>"
+			+ "delete from cart where userid = #{userid}"
+			+ "<if test='itemid != 0'> and itemid=#{itemid} </if>"
+			+ "</script>"})
 	void delete(Map<String, Object> param);
 }

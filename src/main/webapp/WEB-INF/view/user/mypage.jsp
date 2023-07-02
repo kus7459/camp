@@ -43,43 +43,73 @@
 		<h3>내 정보</h3>
 	</header>
 	<div style="width:90%; margin: 0 auto; padding:50px 0px">
-		<div>
-			<div class="form-group">
-				<table class="w3-table-all" style="width:100%">
-					<tr>
-						<th>아이디</th>
-						<td>${user.id }</td>
-					</tr>
-					<tr>
-						<th>이름</th>
-						<td>${user.name}</td>
-					</tr>
-					<tr>
-						<th>생년월일</th>
-						<td><fmt:formatDate value="${user.birth}" pattern="yyyy-MM-dd"/></td>
-					</tr>
-					<tr>
-						<th>전화번호</th>
-						<td>${user.tel}</td>
-					</tr>
-					<tr>
-						<th>이메일</th>
-						<td>${user.email}</td>
-					</tr>
-				</table>
-				<div style="margin-top:10px; text-align:left;">
-				<c:if test="${loginUser.id != 'admin'}">
-					<a href="deleteForm?id=${user.id}" class="btn btn-gray" style="float:right; color:#000"">회원 탈퇴</a>
-				</c:if>
-				<c:if test="${loginUser.id == 'admin'}">
-					<a href="../admin/list" class="btn btn-gray" style="float:right; color:#000">회원 목록</a>
-				</c:if>
-				<a href="update?id=${user.id}" style="text-decoration: none; color: #000; float:right; margin-right:10px"
-					class="btn btn-lime">내 정보 변경</a>
-				</div>
+		<div style="display:flex; justify-content: space-between;">
+			<table class="w3-table-all" style="width:49%">
+				<tr>
+					<th>아이디</th>
+					<td>${user.id }</td>
+				</tr>
+				<tr>
+					<th>이름</th>
+					<td>${user.name}</td>
+				</tr>
+				<tr>
+					<th>생년월일</th>
+					<td><fmt:formatDate value="${user.birth}" pattern="yyyy-MM-dd"/></td>
+				</tr>
+				<tr>
+					<th>전화번호</th>
+					<td>${user.tel}</td>
+				</tr>
+				<tr>
+					<th>이메일</th>
+					<td>${user.email}</td>
+				</tr>
+			</table>
+			<table class="w3-table" style="width:49%">
+				<tr>
+					<th>주문 상품</th>
+					<th>이름</th>
+					<th>갯수</th>
+					<th>가격</th>
+				</tr>
+				<c:choose>
+					<c:when test="${size > 0}">
+					<c:forEach items="${salelist}" var="sale">
+						<tr>
+							<td style="width:20%"><img src="../img/${sale.pictureUrl}" style="width:90%"></td>
+							<td style="width:50%"><a href="../shop/detail?id=${sale.itemid}">${sale.name}</a></td>
+							<td>${sale.quantity}</td>
+							<td>
+								<fmt:formatNumber value="${sale.total/sale.quantity}" pattern="###,###"/>
+							</td>
+						</tr>
+						<tr>
+							<th colspan="4" class="w3-center">
+								총 액: <fmt:formatNumber value="${sale.total}" pattern="###,###"/>
+							</th>
+						</tr>
+					</c:forEach>
+					</c:when>
+					<c:otherwise>
+						<tr>
+							<td colspan="4" class="w3-center">주문 정보가 없습니다.</td>
+						</tr>
+					</c:otherwise>
+				</c:choose>
+			</table>
+		</div>
+		<div style="margin-top:10px; text-align:left;">
+			<c:if test="${loginUser.id != 'admin'}">
+				<a href="deleteForm?id=${user.id}" class="btn btn-gray" style="float:right; color:#000"">회원 탈퇴</a>
+			</c:if>
+			<c:if test="${loginUser.id == 'admin'}">
+				<a href="../admin/list" class="btn btn-gray" style="float:right; color:#000">회원 목록</a>
+			</c:if>
+			<a href="update?id=${user.id}" style="text-decoration: none; color: #000; float:right; margin-right:10px"
+				class="btn btn-lime">내 정보 변경</a>
 			</div>
 		</div>
-	</div>
 	<div class="w3-center btnWrap" style="border-bottom: 1px solid #cddc39">
 		<div id="etc" class="debtn"
 			onclick="javascript:btn_div('etcInner','etc')">등록 게시글</div>

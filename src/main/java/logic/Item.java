@@ -1,5 +1,7 @@
 package logic;
 
+import java.util.List;
+
 import javax.mail.Multipart;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;

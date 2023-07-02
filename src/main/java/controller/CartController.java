@@ -1,6 +1,7 @@
 package controller;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,6 +22,7 @@ import exception.ItemException;
 import logic.CampService;
 import logic.Cart;
 import logic.Item;
+import logic.Sale;
 import logic.User;
 
 @Controller
@@ -137,29 +139,36 @@ public class CartController {
 			saleid = max+1;
 		}
 		
-		System.out.println(param);
 		Integer pitemid = Integer.parseInt(param.get("itemid"));
-		System.out.println("itemid: "+pitemid);
 		// 여러개인 경우
+		
 		int sum = 0;
 		if(pitemid == 0) {
 			List<Cart> citemid = service.getuserCart(loginUser.getId(), 0);
-			System.out.println(citemid);
+			mav.addObject("cartlist", citemid);
 			for(Cart c : citemid) {
-				saleid ++;
 				sum += c.getPrice() * c.getQuantity();
-				service.saleinsert(saleid, loginUser.getId(), c.getItemid(), c.getQuantity(), c.getPrice() * c.getQuantity(),
+				service.saleinsert(saleid, loginUser.getId(), c.getItemid(), c.getName(),
+						c.getQuantity(), c.getPictureUrl(), c.getPrice() * c.getQuantity(), 
 					Integer.parseInt(param.get("postcode")), param.get("address"), param.get("detailAddress"));
 			}
-			service.cartdelete(0, loginUser.getId());
 		} else {
 			List<Cart> cart = service.getuserCart(loginUser.getId(), pitemid);
-			for(Cart c : cart) {
-				service.saleinsert(saleid, loginUser.getId(), c.getItemid(), c.getQuantity(), c.getPrice() * c.getQuantity(), 
-						Integer.parseInt(param.get("postcode")), param.get("address"), param.get("detailAddress"));
-				service.cartdelete(c.getItemid(), loginUser.getId());
-			}
+			mav.addObject("cartlist", cart);
+			sum += cart.get(0).getPrice() * cart.get(0).getQuantity();
+			service.saleinsert(saleid, loginUser.getId(), cart.get(0).getItemid(), cart.get(0).getName(),
+					cart.get(0).getQuantity(), cart.get(0).getPictureUrl(), cart.get(0).getPrice() * cart.get(0).getQuantity(), 
+					Integer.parseInt(param.get("postcode")), param.get("address"), param.get("detailAddress"));
+			
 		}
+		System.out.println("아이디"+saleid);
+		List<Sale> salelist = service.saleitemList(loginUser.getId(), saleid);
+//		System.out.println("주문 내역 리스트: "+salelist);
+		mav.addObject("saleid", saleid);
+		mav.addObject("postcode", salelist.get(0).getPostcode());
+		mav.addObject("address", salelist.get(0).getAddress());
+		mav.addObject("detailAddress", salelist.get(0).getDetailAddress());
+		mav.addObject("user",loginUser);
 		mav.addObject("sum", sum);
 		return mav;
 	}
@@ -170,24 +179,46 @@ public class CartController {
 		Map<String, Object> map = new HashMap<>();
 		
 		User loginUser = (User)session.getAttribute("loginUser");
-		List<Cart> cartlist = service.getuserCart(loginUser.getId(), 0);
-		System.out.println(cartlist);
+		List<Sale> saleid = service.selectsaleid(loginUser.getId()); 
+		System.out.println("카카오 saleid" + saleid);
+		List<Sale> salelist = service.saleitemList(loginUser.getId(), saleid.get(0).getSaleid());
+		System.out.println(salelist);
+		
 		// 주문 정보
 		map.put("merchant_uid", loginUser.getId()+"-"+session.getId()); // 주문 번호
-		map.put("name", cartlist.get(2).getName()+"외"+(cartlist.size()-1));	// 상품명
+		if(salelist.size() > 1) {
+			map.put("name", salelist.get(0).getName()+"외 "+(salelist.size()-1));	// 상품명
+		} else {
+			map.put("name", salelist.get(0).getName());	// 상품명
+		}
 		int sum = 0;
-		for(Cart c : cartlist) {
-			sum += c.getPrice() * c.getQuantity();
+		for(Sale s : salelist) {
+			sum += s.getTotal();
 		}
 		map.put("amount", sum);
 		// ↓ 주문자 정보
-//		map.put("uid", cart.getItemSetList());
+		map.put("uid", saleid.get(0).getSaleid());
 		map.put("buyer_userid", loginUser.getName());
 		map.put("buyer_email", loginUser.getEmail());
 		map.put("buyer_tel", loginUser.getTel());
-//		map.put("buyer_addr", );
-//		map.put("buyer_postcode", loginUser.getPostcode());
-		
+		map.put("buyer_addr", salelist.get(0).getAddress()+","+salelist.get(0).getDetailAddress());
+		map.put("buyer_postcode", salelist.get(0).getPostcode());
 		return map;		// 클라이언트는 json 객체로 전달
+	}
+	
+	@RequestMapping("salecheck")
+	public ModelAndView logingChecksalecheck(Integer saleid, HttpSession session) {
+		ModelAndView mav = new ModelAndView();
+		User loginUser = (User)session.getAttribute("loginUser");
+		List<Cart> salelist = service.getuserCart(loginUser.getId(), 0);
+//		System.out.println("지우기 salelist: "+ salelist);
+		if(salelist.size() > 1) {	// 주문 아이템이 1개보다 많으면
+			// 카트리스트 전체 삭제
+			service.cartdelete(0, loginUser.getId());
+		} else {	// 1개면
+			// 주문한 아이템 아이디 가지고 와서
+			service.cartdelete(salelist.get(0).getItemid(), loginUser.getId());
+		}
+		throw new ItemException("결제되었습니다.", "../user/mypage?id="+loginUser.getId());
 	}
 }

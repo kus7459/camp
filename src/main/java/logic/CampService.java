@@ -1,6 +1,7 @@
 package logic;
 
 import java.io.File;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -171,9 +172,25 @@ public class CampService {
 		return saleDao.maxId();
 	}
 
-	public void saleinsert(Integer saleid, String userid, Integer itemid, Integer quantity, Integer total,
-			Integer postcode, String address, String detailaddress) {
-		saleDao.insert(saleid, userid, itemid, quantity, total, postcode, address, detailaddress);
+	public void saleinsert(Integer saleid, String userid, Integer itemid, String name, Integer quantity, 
+			String pictureUrl, Integer total, Integer postcode, String address, String detailaddress) {
+		saleDao.insert(saleid, userid, itemid, name, quantity, pictureUrl, total, postcode, address, detailaddress);
+	}
+
+	public List<Sale> saleSelect(String userid) {
+		return saleDao.select(userid);
+	}
+
+	public List<Sale> salecheck(String userid, Date saledate) {
+		return saleDao.salecheck(userid, saledate);
+	}
+
+	public List<Sale> saleitemList(String userid, Integer saleid) {
+		return saleDao.saleitemList(userid, saleid);
+	}
+
+	public List<Sale> selectsaleid(String userid) {
+		return saleDao.selectSaleid(userid);
 	}
 
 

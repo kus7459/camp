@@ -15,6 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.mail.FetchProfile.Item;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -51,6 +52,7 @@ import exception.LoginException;
 import logic.Board;
 import logic.CampService;
 import logic.Cart;
+import logic.Sale;
 import logic.User;
 import util.CipherUtil;
 
@@ -462,6 +464,10 @@ public class UserController {
 		User user = service.selectUserOne(id);
 		User loginUser = (User) session.getAttribute("loginUser");
 		
+		// 주문내역 불러오기
+		List<Sale> salelist = service.saleSelect(loginUser.getId());
+		Integer size = salelist.size();
+		System.out.println("mypage 주문내역: "+salelist);
 		// 게시판 등록 글
 //		List<Board> boardlist = service.boardlist(id);
 		
@@ -476,6 +482,8 @@ public class UserController {
 		for(Cart c : cartlist) {
 			total += (c.getPrice() * c.getQuantity());
 		}
+		mav.addObject("size", size);
+		mav.addObject("salelist", salelist);
 		mav.addObject("total", total);
 		mav.addObject("cartlist", cartlist);
 		mav.addObject("user", user);

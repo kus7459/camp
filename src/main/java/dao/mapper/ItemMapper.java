@@ -21,8 +21,9 @@ public interface ItemMapper {
 	void insert(Item item);
 
 	@Select({"<script>",
-		"select * from item <if test='id != null'> where id=#{id}</if> order by id",
-		"</script>"})
+			"select * from item ",
+			"<if test='id != null'> where id=#{id}</if> order by id",
+			"</script>"})
 	List<Item> select(Map<String, Object> param);
 
 	@Select("select * from item where id=#{value}")

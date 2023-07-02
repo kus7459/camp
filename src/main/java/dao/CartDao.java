@@ -55,8 +55,8 @@ public class CartDao {
 
 	public void delete(Integer itemid, String userid) {
 		param.clear();
-		param.put("userid", userid);
 		param.put("itemid", itemid);
+		param.put("userid", userid);
 		template.getMapper(cls).delete(param);
 	}
 }

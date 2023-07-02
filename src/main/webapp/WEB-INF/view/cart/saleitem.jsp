@@ -42,6 +42,8 @@
 					<th>개수</th>
 				</tr>
 				<c:forEach items="${cartlist}" var="cart">
+					<input type="hidden" name="name" value="${cart.name}">
+					<input type="hidden" name="pictureUrl" value="${cart.pictureUrl}">
 					<c:if test="${itemid == 0}">
 						<input type="hidden" name="itemid" value="0">
 					</c:if>
@@ -60,7 +62,7 @@
 					</tr>
 				</c:forEach>
 				<tr>
-					<td colspan="3" class="w3-center">
+					<td colspan="4" class="w3-center">
 						<b>총 금액: <fmt:formatNumber value="${total}" pattern="###,###"/></b>
 					</td>
 				</tr>
@@ -96,8 +98,10 @@
 					</td>
 				</tr>
 				<tr class="w3-center">
-					<td><a href="javascript:chk()" class="btn btn-lime">다음</a></td>
-					<td><a href="../user/mypage?id=${user.id}" class="btn btn-gray">취소</a></td>
+					<td>
+						<a href="javascript:chk()" class="btn btn-lime">다음</a>
+						<a href="../user/mypage?id=${user.id}" class="btn btn-gray">취소</a>
+					</td>
 				</tr>
 			</table>
 		</form>

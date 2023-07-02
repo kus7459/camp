@@ -15,8 +15,10 @@ public class Sale {
 	private int saleid;
 	private String userid;
 	private int itemid;
+	private String name;
 	private int quantity;
 	private int total;
+	private String pictureUrl;
 	private int postcode;
 	private String address;
 	private String detailAddress;

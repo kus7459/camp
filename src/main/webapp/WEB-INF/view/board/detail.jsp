@@ -58,8 +58,10 @@
 			<tr>
 				<td colspan="2">
 				<%--<a href="reply?num=${board.num }">[답변]</a>--%>
+					<c:if test="${loginUser.id == board.writer || loginUser.id eq 'admin'}">
 					<a href="update?num=${board.num }">[수정]</a>
 					<a href="delete?num=${board.num }">[삭제]</a>
+					</c:if>
 					<a href="list?boardid=${board.boardid }">[게시물목록]</a>
 				
 					<c:choose>

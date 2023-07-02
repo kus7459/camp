@@ -1,9 +1,7 @@
 package controller;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
+
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
@@ -14,7 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
-import org.apache.jasper.tagplugins.jstl.core.Param;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,7 +22,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.context.annotation.RequestScope;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -34,15 +31,14 @@ import logic.BoardService;
 import logic.Comment;
 import logic.Good;
 import logic.User;
-import util.CipherUtil;
+
 
 @Controller
 @RequestMapping("board")
 public class BoardController {
 	@Autowired
 	private BoardService service;
-	@Autowired
-	private CipherUtil cipher;
+
 	
 	@GetMapping("*") // 설정되지 않은 모든 요청시 호출되는 메서드 
 	public ModelAndView write() {
@@ -256,17 +252,26 @@ public class BoardController {
 		return map;
 	}
 	@GetMapping({"reply","update","delete"})
-	public ModelAndView loginCheckreplyform(Integer num) {
+	public ModelAndView loginCheckreplyform(Integer num, HttpSession session) {
 		ModelAndView mav = new ModelAndView();
 		Board board = service.getBoard(num);
-		if(board.getBoardid() ==null || board.getBoardid().equals("1")) {
-			mav.addObject("boardName","공지사항");
-		}else if(board.getBoardid().equals("2")) {
-			mav.addObject("boardName","자유게시판");
-		}else if(board.getBoardid().equals("3")) {
-			mav.addObject("boardName","QnA");
+		User loginUser = (User)session.getAttribute("loginuser");
+		try {
+			if (loginUser.getId().equals(board.getWriter()) || loginUser.getId().equals("admin")) {
+				if (board.getBoardid() == null || board.getBoardid().equals("1")) {
+					mav.addObject("boardName", "공지사항");
+				} else if (board.getBoardid().equals("2")) {
+					mav.addObject("boardName", "자유게시판");
+				} else if (board.getBoardid().equals("3")) {
+					mav.addObject("boardName", "QnA");
+				}
+				mav.addObject("board", board);
+				return mav;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+     		throw new BoardException(" 오류 발생","list");
 		}
-		mav.addObject("board",board);
 		return mav;
 	}
 	/*

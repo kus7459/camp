@@ -36,6 +36,10 @@ public class CommentDao {
 	public Comment selectOne(int num, int seq) {
 		return template.getMapper(cls).selectOne(num,seq);
 	}
+	public void update(int num, int seq, String text) {
+		template.getMapper(cls).update(num,seq,text);
+		
+	}
 	
 
 }

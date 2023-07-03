@@ -255,7 +255,7 @@ public class BoardController {
 	public ModelAndView loginCheckreplyform(Integer num, HttpSession session) {
 		ModelAndView mav = new ModelAndView();
 		Board board = service.getBoard(num);
-		User loginUser = (User)session.getAttribute("loginuser");
+		User loginUser = (User)session.getAttribute("loginUser");
 		try {
 			if (loginUser.getId().equals(board.getWriter()) || loginUser.getId().equals("admin")) {
 				if (board.getBoardid() == null || board.getBoardid().equals("1")) {
@@ -306,7 +306,7 @@ public class BoardController {
 		return mav;
 	}*/
 	@PostMapping("reply")
-	public ModelAndView loginCheckreply(@Valid Board board, BindingResult bresult) {
+	public ModelAndView reply(@Valid Board board, BindingResult bresult) {
 		ModelAndView mav = new ModelAndView();
 		
 		if(board.getBoardid() ==null || board.getBoardid().equals("1")) {
@@ -343,7 +343,7 @@ public class BoardController {
 	 */
 	@PostMapping("update")
 	public ModelAndView loginCheckupdate(@Valid Board board, BindingResult bresult,
-			HttpServletRequest request) {
+			HttpServletRequest request, HttpSession session) {
 		ModelAndView mav = new ModelAndView();
 		//1
 		if(bresult.hasErrors()) {
@@ -452,6 +452,20 @@ public class BoardController {
 			throw new BoardException("댓글삭제 실패", "detail?num="+num+"#comment");
 		}
 			return "redirect:detail?num="+num+"#comment";
+	}
+	@RequestMapping("commupdate")
+	@ResponseBody
+	public Map<String,Integer> commupdate (Integer bnum, Integer seq, String text) {
+		Map<String, Integer> map = new HashMap<String, Integer>();
+		System.out.println("컨트롤러 댓글수정"+bnum+" "+seq+" "+text);
+		try {
+			service.commUpdate(bnum,seq,text);
+			map.put("good", 1);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new BoardException("댓글수정 실패", "detail?num="+bnum+"#comment");
+		}
+		return map;
 	}
 
 }

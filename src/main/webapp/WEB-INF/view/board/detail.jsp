@@ -122,20 +122,26 @@
 				<c:if test="${c.secret == 1 }">
 				<c:choose>
 	                <c:when test="${c.writer eq loginUser.id || loginUser.id == 'admin'}">
-	                    <td>${c.content }</td>
+	                    <td><input id="${c.seq}" value="${c.content }" readonly="readonly" style="border: none;"></td>
 	                </c:when>
 	                <c:otherwise><td>비밀댓글입니다요.</td></c:otherwise>
 	            </c:choose> 
 				</c:if>
 				<c:if test="${c.secret != 1 }">
-					<td>${c.content }</td>
+					<td><input id="${c.seq}" value="${c.content }" readonly= "ture" style="border: none;"></td>
 				</c:if>		
 						<td><fmt:formatDate value="${c.regdate }" pattern="yyyy-MM-dd HH:mm:ss"/> </td>
 						<td class="w3-right">
 							<form action="commdel" method="post" name="commdel${stat.index}">
-								<input type="hidden" name="num" value="${param.num}">
-								<input type="hidden" name="seq" value="${c.seq}">
+								<input type="hidden" id="num" value="${param.num}">
+								<input type="hidden" id="seq" value="${c.seq}">
 								<c:if test="${loginUser.id == c.writer || loginUser.id eq 'admin'}">
+								<a class="w3-btn w3-border w3-blue up up${c.seq}" 
+											href="javascript:commupdate1(${c.seq})">수정</a>
+								<a class="w3-btn w3-border w3-blue go go${c.seq}" id="${c.seq}"
+											href="javascript:commupdate2(${c.seq})">확인</a>
+								<a class="w3-btn w3-border w3-blue del del${c.seq}" id="${c.seq}"
+											href="javascript:commupdatedel(${c.seq})">취소</a>
 								<a class="w3-btn w3-border w3-blue" 
 								href="javascript:document.commdel${stat.index}.submit()">삭제</a>
 								</c:if>
@@ -148,9 +154,44 @@
 	</div> 
 	<br><br><br>
 <script type="text/javascript">
-
-
-
+	
+	$(".del").hide();
+	$(".go").hide();
+	function commupdate2(cno){
+		let bnum = $("#boardNum").val();
+		let seq = cno;
+		let text = $("#"+cno).val();
+		console.log("댓글 수정 내용 : num" + bnum +" seq"+ seq+"text" + text )
+		$.ajax({
+			type : "post",
+			url : "commupdate",
+			data : "bnum="+bnum+"&seq="+seq+"&text="+text,
+			success : function(cdata){
+				if(cdata.good==1){
+					alert("댓글수정 성공")
+					commupdatedel(cno)
+				}
+			}
+		})
+		
+	}
+	function commupdate1(cno){
+		$("#"+cno).attr("style", "border: 1px solid #333;");
+		$("#"+cno).attr("readonly",false);
+		$(".del"+cno).show();
+		$(".go"+cno).show();
+		$(".up"+cno).hide();
+		console.log("댓글수정")
+	}
+	function commupdatedel(cno){
+		$("#"+cno).attr("style", "border: none;");
+		$("#"+cno).attr("readonly", true);
+		$(".del"+cno).hide();
+		$(".go"+cno).hide();
+		$(".up"+cno).show();
+		console.log("댓글수정취소")
+	}
+	
 	function changeLike() {
 		let boardNum = $("#boardNum").val();
 		let userId = $("#userId").val();

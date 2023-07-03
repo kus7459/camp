@@ -8,7 +8,7 @@ import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
-
+import org.apache.ibatis.annotations.Update;
 
 import logic.Comment;
 
@@ -30,6 +30,9 @@ public interface CommentMapper {
 
 	@Select("select * from comment where num=#{num} and seq=#{seq}")
 	Comment selectOne(@Param("num")int num,@Param("seq")int seq);
+	
+	@Update("update comment set content = #{text} where num=#{num} and seq=#{seq}")
+	void update(@Param("num")int num,@Param("seq")int seq,@Param("text") String text);
 
 	
 

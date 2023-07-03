@@ -146,6 +146,9 @@ public class BoardService {
 		boarddao.likecntDown(boardNum);
 		
 	}
+	public void commUpdate(int num, int seq, String text) {
+		commentdao.update(num, seq, text);
+	}
 	
 	
 	

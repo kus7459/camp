@@ -28,7 +28,14 @@
 			<div class="searchWrap">
 				<form action="search" method="post" name="f">
 					<input type="hidden" name="pageNum" value="1">
-					<input type="hidden" name="sort" value="${sort}">
+					<input type="hidden" name="sort" value="${params.sort}">
+					
+					<input type="hidden" name="themelist" value="${params.themelist}">
+					<input type="hidden" name="addlist" value="${params.addlist}">
+					<input type="hidden" name="carav" value="${params.carav}">
+					<input type="hidden" name="pet" value="${params.pet}">
+					<script type="text/javascript">
+					</script>
 					<table class="w3-table" style="margin-bottom: 10px">
 						<tr>
 							<th>지역</th>
@@ -89,8 +96,8 @@
 							<td><input type="checkbox" name="oper" value="지자체"> 지자체&emsp; <input
 								type="checkbox" name="oper" value="국립공원"> 국립공원&emsp; <input
 								type="checkbox" name="oper" value="자연휴양림"> 자연휴양림&emsp; <input
-								type="checkbox" name="oper" value="국민여가"> 국민 여가&emsp; <input
-								type="checkbox" name="oper" value="민간"> 민간&emsp;</td>
+								type="checkbox" name="oper" value="국민여가" > 국민 여가&emsp; <input
+								type="checkbox" name="oper" value="민간" <c:if test="${fn:contains(params.operlist,'민간')}">checked</c:if>> 민간&emsp;</td>
 						</tr>
 						<tr style="line-height: 3rem">
 							<th style="width: 20%">테마</th>
@@ -142,11 +149,11 @@
 		<input type="hidden" value="${themelist}" name="themelist">
 		<input type="hidden" value="${aroundlist}" name="aroundlist">
 		<input type="hidden" name="pageNum" value="1">
-		<input type="hidden" name="sort" value="${sort}">
+		<input type="hidden" name="sort" value="${params.sort}">
 		<div class="page page4 w3-center">
 			<h3>테마별, 태그별 캠핑장 찾기</h3>
 			<div class="w3-center" style="padding-top: 30px">
-				<button type="button" class="btn btn-white" onclick="func(this)" value="봄꽃여행">#봄꽃 여행</button>
+				<button type="button" class="btn btn-white 	<c:if test="${fn:contains(themelist,'봄꽃여행')}">on</c:if>" onclick="func(this)" value="봄꽃여행">#봄꽃 여행</button>
 				<button type="button" class="btn btn-white" onclick="func(this)" value="여름물놀이">#여름 물놀이</button>
 				<button type="button" class="btn btn-white" onclick="func(this)" value="가을단풍명소">#가을 단풍명소</button>
 				<button type="button" class="btn btn-white" onclick="func(this)" value="겨울눈꽃명소">#겨울 눈꽃명소</button>
@@ -179,22 +186,22 @@
 		<hr>
 		<div>
 			<select id="sort" name="sortselect">
-			<c:if test="${sort == null }">
+			<c:if test="${params.sort == null || params.sort == ''}">
 				<option value="기본순">기본순</option>
 				<option value="조회순">조회순</option>
 				<option value="추천순">추천순</option>
 			</c:if>
-			<c:if test="${sort == '기본순' }">
+			<c:if test="${params.sort == '기본순' }">
 				<option value="기본순">기본순</option>
 				<option value="조회순">조회순</option>
 				<option value="추천순">추천순</option>
 			</c:if>
-			<c:if test="${sort == '조회순' }">
+			<c:if test="${params.sort == '조회순' }">
 				<option value="조회순">조회순</option>
 				<option value="기본순">기본순</option>
 				<option value="추천순">추천순</option>
 			</c:if>
-			<c:if test="${sort == '추천순' }">
+			<c:if test="${params.sort == '추천순' }">
 				<option value="추천순">추천순</option>
 				<option value="기본순">기본순</option>
 				<option value="조회순">조회순</option>
@@ -353,12 +360,16 @@
 			}
 		})	
 		let theme = "";
+		if(${themelist !=null}){
+			theme = '${themelist}';
+			console.log(theme)
+		}
 		let around ="";
 		function func(val){
 			if(!theme.includes(val.value)){
 				theme += val.value+","
 			}else if(theme.includes(val.value)){
-				theme = theme.replace(val.value+",",'')
+				theme = theme.replace(val.value,'')
 			}
 			document.f2.themelist.value=theme
 			console.log(theme)
@@ -380,7 +391,7 @@
 			if(search == 2){
 				document.f2.pageNum.value=page;
 				document.f2.submit();
-			}	
+			}
 		}
 		$("#sort").change(function(){
 			if(${search}==1){

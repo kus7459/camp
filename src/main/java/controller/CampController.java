@@ -13,6 +13,7 @@ import java.util.Spliterator;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.hibernate.validator.internal.constraintvalidators.bv.number.bound.decimal.DecimalMaxValidatorForBigDecimal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -53,9 +54,16 @@ public class CampController {
 	@RequestMapping("search")
 	public ModelAndView search(@RequestParam Map<String, Object> param, HttpSession session, HttpServletRequest request)
 			throws Exception {
+		System.out.println(param);
 		try {
 			if(param.get("sort").equals("")) {
-				param.put("sort", null);
+				param.put("sort", "");
+			}
+			if(param.get("carav").equals("")) {
+				param.put("carav", null);
+			}
+			if(param.get("pet").equals("")) {
+				param.put("pet", null);
 			}
 		}catch(NullPointerException e) {
 			e.printStackTrace();
@@ -109,8 +117,10 @@ public class CampController {
 			} else if (list.length == 1) {
 				if (list[0].equals("카라반")) {
 					param.put("carav", "Y");
+					param.put("pet", null);
 				} else if (list[0].equals("반려동물")) {
 					param.put("pet", "가능");
+					param.put("carav", null);
 				}
 			}
 
@@ -160,7 +170,7 @@ public class CampController {
 		mav.addObject("endpage", endpage);
 		mav.addObject("search","1");
 		mav.addObject("listcount", listcount);
-		mav.addObject("sort", param.get("sort"));
+		mav.addObject("params", param);
 		return mav;
 	}
 	
@@ -195,7 +205,7 @@ public class CampController {
 			aroundlist = String.join("|", list);
 		}
 		Integer pageNum = null;
-		if (param.get("pageNum") != null) {
+		if (param.get("pageNum") != null) { 
 			pageNum = Integer.parseInt((String) param.get("pageNum"));
 		}
 		if (pageNum == null || pageNum.toString().equals("")) {
@@ -221,11 +231,11 @@ public class CampController {
 			if(pet !=null) {
 				themelist +=",반려동물";
 			}
-			
+		System.out.println(pageNum);
 		System.out.println(themelist);
 		mav.addObject("themelist", themelist);
 		mav.addObject("aroundlist",aroundlist);
-		mav.addObject("sort", param.get("sort"));
+		mav.addObject("params", param);
 		return mav;
 	}
 	

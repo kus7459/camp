@@ -173,8 +173,8 @@ public class CampService {
 	}
 
 	public void saleinsert(Integer saleid, String userid, Integer itemid, String name, Integer quantity, 
-			String pictureUrl, Integer total, Integer postcode, String address, String detailaddress) {
-		saleDao.insert(saleid, userid, itemid, name, quantity, pictureUrl, total, postcode, address, detailaddress);
+			String pictureUrl, Integer price, Integer postcode, String address, String detailaddress) {
+		saleDao.insert(saleid, userid, itemid, name, quantity, pictureUrl, price, postcode, address, detailaddress);
 	}
 
 	public List<Sale> saleSelect(String userid) {
@@ -193,5 +193,8 @@ public class CampService {
 		return saleDao.selectSaleid(userid);
 	}
 
+	public void saledelete(String userid, Integer saleid) {
+		saleDao.saledelete(userid, saleid);
+	}
 
 }

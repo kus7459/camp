@@ -17,65 +17,85 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("ajax")
 public class AjaxController {
 	
-	@RequestMapping(value = "select", produces = "text/plain; charset=utf-8")        // 클라이언트로 문자열 전송. 인코딩 설정이 필요.
-	public String select(String si, String gu, HttpServletRequest request) {
+	@RequestMapping("select")
+	public List<String> select(String si, String gu, HttpServletRequest request) {
 		BufferedReader fr = null;
-		String path = request.getServletContext().getRealPath("/") + "file/sido.txt";
-
+		String path = request.getServletContext().getRealPath("/")+"file/sido.txt";
 		try {
 			fr = new BufferedReader(new FileReader(path));
-		} catch (Exception e) {
+		}catch(Exception e) {
 			e.printStackTrace();
 		}
-		
-		Set<String> set = new LinkedHashSet<String>();
-		String data = null;
-		if (si == null && gu == null) {
+		//Set : 중복불가
+		//LinkedHashSet : 순서유지. 중복불가. 리스트아님(첨자사용안됨).
+		Set<String> set = new LinkedHashSet<>();
+		String data= null;
+		if(si==null && gu==null) {  //시도 선택
 			try {
-				while ((data = fr.readLine()) != null) {
+				//fr.readLine() : 한줄씩 read
+				while((data=fr.readLine()) != null) {
+					// \\s+ : \\s(공백) +(1개이상) 
 					String[] arr = data.split("\\s+");
-					if (arr.length >= 3) set.add(arr[0].trim());
+					if(arr.length >= 3) set.add(arr[0].trim()); //중복제거됨. 
 				}
-			} catch (IOException e) {
+			} catch(IOException e) {
 				e.printStackTrace();
-	            }
-		} else if (gu == null) {    // si 는 선택된 경우, si라는 파라미터가 존재 -> 시,도를 선택한 경우 시,도에 맞는 구,군값 전송할 것
-            si = si.trim();
-            try {
-                while ((data = fr.readLine()) != null) {
-                    String[] arr = data.split("\\s+");
-                    if (arr.length >= 3 && arr[0].equals(si) && !arr[1].contains(arr[0]))
-                        // 서울시 서울시 인 데이터 제거하고
-                        // arr[0]과 arr[1]의 내용이 중복된 것 제거
-                        set.add(arr[1].trim()); // 구,군 정보 설정
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        } else if (gu != null && si != null) {    // 시,도와 구,군 둘 다 선택된 경우 -> 동 값을 전송할 것
-            si = si.trim();        // si와
-            gu = gu.trim();        // gu를 다 가지고 와서
-            try {
-                while ((data = fr.readLine()) != null) {
-                    String[] arr = data.split("\\s+");
-                    if (arr.length >= 3 && arr[0].equals(si) && arr[1].equals(gu) &&
-                            !arr[0].equals(arr[1]) && !arr[2].contains(arr[1])) {
-                        // 시,도도 같고, 구, 군도 같은 것 중에 중복된 거 빼고, 남은 동 값들
-                        if (arr.length > 3) {
-                            if (arr[3].contains(arr[1])) continue;
-                            // 4개로 돼있는 것도 있어서, 중복되는 거 처리하고
-                            arr[2] += " " + arr[3];
-                        }
-                        set.add(arr[2].trim()); //동,리 정보 설정
-                    }
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-		List<String> list = new ArrayList<String>(set);    // Set 객체를 List 객체로 변경
-		return list.toString();    // 리스트 객체가 바로 브라우저에 전달 됨. view가 없음. data가 직접 내려감.
-		// pom.xml의 fasterxml.jackson... 설정에 의해서 브라우저는 배열로 인식함.
-		// ["서울특별시","경기도" ...]
+			}
+		} else if(gu == null) { //si 파라미터 존재 => 시도선택 : 구군값 전송
+		   si = si.trim();
+		   try {
+			  while ((data = fr.readLine()) != null) {
+				 String[] arr = data.split("\\s+");
+			  	 if(arr.length >= 3 && arr[0].equals(si) && !arr[1].contains(arr[0]) ) {
+					 set.add(arr[1].trim()); //구정보 저장
+				 }
+			   }
+		   } catch (IOException e) {
+			   e.printStackTrace();
+		   }
+		} else { //si 파라미터,gu 파라미터 존재 => 구군선택 : 동값 전송
+		   si = si.trim();
+		   gu = gu.trim();
+		   try {
+			  while ((data = fr.readLine()) != null) {
+				  String[] arr = data.split("\\s+");
+		          if(arr.length >= 3 && arr[0].equals(si) &&
+			    	 arr[1].equals(gu) && !arr[0].equals(arr[1]) && !arr[2].contains(arr[1])) {
+			          	 if(arr.length > 3 ) {
+			          		if(arr[3].contains(arr[1])) continue;
+			          		arr[2] += " " + arr[3];
+			          	 }
+			          	 set.add(arr[2].trim());
+			      }
+			  }
+			} catch (IOException e) {
+			    e.printStackTrace();
+			}
+		}
+		List<String> list = new ArrayList<>(set); //Set 객체 => List 객체로 
+		return list; //리스트 객체가 브라우저에 전달. 뷰가 아님.
+		             //pom.xml의 fasterxml.jackson... 의 설정에 의해서 브라우저는 배열로 인식함
+		
+	}
+	@RequestMapping(value="select2",
+			produces="text/plain; charset=utf-8")  //클라이언트로 문자열 전송. 인코딩 설정이 필요.
+	public String select2(String si, String gu, HttpServletRequest request) {
+		BufferedReader fr = null;
+		String path = request.getServletContext().getRealPath("/")+"file/sido.txt";
+		try {
+			fr = new BufferedReader(new FileReader(path));
+		}catch(Exception e) {	e.printStackTrace();	}
+		Set<String> set = new LinkedHashSet<>();
+		String data= null;
+		if(si==null && gu==null) {
+			try {
+				while((data=fr.readLine()) != null) {
+					String[] arr = data.split("\\s+");
+					if(arr.length >= 3) set.add(arr[0].trim()); //중복제거됨. 
+				}
+			} catch(IOException e) {   e.printStackTrace();	}
+		}
+		List<String> list = new ArrayList<>(set); 
+		return list.toString(); //[서울특별시,경기도....] 		
 	}
 }

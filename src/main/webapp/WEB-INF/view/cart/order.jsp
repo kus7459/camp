@@ -82,17 +82,23 @@
 					</th>
 					<td>${address}, ${detailAddress}</td>
 				</tr>
-				<tr class="w3-center">
-					<td colspan="4">
-						<a href="javascript:kakaopay()" class="btn btn-lime">결제하기</a>
-						<a href="order" class="btn btn-gray">취소</a>
-					</td>
-				</tr>
 			</table>
+		</form>
+		<div class="w3-center">
+			<a href="javascript:kakaopay()" class="btn btn-lime">결제하기</a>
+			<a href="javascript:saledelete()" class="btn btn-gray">취소</a>
+		</div>
+		<form action="saledelete" name="saledeleteform" method="post">
+			<input type="hidden" name="saleid" value="${saleid}">
 		</form>
 	</div>
 	<script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.8.js"></script>
 	<script>
+		function saledelete() {
+			console.log("Aa")
+			document.saledeleteform.submit();
+		}
+	
 		let IMP = window.IMP
 		IMP.init("imp53355580")		// 가맹점 식별 코드
 		

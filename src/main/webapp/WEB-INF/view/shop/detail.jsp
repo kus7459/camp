@@ -19,10 +19,10 @@
 	</header>
 	<div class="wrap">
 		<img src="../img/${item.pictureUrl}" style="width:25%;">
-		<div class="listitem" style="padding: 10px 0px; width:70%">
+		<div style="padding: 10px 0px; width:70%">
 		<form action="../cart/addcart" name="f" method="post">
 			<input type="hidden" name="id" value="${item.id}">
-			<table>
+			<table class="w3-table">
 				<tr>
 					<th colspan="2"><b style="font-size:16px">${item.name}</b></th>
 				</tr>
@@ -47,7 +47,7 @@
 					</td>
 				</tr>
 				<tr>
-					<td colspan="2" class="w3-center">
+					<td colspan="2" class="w3-center" style="padding-top:40px">
 						<button type="submit" class="btn btn-gray"><i class='fas fa-shopping-cart'></i>장바구니에 넣기</button>&emsp;
 						<a href="javascript:addcart()" class="btn btn-lime">바로 구매</a>
 					</td>
@@ -65,7 +65,7 @@
 	<script>
 		function addcart() {
 			let qu = document.f.quantity.value;
-			location.href="saledeatil?id=${item.id}&quantity="+qu;
+			location.href="../cart/saleitem?id=${item.id}&quantity="+qu;
 		}
 	</script>
 </body>

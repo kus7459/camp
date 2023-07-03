@@ -26,7 +26,7 @@ public class SaleDao {
 		return template.getMapper(cls).maxid();
 	}
 
-	public void insert(Integer saleid, String userid, Integer itemid, String name, Integer quantity, String pictureUrl, Integer total,
+	public void insert(Integer saleid, String userid, Integer itemid, String name, Integer quantity, String pictureUrl, Integer price,
 			Integer postcode, String address, String detailaddress) {
 		param.clear();
 		param.put("saleid", saleid);
@@ -35,7 +35,7 @@ public class SaleDao {
 		param.put("name", name);
 		param.put("quantity", quantity);
 		param.put("pictureUrl", pictureUrl);
-		param.put("total", total);
+		param.put("price", price);
 		param.put("postcode", postcode);
 		param.put("address", address);
 		param.put("detailAddress", detailaddress);
@@ -66,6 +66,13 @@ public class SaleDao {
 		param.clear();
 		param.put("userid", userid);
 		return template.getMapper(cls).selectid(param);
+	}
+
+	public void saledelete(String userid, Integer saleid) {
+		param.clear();
+		param.put("userid", userid);
+		param.put("saleid", saleid);
+		template.getMapper(cls).saledelete(param);
 	}
 
 }

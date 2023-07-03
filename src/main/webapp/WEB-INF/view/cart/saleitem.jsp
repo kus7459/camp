@@ -41,31 +41,50 @@
 					<th>상품 가격</th>
 					<th>개수</th>
 				</tr>
-				<c:forEach items="${cartlist}" var="cart">
-					<input type="hidden" name="name" value="${cart.name}">
-					<input type="hidden" name="pictureUrl" value="${cart.pictureUrl}">
-					<c:if test="${itemid == 0}">
-						<input type="hidden" name="itemid" value="0">
-					</c:if>
-					<c:if test="${itemid == 1}">
-						<input type="hidden" name="itemid" value="${cart.itemid }">
-					</c:if>
-					<tr id="del${cart.itemid}">
+				<c:if test="${!empty cartlist }">
+					<c:forEach items="${cartlist}" var="cart">
+						<input type="hidden" name="name" value="${cart.name}">
+						<input type="hidden" name="pictureUrl" value="${cart.pictureUrl}">
+						<c:if test="${itemid == 0}">
+							<input type="hidden" name="itemid" value="0">
+						</c:if>
+						<c:if test="${itemid == 1}">
+							<input type="hidden" name="itemid" value="${cart.itemid }">
+						</c:if>
+						<tr id="del${cart.itemid}">
+							<td style="width:10%">
+								<img src="../img/${cart.pictureUrl}" style="width:90%">
+							</td>
+							<td>
+								<b style="color:#333">${cart.name}</b>
+							</td>
+							<td><fmt:formatNumber value="${cart.price}" pattern="###,###"/></td>
+							<td>${cart.quantity}</td>
+						</tr>
+					</c:forEach>
+					<tr>
+						<td colspan="4" class="w3-center"><b>총 주문 금액: <fmt:formatNumber value="${total}" pattern="###,###"/></b></td>
+					</tr>
+				</c:if>
+				<c:if test="${empty cartlist}">
+					<input type="hidden" name="itemid" value="${saleitem.id}">
+					<input type="hidden" name="quantity" value="${quantity}">
+					<tr id="del${si.id}">
 						<td style="width:10%">
-							<img src="../img/${cart.pictureUrl}" style="width:90%">
+							<img src="../img/${saleitem.pictureUrl}" style="width:90%">
 						</td>
 						<td>
-							<b style="color:#333">${cart.name}</b>
+							<b style="color:#333">${saleitem.name}</b>
 						</td>
-						<td><fmt:formatNumber value="${cart.price}" pattern="###,###"/></td>
-						<td>${cart.quantity}</td>
+						<td><fmt:formatNumber value="${saleitem.price}" pattern="###,###"/></td>
+						<td>${quantity}</td>
 					</tr>
-				</c:forEach>
-				<tr>
-					<td colspan="4" class="w3-center">
-						<b>총 금액: <fmt:formatNumber value="${total}" pattern="###,###"/></b>
-					</td>
-				</tr>
+					<tr>
+						<td colspan="4" class="w3-center">
+							<b>총 금액: <fmt:formatNumber value="${saleitem.price * quantity}" pattern="###,###"/></b>
+						</td>
+					</tr>
+				</c:if>
 			</table>
 			<h4 style="padding-top:30px;">주문자 정보</h4>
 			<table class="w3-table">

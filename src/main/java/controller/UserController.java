@@ -10,6 +10,7 @@ import java.net.URLEncoder;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -459,15 +460,13 @@ public class UserController {
 	@RequestMapping("mypage")
 	public ModelAndView idCheckmypage(String id, HttpSession session) {
 		ModelAndView mav = new ModelAndView();
-		Cart cart = (Cart)session.getAttribute("CART");
-	
 		User user = service.selectUserOne(id);
 		User loginUser = (User) session.getAttribute("loginUser");
 		
 		// 주문내역 불러오기
 		List<Sale> salelist = service.saleSelect(loginUser.getId());
 		Integer size = salelist.size();
-		System.out.println("mypage 주문내역: "+salelist);
+		
 		// 게시판 등록 글
 //		List<Board> boardlist = service.boardlist(id);
 		
@@ -475,16 +474,26 @@ public class UserController {
 		
 		// 좋아요
 		
-		// 장바구니
+		// 구매 내역
 		List<Cart> cartlist = service.getuserCart(id, 0);
-		Integer total = 0;
+
 		// 총 금액
-		for(Cart c : cartlist) {
-			total += (c.getPrice() * c.getQuantity());
+		List<Integer> sumprice = new ArrayList<>();
+		Integer sum = 0;
+		for(int i = 0; salelist.size() > i; i++) {
+			Integer sid = salelist.get(i).getSaleid();
+			sum = 0;
+			for(Sale s : salelist) {
+				if(sid == s.getSaleid()) {
+					sum += s.getPrice();
+				}
+			}
+			sumprice.add(sum);
 		}
+			System.out.println(sumprice);
 		mav.addObject("size", size);
 		mav.addObject("salelist", salelist);
-		mav.addObject("total", total);
+		mav.addObject("sumprice", sumprice);
 		mav.addObject("cartlist", cartlist);
 		mav.addObject("user", user);
 		return mav;

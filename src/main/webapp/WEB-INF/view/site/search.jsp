@@ -29,9 +29,6 @@
 				<form action="search" method="post" name="f">
 					<input type="hidden" name="pageNum" value="1">
 					<input type="hidden" name="sort" value="${params.sort}">
-					
-					<input type="hidden" name="themelist" value="${params.themelist}">
-					<input type="hidden" name="addlist" value="${params.addlist}">
 					<input type="hidden" name="carav" value="${params.carav}">
 					<input type="hidden" name="pet" value="${params.pet}">
 					<script type="text/javascript">
@@ -93,45 +90,45 @@
 					<table class="w3-table" id="toggleTable">
 						<tr style="line-height: 3rem">
 							<th>운영형태</th>
-							<td><input type="checkbox" name="oper" value="지자체"> 지자체&emsp; <input
-								type="checkbox" name="oper" value="국립공원"> 국립공원&emsp; <input
-								type="checkbox" name="oper" value="자연휴양림"> 자연휴양림&emsp; <input
-								type="checkbox" name="oper" value="국민여가" > 국민 여가&emsp; <input
-								type="checkbox" name="oper" value="민간" <c:if test="${fn:contains(params.operlist,'민간')}">checked</c:if>> 민간&emsp;</td>
+							<td><input type="checkbox" name="oper" value="지자체" <c:if test="${fn:contains(params.operlist1,'지자체')}">checked</c:if>> 지자체&emsp; <input
+								type="checkbox" name="oper" value="국립공원" <c:if test="${fn:contains(params.operlist1,'국립공원')}">checked</c:if>> 국립공원&emsp; <input
+								type="checkbox" name="oper" value="자연휴양림" <c:if test="${fn:contains(params.operlist1,'자연휴양림')}">checked</c:if>> 자연휴양림&emsp; <input
+								type="checkbox" name="oper" value="국민여가" <c:if test="${fn:contains(params.operlist1,'국민여가')}">checked</c:if>> 국민 여가&emsp; <input
+								type="checkbox" name="oper" value="민간" <c:if test="${fn:contains(params.operlist1,'민간')}">checked</c:if>> 민간&emsp;</td>
 						</tr>
 						<tr style="line-height: 3rem">
 							<th style="width: 20%">테마</th>
-							<td><input type="checkbox" name="theme" value="일출명소"> 일출명소&emsp;
-								<input type="checkbox" name="theme" value="일몰명소"> 일몰명소&emsp; <input
-								type="checkbox" name="theme" value="수상레저"> 수상레저&emsp; <input
-								type="checkbox" name="theme" value="항공레저"> 항공레저&emsp; <input
-								type="checkbox" name="theme" value="스키"> 스키&emsp; <input
-								type="checkbox" name="theme" value="낚시"> 낚시&emsp; <input
-								type="checkbox" name="theme" value="액티비티"> 액티비티&emsp; <input
-								type="checkbox" name="theme" value="봄꽃여행"> 봄 꽃여행&emsp; <input
-								type="checkbox" name="theme" value="여름물놀이"> 여름 물놀이&emsp; <input
-								type="checkbox" name="theme" value="가을단풍명소"> 가을 단풍명소&emsp; <input
-								type="checkbox" name="theme" value="겨울눈꽃명소"> 겨울 눈꽃명소&emsp; <input
-								type="checkbox" name="theme" value="걷기길"> 걷기길&emsp;</td>
+							<td><input type="checkbox" name="theme" value="일출명소" <c:if test="${fn:contains(params.themelist1,'일출명소')}">checked</c:if>> 일출명소&emsp;
+								<input type="checkbox" name="theme" value="일몰명소" <c:if test="${fn:contains(params.themelist1,'일몰명소')}">checked</c:if>> 일몰명소&emsp; <input
+								type="checkbox" name="theme" value="수상레저" <c:if test="${fn:contains(params.themelist1,'수상레저')}">checked</c:if>> 수상레저&emsp; <input
+								type="checkbox" name="theme" value="항공레저" <c:if test="${fn:contains(params.themelist1,'항공레저')}">checked</c:if>> 항공레저&emsp; <input
+								type="checkbox" name="theme" value="스키" <c:if test="${fn:contains(params.themelist1,'스키')}">checked</c:if>> 스키&emsp; <input
+								type="checkbox" name="theme" value="낚시" <c:if test="${fn:contains(params.themelist1,'낚시')}">checked</c:if>> 낚시&emsp; <input
+								type="checkbox" name="theme" value="액티비티" <c:if test="${fn:contains(params.themelist1,'액티비티')}">checked</c:if>> 액티비티&emsp; <input
+								type="checkbox" name="theme" value="봄꽃여행" <c:if test="${fn:contains(params.themelist1,'봄꽃여행')}">checked</c:if>> 봄꽃여행&emsp; <input
+								type="checkbox" name="theme" value="여름물놀이" <c:if test="${fn:contains(params.themelist1,'여름물놀이')}">checked</c:if>> 여름 물놀이&emsp; <input
+								type="checkbox" name="theme" value="가을단풍명소" <c:if test="${fn:contains(params.themelist1,'가을단풍명소')}">checked</c:if>> 가을 단풍명소&emsp; <input
+								type="checkbox" name="theme" value="겨울눈꽃명소" <c:if test="${fn:contains(params.themelist1,'겨울눈꽃명소')}">checked</c:if>> 겨울 눈꽃명소&emsp; <input
+								type="checkbox" name="theme" value="걷기길" <c:if test="${fn:contains(params.themelist1,'걷기길')}">checked</c:if>> 걷기길&emsp;</td>
 						</tr>
 						<tr style="line-height: 3rem">
 							<th style="width: 20%">부대시설</th>
-							<td><input type="checkbox" name="add" value="전기"> 전기&emsp; <input
-								type="checkbox" name="add" value="무선인터넷"> 무선 인터넷&emsp; <input
-								type="checkbox" name="add" value="장작판매"> 장작 판매&emsp; <input
-								type="checkbox" name="add" value="온수"> 온수&emsp; <input
-								type="checkbox" name="add" value="트램폴린"> 트렘폴린&emsp; <input
-								type="checkbox" name="add" value="물놀이장"> 물놀이장&emsp; <input
-								type="checkbox" name="add" value="놀이터"> 놀이터&emsp; <input
-								type="checkbox" name="add" value="산책로"> 산책로&emsp; <input
-								type="checkbox" name="add" value="운동장"> 운동장&emsp; <input
-								type="checkbox" name="add" value="운동시설"> 운동 시설&emsp; <input
-								type="checkbox" name="add" value="마트.편의점"> 마트, 편의점&emsp;</td>
+							<td><input type="checkbox" name="add" value="전기" <c:if test="${fn:contains(params.addlist1,'전기')}">checked</c:if>> 전기&emsp; <input
+								type="checkbox" name="add" value="무선인터넷" <c:if test="${fn:contains(params.addlist1,'무선인터넷')}">checked</c:if>> 무선 인터넷&emsp; <input
+								type="checkbox" name="add" value="장작판매" <c:if test="${fn:contains(params.addlist1,'장작판매')}">checked</c:if>> 장작 판매&emsp; <input
+								type="checkbox" name="add" value="온수" <c:if test="${fn:contains(params.addlist1,'온수')}">checked</c:if>> 온수&emsp; <input
+								type="checkbox" name="add" value="트램폴린" <c:if test="${fn:contains(params.addlist1,'트램폴린')}">checked</c:if>> 트렘폴린&emsp; <input
+								type="checkbox" name="add" value="물놀이장" <c:if test="${fn:contains(params.addlist1,'물놀이장')}">checked</c:if>> 물놀이장&emsp; <input
+								type="checkbox" name="add" value="놀이터" <c:if test="${fn:contains(params.addlist1,'놀이터')}">checked</c:if>> 놀이터&emsp; <input
+								type="checkbox" name="add" value="산책로" <c:if test="${fn:contains(params.addlist1,'산책로')}">checked</c:if>> 산책로&emsp; <input
+								type="checkbox" name="add" value="운동장" <c:if test="${fn:contains(params.addlist1,'운동장')}">checked</c:if>> 운동장&emsp; <input
+								type="checkbox" name="add" value="운동시설" <c:if test="${fn:contains(params.addlist1,'운동시설')}">checked</c:if>> 운동 시설&emsp; <input
+								type="checkbox" name="add" value="마트.편의점" <c:if test="${fn:contains(params.addlist1,'마트.편의점')}">checked</c:if>> 마트, 편의점&emsp;</td>
 						</tr>
 						<tr style="line-height: 3rem">
 							<th style="width: 20%">기타정보</th>
-							<td><input type="checkbox" name="etc" value="카라반"> 개인 카라반
-								가능&emsp; <input type="checkbox" name="etc" value="반려동물"> 반려동물 동반
+							<td><input type="checkbox" name="etc" value="카라반" <c:if test="${fn:contains(params.carav,'Y')}">checked</c:if>> 개인 카라반
+								가능&emsp; <input type="checkbox" name="etc" value="반려동물" <c:if test="${fn:contains(params.pet,'가능')}">checked</c:if>> 반려동물 동반
 								가능&emsp;</td>
 						</tr>
 					</table>
@@ -146,32 +143,32 @@
 		<!-- 테마,태그별 검색 -->
 		<!-- 테마별, 태그별 캠핑장 찾기 -->
 		<form action="search2" method="post" name="f2">
-		<input type="hidden" value="${themelist}" name="themelist">
-		<input type="hidden" value="${aroundlist}" name="aroundlist">
+		<input type="hidden" value="${themelist2}" name="themelist2">
+		<input type="hidden" value="${aroundlist2}" name="aroundlist2">
 		<input type="hidden" name="pageNum" value="1">
 		<input type="hidden" name="sort" value="${params.sort}">
 		<div class="page page4 w3-center">
 			<h3>테마별, 태그별 캠핑장 찾기</h3>
 			<div class="w3-center" style="padding-top: 30px">
-				<button type="button" class="btn btn-white 	<c:if test="${fn:contains(themelist,'봄꽃여행')}">on</c:if>" onclick="func(this)" value="봄꽃여행">#봄꽃 여행</button>
-				<button type="button" class="btn btn-white" onclick="func(this)" value="여름물놀이">#여름 물놀이</button>
-				<button type="button" class="btn btn-white" onclick="func(this)" value="가을단풍명소">#가을 단풍명소</button>
-				<button type="button" class="btn btn-white" onclick="func(this)" value="겨울눈꽃명소">#겨울 눈꽃명소</button>
-				<button type="button" class="btn btn-white" onclick="func(this)" value="걷기길">#걷기길</button>
-				<button type="button" class="btn btn-white" onclick="func(this)" value="일출명소">#일출명소</button>
-				<button type="button" class="btn btn-white" onclick="func(this)" value="일몰명소">#일몰명소</button>
+				<button type="button" class="btn btn-white <c:if test="${fn:contains(themelist2,'봄꽃여행')}">on</c:if>" onclick="func(this)" value="봄꽃여행">#봄꽃 여행</button>
+				<button type="button" class="btn btn-white <c:if test="${fn:contains(themelist2,'여름물놀이')}">on</c:if>" onclick="func(this)" value="여름물놀이">#여름 물놀이</button>
+				<button type="button" class="btn btn-white <c:if test="${fn:contains(themelist2,'가을단풍명소')}">on</c:if>" onclick="func(this)" value="가을단풍명소">#가을 단풍명소</button>
+				<button type="button" class="btn btn-white <c:if test="${fn:contains(themelist2,'겨울눈꽃명소')}">on</c:if>" onclick="func(this)" value="겨울눈꽃명소">#겨울 눈꽃명소</button>
+				<button type="button" class="btn btn-white <c:if test="${fn:contains(themelist2,'걷기길')}">on</c:if>" onclick="func(this)" value="걷기길">#걷기길</button>
+				<button type="button" class="btn btn-white <c:if test="${fn:contains(themelist2,'일출명소')}">on</c:if>" onclick="func(this)" value="일출명소">#일출명소</button>
+				<button type="button" class="btn btn-white <c:if test="${fn:contains(themelist2,'일몰명소')}">on</c:if>" onclick="func(this)" value="일몰명소">#일몰명소</button>
 			</div>
 			<div class="w3-center" style="padding: 20px 0px">
-				<button type="button" class="btn btn-white" onclick="func(this)" value="스키">#스키</button>
-				<button type="button" class="btn btn-white" onclick="func(this)" value="낚시">#낚시</button>
-				<button type="button" class="btn btn-white" onclick="func(this)" value="수상레저">#수상레저</button>
-				<button type="button" class="btn btn-white" onclick="func(this)" value="액티비티">#액티비티</button>
+				<button type="button" class="btn btn-white <c:if test="${fn:contains(themelist2,'스키')}">on</c:if>" onclick="func(this)" value="스키">#스키</button>
+				<button type="button" class="btn btn-white <c:if test="${fn:contains(themelist2,'낚시')}">on</c:if>" onclick="func(this)" value="낚시">#낚시</button>
+				<button type="button" class="btn btn-white <c:if test="${fn:contains(themelist2,'수상레저')}">on</c:if>" onclick="func(this)" value="수상레저">#수상레저</button>
+				<button type="button" class="btn btn-white <c:if test="${fn:contains(themelist2,'액티비티')}">on</c:if>" onclick="func(this)" value="액티비티">#액티비티</button>
 
-				<button type="button" class="btn btn-white" onclick="func(this)" value="반려동물">#반려동물 동반</button>
+				<button type="button" class="btn btn-white <c:if test="${fn:contains(themelist2,'반려동물')}">on</c:if>" onclick="func(this)" value="반려동물">#반려동물 동반</button>
 
-				<button type="button" class="btn btn-white" onclick="func2(this)" value="농어촌체험시설">#농촌체험</button>
-				<button type="button" class="btn btn-white" onclick="func2(this)" value="해수욕">#해수욕</button>
-				<button type="button" class="btn btn-white" onclick="func2(this)" value="어린이놀이시설">#어린이 놀이시설</button>
+				<button type="button" class="btn btn-white <c:if test="${fn:contains(aroundlist2,'농어촌체험시설')}">on</c:if>" onclick="func2(this)" value="농어촌체험시설">#농촌체험</button>
+				<button type="button" class="btn btn-white <c:if test="${fn:contains(aroundlist2,'해수욕')}">on</c:if>" onclick="func2(this)" value="해수욕">#해수욕</button>
+				<button type="button" class="btn btn-white <c:if test="${fn:contains(aroundlist2,'어린이놀이시설')}">on</c:if>" onclick="func2(this)" value="어린이놀이시설">#어린이 놀이시설</button>
 			</div>
 			<div class="w3-center" style="padding-top: 20px">
 				<input type="submit" value="검색하기" class="btn btn-lime">
@@ -360,27 +357,31 @@
 			}
 		})	
 		let theme = "";
-		if(${themelist !=null}){
-			theme = '${themelist}';
+		if(${themelist2 !=null}){
+			theme = '${themelist2}';
 			console.log(theme)
 		}
 		let around ="";
+		if(${aroundlist2 !=null}){
+			around = '${aroundlist2}';
+			console.log(around)
+		}
 		function func(val){
 			if(!theme.includes(val.value)){
-				theme += val.value+","
+				theme += ","+val.value
 			}else if(theme.includes(val.value)){
 				theme = theme.replace(val.value,'')
 			}
-			document.f2.themelist.value=theme
+			document.f2.themelist2.value=theme
 			console.log(theme)
 		}
 		function func2(val){
 			if(!around.includes(val.value)){
-				around += val.value+","
+				around += ","+val.value
 			}else if(around.includes(val.value)){
-				around = around.replace(val.value+",",'')
+				around = around.replace(val.value,'')
 			}
-			document.f2.aroundlist.value=around
+			document.f2.aroundlist2.value=around
 			console.log(around)
 		}
 		function listpage(page,search){
@@ -419,6 +420,7 @@
 				}
 				if($(this).val() == '추천순'){
 					document.f2.sort.value='추천순';
+					document.f2.submit();
 				}
 			}
 		})

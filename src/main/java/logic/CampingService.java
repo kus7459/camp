@@ -43,4 +43,9 @@ public class CampingService {
 		return campDao.lovelist(param);
 	}
 
+	public List<Camp> lovelist2(String themelist, String pet, String aroundlist, Integer pageNum, int limit,
+			int startrow, Object object) {
+		return campDao.lovelist2(themelist,pet,aroundlist,pageNum,limit,startrow,object);
+	}
+
 }

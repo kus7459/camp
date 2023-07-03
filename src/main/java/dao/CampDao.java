@@ -26,6 +26,7 @@ public class CampDao {
 
 
 	public List<Camp> list(Map<String, Object> param2) {
+		System.out.println("뭐야"+param2);
 		return template.getMapper(cls).list(param2);
 	}
 
@@ -38,10 +39,10 @@ public class CampDao {
 
 	public List<Camp> list2(String themelist, String pet, String aroundlist, Integer pageNum, int limit, int startrow, Object object) {
 		param.clear();
-		param.put("themelist", themelist);
+		param.put("themelist2", themelist);
 		param.put("pet", pet);
 		System.out.println(pet);
-		param.put("aroundlist", aroundlist);
+		param.put("aroundlist2", aroundlist);
 		param.put("pageNum", pageNum);
 		param.put("limit", limit);
 		param.put("startrow", startrow);
@@ -69,6 +70,21 @@ public class CampDao {
 
 	public List<Camp> lovelist(Map<String, Object> param) {
 		return template.getMapper(cls).lovelist(param);
+	}
+
+
+	public List<Camp> lovelist2(String themelist, String pet, String aroundlist, Integer pageNum, int limit,
+			int startrow, Object object) {
+		param.clear();
+		param.put("themelist2", themelist);
+		param.put("pet", pet);
+		param.put("aroundlist2", aroundlist);
+		param.put("pageNum", pageNum);
+		param.put("limit", limit);
+		param.put("startrow", startrow);
+		param.put("sort", object);
+		System.out.println("lovelist 실행");
+		return template.getMapper(cls).lovelist2(param);
 	}
 
 }

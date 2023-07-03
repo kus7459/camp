@@ -98,17 +98,17 @@ public class CampController {
 			list = request.getParameterValues("oper");
 			if (list != null) {
 				String operlist = String.join("|", list);
-				param.put("operlist", operlist);
+				param.put("operlist1", operlist);
 			}
 			list = request.getParameterValues("theme");
 			if (list != null) {
 				String themelist = String.join("|", list);
-				param.put("themelist", themelist);
+				param.put("themelist1", themelist);
 			}
 			list = request.getParameterValues("add");
 			if (list != null) {
 				String addlist = String.join("|", list);
-				param.put("addlist", addlist);
+				param.put("addlist1", addlist);
 			}
 			list = request.getParameterValues("etc");
 			if (list.length == 2) {
@@ -187,22 +187,31 @@ public class CampController {
 		}
 		String[] theme =null;
 		List<String> list = new ArrayList<>();
-		String themelist = "";
-		String aroundlist = "";
+		String themelist2 = "";
+		String aroundlist2 = "";
 		String pet = null;
-		if(!param.get("themelist").equals("")) {
-			theme = ((String) param.get("themelist")).split(",");
+		if(!param.get("themelist2").equals("")) {
+			theme = ((String) param.get("themelist2")).split(",");
 			list = new ArrayList<>(Arrays.asList(theme));
 			if(list.contains("반려동물")) {
 				pet="가능";
 				list.remove(list.indexOf("반려동물"));
 			}
-			themelist = String.join("|", list);
+			themelist2 = String.join("|", list);
+			themelist2 = themelist2.replace("||","|");
+			if(themelist2.indexOf("|")==0) {
+				themelist2 = themelist2.substring(1);
+			}
+			
 		}
-		if(!param.get("aroundlist").equals("")) {
-			theme = ((String) param.get("aroundlist")).split(",");
+		if(!param.get("aroundlist2").equals("")) {
+			theme = ((String) param.get("aroundlist2")).split(",");
 			list = new ArrayList<>(Arrays.asList(theme));
-			aroundlist = String.join("|", list);
+			aroundlist2 = String.join("|", list);
+			aroundlist2 = aroundlist2.replace("||","|");
+			if(aroundlist2.indexOf("|")==0) {
+				aroundlist2 = aroundlist2.substring(1);
+			}
 		}
 		Integer pageNum = null;
 		if (param.get("pageNum") != null) { 
@@ -212,7 +221,7 @@ public class CampController {
 			pageNum = 1;
 		}
 		int limit = 10; // 한페이지당 보여줄 게시물 건수
-		int listcount = service.campcount2(themelist,pet,aroundlist); // 등록된 게시물 건수
+		int listcount = service.campcount2(themelist2,pet,aroundlist2); // 등록된 게시물 건수
 		int maxpage = (int) ((double) listcount / limit + 0.95); // 등록 건수에 따른 최대 페이지 수
 		int startpage = (int) ((pageNum / 10.0 + 0.9) - 1) * 10 + 1; // 페이지의 시작 번호
 		int endpage = startpage + 9; // 페이지의 끝 번호
@@ -224,17 +233,35 @@ public class CampController {
 		mav.addObject("endpage", endpage);
 		mav.addObject("search","2");
 		mav.addObject("listcount", listcount);
-		List<Camp> camplist = service.camplist2(themelist,pet,aroundlist,pageNum,limit,startrow,param.get("sort"));
-		mav.addObject("camplist", camplist);
-		System.out.println(themelist);
-		System.out.println(aroundlist);
-			if(pet !=null) {
-				themelist +=",반려동물";
+		List<Camp> camplist = service.camplist2(themelist2,pet,aroundlist2,pageNum,limit,startrow,param.get("sort"));
+		try {
+			if(param.get("sort").equals("추천순")) {
+				System.out.println("추천순이다");
+				camplist = service.lovelist2(themelist2,pet,aroundlist2,pageNum,limit,startrow,param.get("sort"));
 			}
+		}catch(NullPointerException e) {
+			e.printStackTrace();
+		}
+		for(Camp c : camplist) {
+			Good good = new Good();
+			good.setGoodno(c.getContentId());
+			good.setGoodtype(3);
+			int lovecnt=bservice.goodcount(good);
+			c.setLovecnt(lovecnt);
+		}
+		mav.addObject("camplist", camplist);
+		System.out.println(themelist2);
+		System.out.println(aroundlist2);
+			if(pet !=null) {
+				themelist2 +=",반려동물";
+			}
+		themelist2 = themelist2.replace("|", ",");
+		aroundlist2 = aroundlist2.replace("|", ",");
 		System.out.println(pageNum);
-		System.out.println(themelist);
-		mav.addObject("themelist", themelist);
-		mav.addObject("aroundlist",aroundlist);
+		System.out.println(themelist2);
+		System.out.println(camplist);
+		mav.addObject("themelist2", themelist2);
+		mav.addObject("aroundlist2",aroundlist2);
 		mav.addObject("params", param);
 		return mav;
 	}

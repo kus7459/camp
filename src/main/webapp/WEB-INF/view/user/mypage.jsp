@@ -273,10 +273,17 @@
 						<input type="hidden" name="saleid" value="">
 					</form>
 					<c:forEach items="${salelist}" var="sale" varStatus="vs">
+						<c:if test= "${salelist[vs.index].saledate != salelist[vs.index-1].saledate}">
+						<tr>
+							<td colspan="6" style="padding:15px 0px 5px 15px">
+								<b style="font-size:15px">결제 일시: <fmt:formatDate value="${sale.saledate}" pattern="yyyy-MM-dd HH:mm"/></b>
+							</td>								
+						</tr>
+						</c:if>
 						<tr>
 							<td style="width:13%"><img src="../img/${sale.pictureUrl}" style="width:80%"></td>
-							<td><a href="../shop/detail?id=${sale.itemid}" style="color:#333"><b>${sale.name}</b></a></td>
-							<td>${sale.quantity}</td>
+							<td><a href="../shop/detail?id=${sale.itemid}" style="color:#333;"><b>${sale.name}</b></a></td>
+							<td class="w3-center">${sale.quantity}</td>
 							<td>
 								<fmt:formatNumber value="${sale.price/sale.quantity}" pattern="###,###"/>
 							</td>

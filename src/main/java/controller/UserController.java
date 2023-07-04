@@ -490,7 +490,6 @@ public class UserController {
 			}
 			sumprice.add(sum);
 		}
-			System.out.println(sumprice);
 		mav.addObject("size", size);
 		mav.addObject("salelist", salelist);
 		mav.addObject("sumprice", sumprice);

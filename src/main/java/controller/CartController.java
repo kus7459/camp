@@ -168,6 +168,7 @@ public class CartController {
 			// 바로구매
 			if(param.get("quantity") != null || !param.get("quantity").toString().trim().equals("")) {
 				Item item = service.itemOne(itemid);
+				sum += item.getPrice() * Integer.parseInt(param.get("quantity"));
 				service.saleinsert(saleid, loginUser.getId(), item.getId(), item.getName(),
 						Integer.parseInt(param.get("quantity")), item.getPictureUrl(), item.getPrice() * Integer.parseInt(param.get("quantity")), 
 					Integer.parseInt(param.get("postcode")), param.get("address"), param.get("detailAddress"));
@@ -230,22 +231,17 @@ public class CartController {
 	@RequestMapping("salecheck")
 	public ModelAndView logingChecksalecheck(Integer saleid, HttpSession session) {
 		ModelAndView mav = new ModelAndView();
-		try {
-			User loginUser = (User)session.getAttribute("loginUser");
-			List<Cart> salelist = service.getuserCart(loginUser.getId(), 0);
-			if(salelist.size() == 0) {
-				
-			} else if(salelist.size() > 1) {	// 주문 아이템이 1개보다 많으면
-				// 카트리스트 전체 삭제
-				service.cartdelete(0, loginUser.getId());
-			} else {	// 1개면
-				service.cartdelete(salelist.get(0).getItemid(), loginUser.getId());
-			}
-			throw new ItemException("결제되었습니다.", "../user/mypage?id="+loginUser.getId());
-		} catch(Exception e) {
-			e.printStackTrace();
+		User loginUser = (User)session.getAttribute("loginUser");
+		List<Cart> salelist = service.getuserCart(loginUser.getId(), 0);
+		if(salelist.size() == 0) {
+			
+		} else if(salelist.size() > 1) {	// 주문 아이템이 1개보다 많으면
+			// 카트리스트 전체 삭제
+			service.cartdelete(0, loginUser.getId());
+		} else {	// 1개면
+			service.cartdelete(salelist.get(0).getItemid(), loginUser.getId());
 		}
-		return mav;
+		throw new ItemException("결제되었습니다.", "../user/mypage?id="+loginUser.getId());
 	}
 	
 	@RequestMapping("saledelete")

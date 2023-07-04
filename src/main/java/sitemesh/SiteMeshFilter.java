@@ -26,6 +26,7 @@ public class SiteMeshFilter extends ConfigurableSiteMeshFilter {
 		else if (url.contains("/admin/")) url = "user";
 		else if (url.contains("/site/")) url = "site";
 		else if (url.contains("/shop/")) url = "shop";
+		else if (url.contains("/weather/")) url = "weather";
 		else url = "";
 		request.setAttribute("url", url);		// 속성 등록
 		super.doFilter(servletRequest, servletResponse, filterChain);	// 다음 프로세스 진행

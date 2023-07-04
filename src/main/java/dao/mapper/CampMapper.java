@@ -30,7 +30,8 @@ public interface CampMapper {
 	void insert(Camp camp);
 
 	@Select("<script> "
-			+ "select * from campdetail where lctCl regexp #{loc} "
+			+ "select * from campdetail where doNm like '%${si}%' and sigunguNm like '%${gu}%' "
+			+ " and lctCl regexp #{loc} "
 			+ " and induty like '%${csite}%'"
 			+ " <if test='bot != null '> and ${bot} != '0' </if> "
 			+ " <if test='operlist1 != null '> and facltDivNm REGEXP #{operlist1} </if> "
@@ -50,7 +51,8 @@ public interface CampMapper {
 	List<Camp> list(Map<String, Object> param2);
 
 	@Select("<script> "
-			+ "select count(*) from campdetail where lctCl regexp #{loc} "
+			+ "select count(*) from campdetail where doNm like '%${si}%' and sigunguNm like '%${gu}%'"
+			+ " and lctCl regexp #{loc} "
 			+ " and induty like '%${csite}%'"
 			+ " <if test='bot != null '> and ${bot} != '0' </if> "
 			+ " <if test='operlist1 != null '> and facltDivNm REGEXP #{operlist1} </if> "
@@ -87,7 +89,8 @@ public interface CampMapper {
 			+ " SELECT * FROM campdetail t1 left outer JOIN"
 			+ " (SELECT goodno,ifnull(count(*),0) cnt FROM good WHERE goodtype=3 group by goodno) t2 "
 			+ " on t1.contentId = t2.goodno "
-			+ " where t1.lctCl regexp #{loc} and t1.induty like '%${csite}%' "
+			+ " where t1.doNm like '%${si}%' and t1.sigunguNm like '%${gu}%' "
+			+ " and t1.lctCl regexp #{loc} and t1.induty like '%${csite}%' "
 			+ " <if test='bot != null '> and ${bot} != '0' </if> "
 			+ " <if test='operlist1 != null '> and t1.facltDivNm REGEXP #{operlist1} </if> "
 			+ " <if test='themelist1 != null '> and t1.themaEnvrnCl REGEXP #{themelist1} </if> "

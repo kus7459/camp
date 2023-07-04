@@ -38,11 +38,21 @@
 							<th>지역</th>
 							<td id="si"><select name="si" onchange="getText('si')"
 								class="w3-input w3-border w3-round-large">
+									<c:if test="${params.si ==null }">
 									<option value="">시,도 선택</option>
+									</c:if>
+									<c:if test="${params.si != null }">
+									<option value="${params.si}">${params.si}</option>
+									</c:if>
 							</select></td>
 							<td id="gi"><select name="gu" onchange="getText('gu')"
 								class="w3-input w3-border w3-round-large">
-									<option value="">구,군 선택</option>
+									<c:if test="${params.gu ==null }">
+									<option value="${params.gu}">구,군 선택</option>
+									</c:if>
+									<c:if test="${params.gu != null }">
+									<option value="${params.gu}">${params.gu}</option>
+									</c:if>
 							</select></td>
 						</tr>
 						<!-- sido ajax -->
@@ -394,6 +404,9 @@
 			}
 			
 			getSido()
+			if('${params.si}' != ''){
+				getText('si')
+			}
 		})
 		
 		function getSido() {  //서버에서 리스트객체를 배열로 직접 전달 받음
@@ -417,6 +430,9 @@
 			let gu = $("select[name='gu']").val();    //구군 선택값
 			let disname;
 			let toptext="구군을 선택하세요";
+			if('${params.gu}'!= ''){
+				toptext = '${params.gu}';
+			}
 			let params = "";
 			if (name == "si") { //시도 선택한 경우
 				params = "si=" + city.trim();
@@ -428,14 +444,15 @@
 			} else { 
 				return ;
 			}
+
 			$.ajax({
-			  url : "${path}/ajax/select2",
+			  url : "${path}/ajax/select",
 			  type : "POST",    
 			  data : params,  			
 			  success : function(arr) {
 				  $("select[name="+disname+"] option").remove(); //출력 select 태그의 option 제거
 				  $("select[name="+disname+"]").append(function(){
-					  return "<option value=''>"+toptext+"</option>"
+					  return "<option value='"+toptext+"'>"+toptext+"</option>"
 				  })
 				  $.each(arr,function(i,item) {  //서버에서 전송 받은 배열값을 option 객체로 추가
 					  $("select[name="+disname+"]").append(function(){

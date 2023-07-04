@@ -36,7 +36,7 @@ public class AjaxController {
 				while((data=fr.readLine()) != null) {
 					// \\s+ : \\s(공백) +(1개이상) 
 					String[] arr = data.split("\\s+");
-					if(arr.length >= 3) set.add(arr[0].trim()); //중복제거됨. 
+					if(arr.length >= 2) set.add(arr[0].trim()); //중복제거됨. 
 				}
 			} catch(IOException e) {
 				e.printStackTrace();
@@ -46,7 +46,7 @@ public class AjaxController {
 		   try {
 			  while ((data = fr.readLine()) != null) {
 				 String[] arr = data.split("\\s+");
-			  	 if(arr.length >= 3 && arr[0].equals(si) && !arr[1].contains(arr[0]) ) {
+			  	 if(arr.length >= 2 && arr[0].equals(si) && !arr[1].contains(arr[0]) ) {
 					 set.add(arr[1].trim()); //구정보 저장
 				 }
 			   }
@@ -73,6 +73,7 @@ public class AjaxController {
 			}
 		}
 		List<String> list = new ArrayList<>(set); //Set 객체 => List 객체로 
+		System.out.println(list);
 		return list; //리스트 객체가 브라우저에 전달. 뷰가 아님.
 		             //pom.xml의 fasterxml.jackson... 의 설정에 의해서 브라우저는 배열로 인식함
 		

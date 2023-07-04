@@ -26,13 +26,11 @@ public class CampDao {
 
 
 	public List<Camp> list(Map<String, Object> param2) {
-		System.out.println("뭐야"+param2);
 		return template.getMapper(cls).list(param2);
 	}
 
 
 	public int count(Map<String, Object> param2) {
-		System.out.println();
 		return template.getMapper(cls).count(param2);
 	}
 
@@ -41,12 +39,10 @@ public class CampDao {
 		param.clear();
 		param.put("themelist2", themelist);
 		param.put("pet", pet);
-		System.out.println(pet);
 		param.put("aroundlist2", aroundlist);
 		param.put("pageNum", pageNum);
 		param.put("limit", limit);
 		param.put("startrow", startrow);
-		System.out.println(object);
 		param.put("sort", object);
 		param.put("test", "조회순");
 		return template.getMapper(cls).list2(param);

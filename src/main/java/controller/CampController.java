@@ -163,6 +163,13 @@ public class CampController {
 			int lovecnt=bservice.goodcount(good);
 			c.setLovecnt(lovecnt);
 		}
+		try{
+			if(param.get("si").equals("")) {
+				param.put("si", "시,도 선택");
+			}
+		}catch(NullPointerException e) {
+			e.printStackTrace();
+		}
 		mav.addObject("camplist", camplist);
 		mav.addObject("pageNum", pageNum);
 		mav.addObject("maxpage", maxpage);

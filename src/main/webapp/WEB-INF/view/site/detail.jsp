@@ -221,7 +221,7 @@
 			<h4>${camp.facltNm}</h4>
 			<p style="margin-bottom: 15px">${camp.addr1}</p>
 			
-			<div id="map" style="width: 500px; height: 400px;"></div> 
+			<div id="map" style="height: 400px;"></div> 
    
    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=e68d595e1b5cf86f4c344b473c443aef&libraries=services,clusterer,drawing"></script>
    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=e68d595e1b5cf86f4c344b473c443aef"></script>
@@ -229,11 +229,11 @@
    
    var container = document.getElementById('map'); //지도를 담을 영역의 DOM 레퍼런스
    var options = { //지도를 생성할 때 필요한 기본 옵션
-      center: new kakao.maps.LatLng(${camp.mapX}, ${camp.mapY}), //지도의 중심좌표.
+      center: new kakao.maps.LatLng(${camp.mapY}, ${camp.mapX}), //지도의 중심좌표.
       level: 3 //지도의 레벨(확대, 축소 정도)
    };
    var map = new kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
-   var markerPosition  = new kakao.maps.LatLng(${camp.mapX}, ${camp.mapY});  // 마커가 표시될 위치 
+   var markerPosition  = new kakao.maps.LatLng(${camp.mapY}, ${camp.mapX});  // 마커가 표시될 위치 
    var marker = new kakao.maps.Marker({  // 마커를 생성한다
        position: markerPosition
    });

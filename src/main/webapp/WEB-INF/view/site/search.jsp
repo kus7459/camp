@@ -41,18 +41,18 @@
 									<c:if test="${params.si ==null }">
 									<option value="">시,도 선택</option>
 									</c:if>
-									<c:if test="${params.si != null }">
+									<c:if test="${! empty params.si}">
 									<option value="${params.si}">${params.si}</option>
 									</c:if>
 							</select></td>
-							<td id="gi"><select name="gu" onchange="getText('gu')"
+							<td id="gi"><select name="gu"
 								class="w3-input w3-border w3-round-large">
-									<c:if test="${params.gu ==null }">
-									<option value="${params.gu}">구,군 선택</option>
+									<c:if test="${ empty params.gu }">
+									<option value="">구,군 선택</option>
 									</c:if>
-									<c:if test="${params.gu != null }">
+									<%-- <c:if test="${params.gu != null }">
 									<option value="${params.gu}">${params.gu}</option>
-									</c:if>
+									</c:if> --%>
 							</select></td>
 						</tr>
 						<!-- sido ajax -->
@@ -179,6 +179,7 @@
 						<input type="submit" value="검색하기" class="btn btn-lime"> <input
 							type="button" value="상세검색" class="btn w3-light-grey"
 							id="deSearch">
+						<a href="" class="btn w3-light-grey">초기화</a>
 					</div>
 				</form>
 			</div>
@@ -406,6 +407,9 @@
 			getSido()
 			if('${params.si}' != ''){
 				getText('si')
+				if('${params.gu}'!= ''){
+					$("select[name=gu]").val('${params.gu}')
+				}
 			}
 		})
 		
@@ -424,23 +428,29 @@
 					   })
 				   }
 			   })
+				if('${params.gu}'!= ''){
+					$("select[name=gu]").val('${params.gu}')
+				}
 	   }
 		function getText(name) { //si
 			let city = $("select[name='si']").val();  //시도 선택값 
-			let gu = $("select[name='gu']").val();    //구군 선택값
+//			let gu = $("select[name='gu']").val();    //구군 선택값
 			let disname;
 			let toptext="구군을 선택하세요";
+			/*
 			if('${params.gu}'!= ''){
 				toptext = '${params.gu}';
 			}
+			*/
 			let params = "";
 			if (name == "si") { //시도 선택한 경우
 				params = "si=" + city.trim();
+//				$("select[name='gu']").val('')
 				disname = "gu"; 
-			} else if (name == "gu") { //구군 선택한 경우 
-				params = "si=" + city.trim()+"&gu="+gu.trim();
-				disname = "dong";
-				toptext="동리를 선택하세요";		
+//			} else if (name == "gu") { //구군 선택한 경우 
+//				params = "si=" + city.trim()+"&gu="+gu.trim();
+//				disname = "dong";
+//				toptext="동리를 선택하세요";		
 			} else { 
 				return ;
 			}
@@ -452,13 +462,16 @@
 			  success : function(arr) {
 				  $("select[name="+disname+"] option").remove(); //출력 select 태그의 option 제거
 				  $("select[name="+disname+"]").append(function(){
-					  return "<option value='"+toptext+"'>"+toptext+"</option>"
+					  return "<option value=''>"+toptext+"</option>"
 				  })
 				  $.each(arr,function(i,item) {  //서버에서 전송 받은 배열값을 option 객체로 추가
 					  $("select[name="+disname+"]").append(function(){
 						  return "<option>"+item+"</option>"
 					  })
 				  })
+					if('${params.gu}' != ''){
+						$("select[name=gu]").val('${params.gu}')
+					}
 			  }
 		   })				
 		}

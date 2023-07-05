@@ -19,6 +19,7 @@ public class AjaxController {
 	
 	@RequestMapping("select")
 	public List<String> select(String si, String gu, HttpServletRequest request) {
+		gu = null;
 		BufferedReader fr = null;
 		String path = request.getServletContext().getRealPath("/")+"file/sido.txt";
 		try {

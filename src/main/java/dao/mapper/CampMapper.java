@@ -19,14 +19,14 @@ public interface CampMapper {
 			+ "indvdlCaravSiteCo,siteBottomCl1,siteBottomCl2,siteBottomCl3,siteBottomCl4,siteBottomCl5,"
 			+ "glampInnerFclty,caravInnerFclty,prmisnDe,operPdCl,operDeCl,intro,extshrCo,"
 			+ "frprvtWrppCo,fireSensorCo,themaEnvrnCl,eqpmnLendCl,animalCmgCl,firstImageUrl,"
-			+ "facltNm,lineIntro,bizrno,facltDivNm)"
+			+ "facltNm,lineIntro,bizrno,facltDivNm,mapX,mapY)"
 			+ " values(#{contentId},#{brazierCl},#{sbrsCl},#{posblFcltyCl},#{hvofBgnde},#{caravAcmpnyAt},#{toiletCo},"
 			+ "#{swrmCo},#{hvofEnddle},#{featureNm},#{induty},#{lctCl},#{doNm},#{sigunguNm},#{addr1},"
 			+ "#{tel},#{homepage},#{resveUrl},#{gnrlSiteCo},#{autoSiteCo},#{glampSiteCo},#{caravSiteCo},"
 			+ "#{indvdlCaravSiteCo},#{siteBottomCl1},#{siteBottomCl2},#{siteBottomCl3},#{siteBottomCl4},#{siteBottomCl5},"
 			+ "#{glampInnerFclty},#{caravInnerFclty},#{prmisnDe},#{operPdCl},#{operDeCl},#{intro},#{extshrCo},"
 			+ "#{frprvtWrppCo},#{fireSensorCo},#{themaEnvrnCl},#{eqpmnLendCl},#{animalCmgCl},#{firstImageUrl},"
-			+ "#{facltNm},#{lineIntro},#{bizrno},#{facltDivNm})")
+			+ "#{facltNm},#{lineIntro},#{bizrno},#{facltDivNm},#{mapX},#{mapY})")
 	void insert(Camp camp);
 
 	@Select("<script> "

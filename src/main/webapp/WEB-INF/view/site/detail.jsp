@@ -220,10 +220,26 @@
 		<div id="locInner" class="inner w3-center">
 			<h4>${camp.facltNm}</h4>
 			<p style="margin-bottom: 15px">${camp.addr1}</p>
-			<iframe
-				src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3161.1745599682176!2d126.62549048507076!3d37.598050550217614!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x357c80682f83e31d%3A0x6adacb4d5ad65309!2z7J247LKc6rSR7Jet7IucIOyEnOq1rCDsmKTrpZjrj5kgNTAwLTE!5e0!3m2!1sko!2skr!4v1687094043898!5m2!1sko!2skr"
-				width="100%" height="450" style="border: 0;" allowfullscreen=""
-				loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+			
+			<div id="map" style="width: 500px; height: 400px;"></div> 
+   
+   <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=e68d595e1b5cf86f4c344b473c443aef&libraries=services,clusterer,drawing"></script>
+   <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=e68d595e1b5cf86f4c344b473c443aef"></script>
+   <script type="text/javascript">
+   
+   var container = document.getElementById('map'); //지도를 담을 영역의 DOM 레퍼런스
+   var options = { //지도를 생성할 때 필요한 기본 옵션
+      center: new kakao.maps.LatLng(${camp.mapX}, ${camp.mapY}), //지도의 중심좌표.
+      level: 3 //지도의 레벨(확대, 축소 정도)
+   };
+   var map = new kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
+   var markerPosition  = new kakao.maps.LatLng(${camp.mapX}, ${camp.mapY});  // 마커가 표시될 위치 
+   var marker = new kakao.maps.Marker({  // 마커를 생성한다
+       position: markerPosition
+   });
+
+   marker.setMap(map); // 마커가 지도 위에 표시되도록 설정한다
+   </script>
 		</div>
 	</div>
 

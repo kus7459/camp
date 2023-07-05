@@ -53,6 +53,8 @@ public class Camp {
 	private String lineIntro;
 	private String bizrno;
 	private String facltDivNm;
+	private String mapX;
+	private String mapY;
 	private int cnt;
 	private int lovecnt;
 

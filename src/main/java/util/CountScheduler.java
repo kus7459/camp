@@ -34,7 +34,7 @@ public class CountScheduler {
 	@Autowired
 	private CampService service;
 	
-	@Scheduled(cron="0 31 15 * * ?")
+	@Scheduled(cron="0 58 14 * * ?")
 	public void campinsert() throws IOException {
 		String gongurl = "http://apis.data.go.kr/B551011/GoCamping/basedList"
 				+ "?serviceKey=nTEPXnPuEfFja%2B8NyIriI8RcoAj76sAB4Tl%2FW7vx2EEW1VjNsA8wczqlHhv6ocUsMNFbYnASilpAel15%2Fri3Jg%3D%3D"
@@ -108,6 +108,8 @@ public class CountScheduler {
 					camp.setLineIntro(i.select("lineIntro").html());
 					camp.setBizrno(i.select("bizrno").html());
 					camp.setFacltDivNm(i.select("facltDivNm").html());
+					camp.setMapX(i.select("mapX").html());
+					camp.setMapY(i.select("mapY").html());
 					service.campinsert(camp);
 				}
 			}

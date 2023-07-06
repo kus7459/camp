@@ -60,26 +60,8 @@
 	<header>
 		<h3>날씨 보기</h3>
 	</header>
-	<div class="titleWrap">
-		<h3 style="font-weight: bold; margin-bottom:15px; width: 38%">현재 전국 날씨</h3>
-		<h3 style="font-weight: bold; margin-bottom:15px; width: 50%">주간 날씨</h3>
-	</div>
-	<div class="wrap">
-		<div class="whole">
-			<ul class="whole_bar">
-				<li style="border-radius: 25px 0px 0px 25px" class="libtn on">현재</li>
-				<li class="libtn">오전</li>
-				<li style="border-radius: 0px 25px 25px 0px" class="libtn">오후</li>
-			</ul>
-			<img alt="날씨" src="../img/whole.png" class="wholeImg">
-		</div>
-		<div class="weeked">
-			<img alt="주간 날씨" src="../img/weeked.png">
-			<img alt="주간 날씨" src="../img/weeked2.png">
-		</div>
-	</div>
 	<div class="searchWrap">
-		<h3 style="font-weight: bold; margin-bottom:15px">다른 지역 날씨 찾아보기</h3>
+		<h3 style="font-weight: bold; margin-bottom:15px">날씨 찾아보기</h3>
 		<table class="w3-table" style="width:90%">
 			<tr>
 				<td id="si">
@@ -178,8 +160,13 @@
 				} else if (resultMsg === "NORMAL_SERVICE") {
 					let items = obj.response.body.items;
 					html = "<h4 style='font-weight: bold'>"+siname+" "+gunname+" "+dongname+" 날씨</h4>";
-					let time = items.fcstTime;
+					console.log(items.item[0].category);
+					if(items.item[0].category == "TMP") { // 기온
+						html+= "<table><tr><th>"+this.fcstValue+"<th></tr>"
+					}
 					
+					
+					html += "</table>";
 					$("#result").html(html);
 				}
 			}

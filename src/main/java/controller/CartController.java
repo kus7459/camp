@@ -140,7 +140,7 @@ public class CartController {
 	public ModelAndView loginCheckorder(@RequestParam Map<String, String> param, HttpSession session) {
 		ModelAndView mav = new ModelAndView();
 		User loginUser = (User) session.getAttribute("loginUser");
-		
+		System.out.println(param);
 		Integer max = service.getMax();
 		Integer saleid;
 		if(max == 0 || max == null || max.toString().trim().equals("")) {
@@ -244,10 +244,4 @@ public class CartController {
 		throw new ItemException("결제되었습니다.", "../user/mypage?id="+loginUser.getId());
 	}
 	
-	@RequestMapping("saledelete")
-	public String loginChecksaledelete(Integer saleid, HttpSession session) {
-		User loginUser = (User) session.getAttribute("loginUser");
-		service.saledelete(loginUser.getId(), saleid);
-		return "redirect:/user/mypage?id="+loginUser.getId();
-	}
 }

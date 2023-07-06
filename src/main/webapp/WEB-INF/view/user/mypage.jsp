@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/view/jspHeader.jsp"%>
+<c:set var="path" value="${pageContext.request.contextPath}" />
 <!DOCTYPE html>
 <html>
 <head>
@@ -289,7 +290,7 @@
 						<tr>
 							<td colspan="6" class="w3-center" style="background-color: #eee">
 								<b>총 구매 금액: <fmt:formatNumber value="${sumprice[vs.index]}" pattern="###,###"/></b>
-								<button class="btn btn-lime" style="float:right" onclick="saledelete(${sale.saleid})">결제 내역 삭제</button>
+								<button type="button" class="btn btn-lime" style="float:right" onclick="saledelete(${sale.saleid})">결제 내역 삭제</button>
 							</td>								
 						</tr>
 						</c:if>
@@ -307,9 +308,70 @@
 	<script>
 		// 결제 내역 지우기
 		function saledelete(saleid) {
-			console.log(saleid);
-			document.saledeleteform.saleid.value=saleid;
-			document.saledeleteform.submit();
+			$.ajax({
+				type:"post",
+				url :"${path}/ajax/saledelete",
+				data : "saleid="+saleid+"&userId=${user.id}",
+				success : function(jdata){
+					alert("결제 내역을 삭제했습니다")
+					let total =0;
+					let html ="";
+					html+= "<h3 style='margin-bottom: 20px'> <i class='far fa-clipboard'></i> 주문 내역 보기 "
+						+ "</h3> <table class='w3-table'> <tr style='background-color: #cddc39'>" 
+						+ "<th>주문 상품</th><th>상품 이름</th><th>주문 수량</th><th>가격</th><th>주문 일자</th><th>총 액</th></tr>";
+					
+					if(jdata.length>0){
+						$.each(jdata, function(i,item){
+							let date = new Date(item.saledate);
+							let year = date.getYear()
+							let mon = date.getMonth()+1
+							let day = date.getDate();
+							let minute = date.getMinutes();
+							let hour = date.getHours();
+							year = year+1900
+							mon = mon >= 10 ? month : '0' + mon;
+					        day = day >= 10 ? day : '0' + day;
+					        hour = hour >= 10 ? hour : '0' + hour;
+					        minute = minute >= 10 ? minute : '0' + minute;
+							if(i==0){
+								html+= "<tr><td colspan='6' style='padding:15px 0px 5px 15px'>"
+								+ "<b style='font-size:15px'>결제 일시: "+year+"-"+mon+"-"+day+" "+hour+":"+minute+"</b>"
+								+ "</td>"
+							}else if(jdata[i].saledate != jdata[i-1].saledate){
+								html+= "<tr><td colspan='6' style='padding:15px 0px 5px 15px'>"
+									+ "<b style='font-size:15px'>결제 일시: "+year+"-"+mon+"-"+day+" "+hour+":"+minute+"</b>"
+									+ "</td>"
+							}
+							html+= "<tr> <td style='width:13%'><img src='../img/"+item.pictureUrl+"' style='width:80%'></td>"
+								+ "<td> <a href='../shop/detail?id="+item.itemid+"' style='color:#333'><b>"+item.name+"</b></a></td>"
+								+ "<td class='w3-center'>"+item.quantity+"</td>"
+								+ "<td>"+(item.price/item.quantity)+"</td>"
+								+ "<td>"+year+"-"+mon+"-"+day+"</td>"
+								+ "<td> <b>"+item.price+"</b></td>";
+							if(i<(jdata.length-1)){
+								if(jdata[i].saleid != jdata[i+1].saleid){
+									total += (item.price*item.quantity)
+									html+= "<tr> <td colspan='6' class='w3-center' style='background-color:#eee'>"
+										+ "<b>총 구매 금액: "+new Intl.NumberFormat('ko-KR').format(total)+"</b>"
+										+ "<button type='button' class='btn btn-lime' style='float:right;' onclick='saledelete("+item.saleid+")'>결제 내역 삭제"
+										+ "</td></tr>"
+									total = 0;
+								}else{
+									total += (item.price*item.quantity)
+								}
+							}else if(i == (jdata.length-1)){
+								total += (item.price*item.quantity)
+								html+= "<tr> <td colspan='6' class='w3-center' style='background-color:#eee'>"
+									+ "<b>총 구매 금액: "+new Intl.NumberFormat('ko-KR').format(total)+"</b>"
+									+ "<button type='button' class='btn btn-lime' style='float:right;' onclick='saledelete("+item.saleid+")'>결제 내역 삭제"
+									+ "</td></tr>"
+								total =0;
+							}
+						})
+					}
+					$("#saleInner").html(html);
+				}
+			})
 		}
 		function allsale(userid) {
 			document.saleform.id.value=0;

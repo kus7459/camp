@@ -117,6 +117,11 @@ public interface CampMapper {
 	@Select("select * from campdetail where contentId = #{value}")
 	Camp mpllist(int goodno);
 
+	@Select("select * from campdetail t1 left outer join "
+			+ " (SELECT goodno,ifnull(count(*),0) cnt FROM good WHERE goodtype=3 group by goodno) t2 "
+			+ " on t1.contentId = t2.goodno order by t2.cnt desc limit 0,3")
+	List<Camp> maincamp();
+
 //	@Select("<script>"
 //			+ "select * from campdetail where themaEnvrnCl regexp #{themelist} "
 //			+ " and posblFcltyCl regexp #{aroundlist} "

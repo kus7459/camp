@@ -48,4 +48,8 @@ public class CampingService {
 		return campDao.lovelist2(themelist,pet,aroundlist,pageNum,limit,startrow,object);
 	}
 
+	public List<Camp> maincamp() {
+		return campDao.maincamp();
+	}
+
 }

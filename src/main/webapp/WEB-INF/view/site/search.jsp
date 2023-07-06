@@ -38,12 +38,9 @@
 							<th>지역</th>
 							<td id="si"><select name="si" onchange="getText('si')"
 								class="w3-input w3-border w3-round-large">
-									<c:if test="${params.si ==null }">
+
 									<option value="">시,도 선택</option>
-									</c:if>
-									<c:if test="${! empty params.si}">
-									<option value="${params.si}">${params.si}</option>
-									</c:if>
+
 							</select></td>
 							<td id="gi"><select name="gu"
 								class="w3-input w3-border w3-round-large">

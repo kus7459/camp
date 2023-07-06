@@ -132,18 +132,22 @@
     	display: flex;
         flex-direction: row;
         justify-content: space-around;}
+    .popWrap2 {padding: 5px 0px;
+    	width: 90%; 
+    	margin: 0 auto;
+    	display: flex;
+        flex-direction: row;
+        justify-content: space-around;}
     .popImg {background-position: center;
     		background-repeat: no-repeat;
     		background-size: cover;
     		width: 30%;
     		height: 30vh}
-    .pImg1 {background-image: url("../img/main_1.jpg")}		
-    .pImg2 {background-image: url("../img/main_2.jpg")}		
-    .pImg3 {background-image: url("../img/main_3.jpg")}		
+	
     
      /* 테마별, 태그별 캠핑장 찾기*/
      .page4 {
-        padding: 120px 20px;
+        padding: 60px 20px;
      }
 	.page4 h3 {text-align: center;
 			font-weight: bold;}

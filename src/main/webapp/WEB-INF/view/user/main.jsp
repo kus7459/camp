@@ -39,7 +39,7 @@
       <div class="campsearch">
          <h3>캠핑장 찾기</h3>
          <div class="searchWrap">
-            <form action="search" method="post">
+            <form action="../site/search" method="post">
                <table class="w3-table">
                   <tr>
                      <th>지역</th>
@@ -57,37 +57,32 @@
                   <!-- sido ajax -->
                   <tr>
                      <th>입지 구분</th>
-                     <td colspan="3">
-                        <select class="w3-input w3-border w3-round-large">
-							<option>선택하세요.</option>
-							<option>산</option>
-							<option>숲</option>
-							<option>계곡</option>
-							<option>강</option>
-                            <option>호수</option>
-							<option>해변</option>
-							<option>섬</option>
-							<option>도심</option>
-                        </select>
-                     </td>
-                  </tr>
+						<td colspan="3"><select
+							class="w3-input w3-border w3-round-large" name="loc">
+								<option value="">선택하세요.</option>
+								<option>산,숲</option>
+								<option>계곡,강,호수</option>
+								<option>해변,섬</option>
+								<option>도심</option>
+							</select></td>
+						</tr>
                   <tr>
                      <th>주요 시설</th>
                      <td colspan="3">
-                        <select class="w3-input w3-border w3-round-large">
-                           <option>선택하세요.</option>
-                           <option>일반 야영장</option>
-                           <option>자동차 야영장</option>
-                           <option>카라반</option>
-                           <option>글램핑</option>
-                        </select>
-                     </td>
+                     	<select class="w3-input w3-border w3-round-large" name="csite">
+								<option value="">선택하세요.</option>
+								<option>일반야영장</option>
+								<option>자동차야영장</option>
+								<option>카라반</option>
+								<option>글램핑</option>
+						</select>
+					 </td>
                   </tr>
                   <tr>
                      <th>바닥 형태</th>
                      <td colspan="3">
-                        <select class="w3-input w3-border w3-round-large">
-                           <option>선택하세요.</option>
+                        <select class="w3-input w3-border w3-round-large" name="bot">
+                           <option value="">선택하세요.</option>
                            <option>잔디</option>
                            <option>데크</option>
                            <option>파쇄석</option>
@@ -119,33 +114,83 @@
    <div class="page3 w3-center">
       <h3>인기 캠핑장 Best 3</h3>
       <div class="popWrap">
-         <div class="popImg pImg1"></div>
-         <div class="popImg pImg2"></div>
-         <div class="popImg pImg3"></div>
+      <c:forEach items="${maincamp}" var="m">
+         <div class="popImg" style="background-image: url('${m.firstImageUrl}')"></div>
+      </c:forEach>
+      </div>
+      <div class="popWrap2">
+       <c:forEach items="${maincamp}" var="m">
+         <a href="${path}/site/detail?contentId=${m.contentId}" style="color:black">${m.facltNm}</a>
+      </c:forEach>
+      </div>
+      <div class="popWrap2">
+       <c:forEach items="${maincamp}" var="m">
+         <div> ${m.homepage}</div>
+      </c:forEach>
       </div>
    </div>
    
    <!-- 테마별, 태그별 캠핑장 찾기 -->
 	<div class="page page4 w3-center">
+	<form action="../site/search2" method="post" name="f2">
+			<input type="hidden" value="${themelist2}" name="themelist2">
+			<input type="hidden" value="${aroundlist2}" name="aroundlist2">
 		<h3>테마별, 태그별 캠핑장 찾기</h3>
-		<div class="w3-center" style="padding-top:30px">
-			<button class="btn btn-white">#봄 꽃여행</button>
-			<button class="btn btn-white">#여름 물놀이</button>
-			<button class="btn btn-white">#가을 단풍명소</button>
-			<button class="btn btn-white">#겨울 눈꽃명소</button>
-			<button class="btn btn-white">#반려견 동반</button>
-		</div>
-		<div class="w3-center" style="padding:20px 0px">
-			<button class="btn btn-white">#일출명소</button>
-			<button class="btn btn-white">#일몰명소</button>
-			<button class="btn btn-white">#스키</button>
-			<button class="btn btn-white">#낚시</button>
-			<button class="btn btn-white">#산책로</button>
-		</div>
+		<div class="w3-center" style="padding-top: 30px">
+					<button type="button"
+						class="btn btn-white"
+						onclick="func(this)" value="봄꽃여행">#봄꽃 여행</button>
+					<button type="button"
+						class="btn btn-white"
+						onclick="func(this)" value="여름물놀이">#여름 물놀이</button>
+					<button type="button"
+						class="btn btn-white"
+						onclick="func(this)" value="가을단풍명소">#가을 단풍명소</button>
+					<button type="button"
+						class="btn btn-white"
+						onclick="func(this)" value="겨울눈꽃명소">#겨울 눈꽃명소</button>
+					<button type="button"
+						class="btn btn-white"
+						onclick="func(this)" value="걷기길">#걷기길</button>
+					<button type="button"
+						class="btn btn-white"
+						onclick="func(this)" value="일출명소">#일출명소</button>
+					<button type="button"
+						class="btn btn-white"
+						onclick="func(this)" value="일몰명소">#일몰명소</button>
+				</div>
+				<div class="w3-center" style="padding: 20px 0px">
+					<button type="button"
+						class="btn btn-white"
+						onclick="func(this)" value="스키">#스키</button>
+					<button type="button"
+						class="btn btn-white"
+						onclick="func(this)" value="낚시">#낚시</button>
+					<button type="button"
+						class="btn btn-white"
+						onclick="func(this)" value="수상레저">#수상레저</button>
+					<button type="button"
+						class="btn btn-white"
+						onclick="func(this)" value="액티비티">#액티비티</button>
+
+					<button type="button"
+						class="btn btn-white"
+						onclick="func(this)" value="반려동물">#반려동물 동반</button>
+
+					<button type="button"
+						class="btn btn-white"
+						onclick="func2(this)" value="농어촌체험시설">#농촌체험</button>
+					<button type="button"
+						class="btn btn-white"
+						onclick="func2(this)" value="해수욕">#해수욕</button>
+					<button type="button"
+						class="btn btn-white"
+						onclick="func2(this)" value="어린이놀이시설">#어린이 놀이시설</button>
+				</div>
 		<div class="w3-center" style="padding-top:20px">
 			<input type="submit" value="검색하기" class="btn btn-lime">
-			<input type="button" value="상세검색" class="btn w3-light-grey">
 		</div>
+		</form>
    </div>
    
    <!-- 게시물 -->
@@ -291,6 +336,26 @@
   	   })				
   	}
  		
+  	let theme = "";
+	let around ="";
+	function func(val){
+		if(!theme.includes(val.value)){
+			theme += ","+val.value
+		}else if(theme.includes(val.value)){
+			theme = theme.replace(val.value,'')
+		}
+		document.f2.themelist2.value=theme
+		console.log(theme)
+	}
+	function func2(val){
+		if(!around.includes(val.value)){
+			around += ","+val.value
+		}else if(around.includes(val.value)){
+			around = around.replace(val.value,'')
+		}
+		document.f2.aroundlist2.value=around
+		console.log(around)
+	}
     </script>
 </body>
 </html>

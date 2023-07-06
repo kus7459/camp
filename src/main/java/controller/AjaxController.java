@@ -3,6 +3,7 @@ package controller;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -10,12 +11,19 @@ import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import logic.CampService;
+import logic.Sale;
 
 @RestController
 @RequestMapping("ajax")
 public class AjaxController {
+	@Autowired
+	private CampService service;
 	
 	@RequestMapping("select")
 	public List<String> select(String si, String gu, HttpServletRequest request) {
@@ -99,5 +107,12 @@ public class AjaxController {
 		}
 		List<String> list = new ArrayList<>(set); 
 		return list.toString(); //[서울특별시,경기도....] 		
+	}
+	@RequestMapping("saledelete")
+	@ResponseBody
+	public List<Sale> loginChecksaledelete(Integer saleid, String userId) {
+		service.saledelete(userId, saleid);
+		List<Sale> salelist = service.saleSelect(userId);
+		return salelist;
 	}
 }

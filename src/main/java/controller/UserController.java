@@ -94,6 +94,9 @@ public class UserController {
 		List<Board> noticelist = bservice.mainlist(1);
 		mav.addObject("boardlist",boardlist);
 		mav.addObject("noticelist", noticelist);
+		List<Camp> maincamp = cservice.maincamp();
+		System.out.println(maincamp);
+		mav.addObject("maincamp", maincamp);
 		return mav;
 	}
 	
@@ -486,6 +489,7 @@ public class UserController {
 		// 주문내역 불러오기
 		List<Sale> salelist = service.saleSelect(loginUser.getId());
 		Integer size = salelist.size();
+		System.out.println("사이즈"+size);
 		
 		// 게시판 등록 글
 //		List<Board> boardlist = service.boardlist(id);
@@ -505,7 +509,7 @@ public class UserController {
 			sum = 0;
 			for(Sale s : salelist) {
 				if(sid == s.getSaleid()) {
-					sum += s.getPrice();
+					sum += (s.getPrice()*s.getQuantity());
 				}
 			}
 			sumprice.add(sum);

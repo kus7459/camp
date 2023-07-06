@@ -53,4 +53,5 @@ public class Board {
 	private int commcnt;
 	private int secret;//1
 	private int likecnt;//1
+	private String cate;
 }

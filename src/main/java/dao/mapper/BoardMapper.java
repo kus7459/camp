@@ -17,16 +17,16 @@ public interface BoardMapper {
 	String select =" select num,writer,pass,"
 			+ "title,content,file1 fileurl,"
 			+ "regdate,readcnt,grp, grplevel, "
-			+ "grpstep,boardid,secret,likecnt from board";
+			+ "grpstep,boardid,secret,likecnt,cate from board";
 
 	@Select("select ifnull(max(num),0) from board")
 	int maxNum();
 
 	@Insert("insert into board"
 			+ " (num, writer,pass,title,content,file1,regdate,"
-			+ " readcnt, grp,grplevel,grpstep,boardid,secret)"
+			+ " readcnt, grp,grplevel,grpstep,boardid,secret,cate)"
 			+ " values (#{num}, #{writer},#{pass},#{title},#{content},#{fileurl},now(),"
-			+ "	#{readcnt}, #{grp},#{grplevel},#{grpstep},#{boardid},#{secret})")
+			+ "	#{readcnt}, #{grp},#{grplevel},#{grpstep},#{boardid},#{secret},#{cate})")
 	void insert( Board board);
 
 	@Select({"<script>",
@@ -38,14 +38,14 @@ public interface BoardMapper {
 	@Select({"<script>",
 	select ,
 	" <if test='num !=null '> where num = #{num}</if>",
-	" <if test='boardid != null'> where boardid =#{boardid}</if>",
-	" <if test='column != null'> and ${column} like '%${find}%' </if> ",
+	" <if test='boardid != null'> where boardid =#{boardid} </if>",
+	" <if test='column != null'> and #{column} like '%#{find}%' </if> ",
+	" <if test='cate != null '> and cate =#{cate}</if>",
 	//"<if test ='limit !=null'> grpstep asc limit #{startrow}, #{limit}</if>",
 	//" <if test ='cnt == null'> order by regdate desc </if>",
-	" <if test ='cnt != null '> order by ${cnt} desc </if>",
+	" <if test ='cnt != null '> order by #{cnt} desc </if>",
 	" <if test ='cnt == null '> order by regdate desc </if>",
 	" <if test ='limit !=null'> limit #{startrow}, #{limit} </if>",
-	//"<if test ='cnt == '좋아요''> order by likecnt desc </if>", 
 	" </script>"})
 	List<Board> select(Map<String, Object> param);
 

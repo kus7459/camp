@@ -75,8 +75,8 @@ public class BoardService {
 	}
 
 	public List<Board> boardlist(Integer pageNum, int limit, String boardid, 
-									String column, String find, String cnt) {
-		return boarddao.list(pageNum, limit, boardid, column, find, cnt);
+									String column, String find, String cnt, String cate) {
+		return boarddao.list(pageNum, limit, boardid, column, find, cnt, cate);
 	}
 
 	public Board getBoard(Integer num) {

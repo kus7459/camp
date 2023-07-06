@@ -47,7 +47,7 @@ public class BoardDao {
 	
 	
 	public List<Board> list(Integer pageNum, int limit, String boardid
-			,String column, String find, String cnt) {
+			,String column, String find, String cnt,String cate) {
 		param.clear();
 		param.put("startrow", (pageNum-1)*limit); //1페이지 :0 , 2페이지 :10
 		param.put("limit", limit);
@@ -55,6 +55,7 @@ public class BoardDao {
 		param.put("column", column);
 		param.put("find", find);
 		param.put("cnt", cnt);
+		param.put("cate", cate);
 		return template.getMapper(cls).select(param);
 	}
 	public Board selectOne(Integer num) {

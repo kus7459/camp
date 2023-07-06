@@ -93,13 +93,13 @@
 <br><br>
 
 <p><div id="chatStatus"></div>
-<textarea rows="15" cols="40" name="chatMsg"></textarea><br>
+<textarea rows="15" cols="40" name="chatMsg" readonly="readonly"></textarea><br>
 메시지입력 : <input type="text" name="chatInput">
 
 <h3 style="width:90%; margin: 0 auto; font-weight: bold;">${boardName}</h3>
 <br>
 <div class="w3-center" style="border: 1px solid #333; border-radius: 10px; padding: 10px;
-	width:90%; margin: 0 auto">
+	width:95%; margin: 0 auto">
 	<h4>${boardName}목록</h4>
 	<table class="w3-table">
 		<tr>
@@ -119,7 +119,7 @@
 					searchform.searchtype.value="${param.searchtype}";
 				</script>	
 			</td>
-			<td colspan="3">
+			<td colspan="2">
 				<input type="text" name="searchcontent"
 					value="${param.searchcontent}"  class="form-control">
 			</td>
@@ -127,6 +127,8 @@
 				<input type="submit" value="검색" class="btn btn-lime">
 				<input type="button" value="전체게시물보기" class="btn btn-gray"
 				onclick="location.href='list?boardid=${boardid}'">
+			</td>
+			<td colspan="1">	
 				<select name="cnt" class="form-control" style="border: 1px solid #333;">
 					<option value="">날짜순</option>
 					<option value="readcnt">조회순</option>
@@ -135,6 +137,19 @@
 					<script type="text/javascript">
 						searchform.cnt.value="${param.cnt}";
 					</script>
+			</td>
+			<td colspan="1">		
+				<c:if test="${boardid == '2' }">
+				<select name="cate" class="form-control" style="border: 1px solid #333;">
+					<option value="">선택하세요</option>
+					<option value="[캠핑장후기]">캠핑장후기</option>
+					<option value="[여행팁]">여행팁</option>
+					<option value="[자유게시판]">자유게시판</option>
+				</select>
+					<script type="text/javascript">
+						searchform.cate.value="${param.cate}";
+					</script>
+				</c:if>
 			</td>
 			</form>
 		</tr>
@@ -167,13 +182,13 @@
 					<c:if test="${empty board.fileurl}">&nbsp;&nbsp;&nbsp;</c:if>
 					<c:forEach begin="1" end="${board.grplevel}">&nbsp;&nbsp;</c:forEach>
 					<c:if test="${board.grplevel >0 }">ㄴ</c:if>
-				<a href="detail?num=${board.num}">${board.title}</a>
+				<a href="detail?num=${board.num}">${board.cate}${board.title}</a>
 				</c:if>
 				
 				<c:if test="${board.secret == 1 }">
 				<c:choose>
-	                <c:when test="${board.writer eq loginUser.id || loginUser.id == 'admin'}">
-	                    <a href="detail?num=${board.num}">${board.title}</a>
+	                <c:when test="${board.writer eq loginUser.id || loginUser.id eq 'admin'}">
+	                    <a href="detail?num=${board.num}">${board.cate}${board.title}</a>
 	                </c:when>
 	                <c:otherwise>비밀글은 작성자와 관리자만 볼 수 있습니다.</c:otherwise>
 	            </c:choose> 

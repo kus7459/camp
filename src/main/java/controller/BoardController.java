@@ -94,8 +94,12 @@ public class BoardController {
 		String column = param.get("searchtype");
 		String find = param.get("searchcontent");
 		String cnt = param.get("cnt");
+		String cate = param.get("cate");
 		if(cnt == null || cnt.trim().equals("")) {
 			cnt = null;
+		}
+		if(cate == null || cate.trim().equals("")) {
+			cate = null;
 		}
 
 		System.out.println("찾기 : "+column + find + cnt);
@@ -132,7 +136,7 @@ public class BoardController {
 		int listcount = service.boardcount(boardid,column,find); //등록된 게시물 건수
 		// boardlist : 현재 페이지에 보여줄 게시물 목록
 	
-		List<Board> boardlist = service.boardlist(pageNum,limit,boardid,column,find,cnt);
+		List<Board> boardlist = service.boardlist(pageNum,limit,boardid,column,find,cnt,cate);
 		/*
 		 * for(Board b : boardlist) { Good good = new Good();
 		 * good.setGoodno(b.getNum()); good.setGoodtype(1); int

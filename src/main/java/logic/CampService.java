@@ -197,4 +197,8 @@ public class CampService {
 		saleDao.saledelete(userid, saleid);
 	}
 
+	public Camp mpllist(int goodno) {
+		return campDao.mpllist(goodno);
+	}
+
 }

@@ -83,4 +83,9 @@ public class CampDao {
 		return template.getMapper(cls).lovelist2(param);
 	}
 
+
+	public Camp mpllist(int goodno) {
+		return template.getMapper(cls).mpllist(goodno);
+	}
+
 }

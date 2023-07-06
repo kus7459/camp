@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
 import logic.Good;
@@ -27,8 +28,8 @@ public interface GoodMapper {
 			+ "	where goodno=#{goodno} and goodtype=#{goodtype}")
 	int count(Good good);
 
-	@Select("select * from good where userId = #{value} and goodtype=1")
-	List<Good> goodlist(String id);
+	@Select("select * from good where userId = #{id} and goodtype=#{type}")
+	List<Good> goodlist(@Param("id") String id, @Param("type") int i);
 
 	
 }

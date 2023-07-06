@@ -114,6 +114,9 @@ public interface CampMapper {
 			+ "</script>")
 	List<Camp> lovelist2(Map<String, Object> param);
 
+	@Select("select * from campdetail where contentId = #{value}")
+	Camp mpllist(int goodno);
+
 //	@Select("<script>"
 //			+ "select * from campdetail where themaEnvrnCl regexp #{themelist} "
 //			+ " and posblFcltyCl regexp #{aroundlist} "

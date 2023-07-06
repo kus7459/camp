@@ -211,16 +211,16 @@
 					<th>캠핑장 이름</th>
 					<th>전화번호</th>
 					<th>주소</th>
-					<th>찜</th>
-					<th>조회수</th>
+					<th>홈페이지</th>
+					<th>간단설명</th>
 				</tr>
 				<c:forEach items="${camplist}" var="cam">
 					<tr>
 						<td>${cam.facltNm}</td>
 						<td>${cam.tel}</td>
 						<td>${cam.addr1}</td>
-						<td><fmt:formatDate value="${cam.regdate}" pattern="yyyy-MM-dd HH:mm"/></td>
-						<td>${cam.content}</td>
+						<td>${cam.homepage}</td>
+						<td>${cam.lineIntro}</td>
 					</tr>
 				</c:forEach>
 			</table>

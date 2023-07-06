@@ -287,7 +287,7 @@ public class CampController {
 			like.setGoodno(contentId);
 			like.setUserId(loginUser.getId());
 			like.setGoodtype(2);
-			int likeselect = bservice.goodselect(like); // 좋아요눌렀는지 확인
+			int likeselect = bservice.goodselect(like); // 좋아요(2)눌렀는지 확인
 			if(likeselect == 0) {
 				mav.addObject("likeselect",0);
 			}else {
@@ -297,7 +297,7 @@ public class CampController {
 			love.setGoodno(contentId);
 			love.setUserId(loginUser.getId());
 			love.setGoodtype(3);
-			int loveselect = bservice.goodselect(love); // 좋아요눌렀는지 확인
+			int loveselect = bservice.goodselect(love); // 찜(3)눌렀는지 확인
 			if(loveselect == 0) {
 				mav.addObject("loveselect",0);
 			}else {

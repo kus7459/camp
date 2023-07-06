@@ -158,8 +158,8 @@ public class BoardService {
 	public List<Comment> mpclist(String id) {
 		return boarddao.mpclist(id);
 	}
-	public List<Good> goodlist(String id) {
-		return gooddao.goodlist(id);
+	public List<Good> goodlist(String id, int i) {
+		return gooddao.goodlist(id,i);
 	}
 	public Board mpglist(int goodno) {
 		return boarddao.mpglist(goodno);

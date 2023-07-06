@@ -52,7 +52,9 @@ import com.mchange.v2.cfg.PropertiesConfigSource.Parse;
 import exception.LoginException;
 import logic.Board;
 import logic.BoardService;
+import logic.Camp;
 import logic.CampService;
+import logic.CampingService;
 import logic.Cart;
 import logic.Comment;
 import logic.Good;
@@ -70,6 +72,8 @@ public class UserController {
 	@Autowired
 	private BoardService bservice;
 	
+	@Autowired
+	private CampingService cservice;
 	@Autowired
 	private CipherUtil util;
 	
@@ -515,16 +519,22 @@ public class UserController {
 		List<Comment> mpclist = bservice.mpclist(id);
 		mav.addObject("mpblist", mpblist);
 		mav.addObject("mpclist", mpclist);
-		List<Good> goodlist = bservice.goodlist(id);
+		List<Good> goodlist = bservice.goodlist(id,1);
 		List<Board> boardlist = new ArrayList<>();
+		List<Camp> camplist = new ArrayList<>();
 		try {
 			for(Good g : goodlist) { 
 				boardlist.add(bservice.mpglist(g.getGoodno()));
+			}
+			goodlist = bservice.goodlist(id, 3);
+			for(Good g : goodlist) { 
+				camplist.add(service.mpllist(g.getGoodno()));
 			}
 		}catch (NullPointerException e) {
 			e.printStackTrace();
 		}
 		mav.addObject("boardlist", boardlist);
+		mav.addObject("camplist", camplist);
 		return mav;
 	}
 	

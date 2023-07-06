@@ -36,7 +36,7 @@ public class GoodDao {
 		return template.getMapper(cls).count(good);
 	}
 
-	public List<Good> goodlist(String id) {
-		return template.getMapper(cls).goodlist(id);
+	public List<Good> goodlist(String id, int i) {
+		return template.getMapper(cls).goodlist(id,i);
 	}
 }

@@ -305,6 +305,7 @@
 	</div>
 </div>
 	<script>
+		// 결제 내역 지우기
 		function saledelete(saleid) {
 			console.log(saleid);
 			document.saledeleteform.saleid.value=saleid;

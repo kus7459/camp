@@ -51,8 +51,11 @@ import com.mchange.v2.cfg.PropertiesConfigSource.Parse;
 
 import exception.LoginException;
 import logic.Board;
+import logic.BoardService;
 import logic.CampService;
 import logic.Cart;
+import logic.Comment;
+import logic.Good;
 import logic.Sale;
 import logic.User;
 import util.CipherUtil;
@@ -63,6 +66,9 @@ public class UserController {
 	
 	@Autowired
 	private CampService service;
+	
+	@Autowired
+	private BoardService bservice;
 	
 	@Autowired
 	private CipherUtil util;
@@ -80,6 +86,16 @@ public class UserController {
 	public ModelAndView main() {
 		ModelAndView mav = new ModelAndView();
 		mav.addObject(new User());
+		List<Board> boardlist = bservice.mainlist(2);
+		List<Board> noticelist = bservice.mainlist(1);
+		mav.addObject("boardlist",boardlist);
+		mav.addObject("noticelist", noticelist);
+		return mav;
+	}
+	
+	@PostMapping("search")
+	public ModelAndView search() {
+		ModelAndView mav = new ModelAndView("../site/search");
 		return mav;
 	}
 	
@@ -495,6 +511,20 @@ public class UserController {
 		mav.addObject("sumprice", sumprice);
 		mav.addObject("cartlist", cartlist);
 		mav.addObject("user", user);
+		List<Board> mpblist = bservice.mpblist(id);
+		List<Comment> mpclist = bservice.mpclist(id);
+		mav.addObject("mpblist", mpblist);
+		mav.addObject("mpclist", mpclist);
+		List<Good> goodlist = bservice.goodlist(id);
+		List<Board> boardlist = new ArrayList<>();
+		try {
+			for(Good g : goodlist) { 
+				boardlist.add(bservice.mpglist(g.getGoodno()));
+			}
+		}catch (NullPointerException e) {
+			e.printStackTrace();
+		}
+		mav.addObject("boardlist", boardlist);
 		return mav;
 	}
 	

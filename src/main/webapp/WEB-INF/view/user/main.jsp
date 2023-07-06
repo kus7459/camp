@@ -39,7 +39,7 @@
       <div class="campsearch">
          <h3>캠핑장 찾기</h3>
          <div class="searchWrap">
-            <form action="campsearch" method="post">
+            <form action="search" method="post">
                <table class="w3-table">
                   <tr>
                      <th>지역</th>
@@ -51,11 +51,6 @@
                      <td id="gi">
                         <select name="gu" onchange="getText('gu')" class="w3-input w3-border w3-round-large">
                            <option value="">구,군 선택</option>
-                        </select>
-                     </td>
-                     <td id="dong">
-                        <select name="dong" class="w3-input w3-border w3-round-large">
-                           <option value="">동,리 선택</option>
                         </select>
                      </td>
                   </tr>
@@ -161,9 +156,18 @@
             <tr style="background-color: #cddc39;">
                <th>게시판</th>
                <th>작성자</th>
-               <th>내용</th>
+               <th>제목</th>
                <th>조회수</th>
             </tr>
+            <c:forEach items="${boardlist}" var="b">
+            <tr>
+            	<td>자유게시판</td>
+            	<td>${b.writer}</td>
+            	<td>${b.title}</td>
+            	<td>${b.readcnt}</td>
+            </tr>
+            
+            </c:forEach>
          </table>
       </div>
       <div>
@@ -175,6 +179,14 @@
                <th>내용</th>
                <th>조회수</th>
             </tr>
+            <c:forEach items="${noticelist}" var="n">
+            <tr>
+            	<td>공지사항</td>
+            	<td>${n.writer}</td>
+            	<td>${n.title}</td>
+            	<td>${n.readcnt}</td>
+            </tr>
+            </c:forEach>
          </table>
       </div>
    </div>
@@ -230,57 +242,54 @@
             })
         }
    
-      // 지역 선택
-      function getSido() { // 서버에서 문자열로 전달 받기
-         $.ajax({
-            url : "${path}/ajax/select",
-            success : function(data) {
-               console.log(data) // data : [서울특별시, ... 제주특별자치도], 문자열. 배열 아님.
-               // data를 배열로 만들어서 처리.      [ 다음부터 ] 앞까지 , 로 분리   => arr: 배열
-               let arr = data.substring(data.indexOf("[") + 1,
-                     data.indexOf("]")).split(",");
-               $.each(arr, function(i, item) {
-                  $("select[name=si]").append(function() {
-                     return "<option>" + item + "</option>"
-                  })
-               })
-            }
-         })
-      }
-      function getText(name) { //si : 시도 선택, gu:구군 선택
-         let city = $("select[name='si']").val();
-         let gun = $("select[name='gu']").val();
-         let disname;
-         let toptext = "구, 군 선택";
-         let params = "";
-
-         if (name == "si") { // 시, 도를 선택한 경우
-            params = "si=" + city.trim(); // city(시,도)만 넣어주고
-            disname = "gu";
-         } else if (name == "gu") { // 구, 군을 선택한 경우
-            params = "si=" + city.trim() + "&gu=" + gun.trim(); // si와 gu를 같이 넣어주고 
-            disname = "dong"; // select 영역은 dong, 
-            toptext = "동, 리 선택";
-         } else { // 다 아니면 아무것도 하지 마
-            return;
-         }
-         $.ajax({
-            url : "${path}/ajax/select",
-            type : "POST",
-            data : params,
-            success : function(arr) {
-               $("select[name=" + disname + "] option").remove(); // 시를 선택했으면 출력 select 태그의 option 객체를 제거해라. 
-               $("select[name=" + disname + "]").append(function() { // append가 돼서 제거를 안 하면 계속 출력 됨
-                  return "<option value=''>" + toptext + "</option>"
-               })
-               $.each(arr, function(i, item) { // 서버에서 전송 받은 배열값을 option 객체에 추가
-                  $("select[name=" + disname + "]").append(function() {
-                     return "<option>" + item + "</option>"
-                  })
-               })
-            }
-         })
-      }
+  	function getSido() {  //서버에서 리스트객체를 배열로 직접 전달 받음
+  		$.ajax({
+  			   url : "${path}/ajax/select",
+  			   success : function(arr) {
+  				   //arr : 서버에서 전달 받는 리스트 객체를 배열로 인식함
+  				   $.each(arr,function(i,item){
+  					   // i : 인덱스. 첨자. 0부터시작
+  					   //item : 배열의 요소
+  					   $("select[name=si]").append(function(){
+  						   return "<option>"+item+"</option>"
+  					   })
+  				   })
+  			   }
+  		   })
+     }
+  	function getText(name) { //si
+  		let city = $("select[name='si']").val();  //시도 선택값 
+  		let gu = $("select[name='gu']").val();    //구군 선택값
+  		let disname;
+  		let toptext="구군을 선택하세요";
+  		let params = "";
+  		if (name == "si") { //시도 선택한 경우
+  			params = "si=" + city.trim();
+  			disname = "gu"; 
+  		} else if (name == "gu") { //구군 선택한 경우 
+  			params = "si="+city.trim()+"&gu="+gu.trim();
+  			disname = "dong";
+  			toptext="동리를 선택하세요";		
+  		} else { 
+  			return ;
+  		}
+  		$.ajax({
+  		  url : "${path}/ajax/select",
+  		  type : "POST",    
+  		  data : params,  			
+  		  success : function(arr) {
+  			  $("select[name="+disname+"] option").remove(); //출력 select 태그의 option 제거
+  			  $("select[name="+disname+"]").append(function(){
+  				  return "<option value=''>"+toptext+"</option>"
+  			  })
+  			  $.each(arr,function(i,item) {  //서버에서 전송 받은 배열값을 option 객체로 추가
+  				  $("select[name="+disname+"]").append(function(){
+  					  return "<option>"+item+"</option>"
+  				  })
+  			  })
+  		  }
+  	   })				
+  	}
  		
     </script>
 </body>

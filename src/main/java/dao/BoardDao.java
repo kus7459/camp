@@ -19,6 +19,7 @@ import org.springframework.stereotype.Repository;
 
 import dao.mapper.BoardMapper;
 import logic.Board;
+import logic.Comment;
 
 
 @Repository
@@ -100,6 +101,22 @@ public class BoardDao {
 	public void likecntDown(Integer boardNum) {
 		template.getMapper(cls).likecntDown(boardNum);
 		
+	}
+
+	public List<Board> mainlist(int i) {
+		return template.getMapper(cls).mainlist(i);
+	}
+
+	public List<Board> mpblist(String id) {
+		return template.getMapper(cls).mpblist(id);
+	}
+
+	public List<Comment> mpclist(String id) {
+		return template.getMapper(cls).mpclist(id);
+	}
+
+	public Board mpglist(int goodno) {
+		return template.getMapper(cls).mpglist(goodno);
 	}
 	
 }

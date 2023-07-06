@@ -149,6 +149,22 @@ public class BoardService {
 	public void commUpdate(int num, int seq, String text) {
 		commentdao.update(num, seq, text);
 	}
+	public List<Board> mainlist(int i) {
+		return boarddao.mainlist(i);
+	}
+	public List<Board> mpblist(String id) {
+		return boarddao.mpblist(id);
+	}
+	public List<Comment> mpclist(String id) {
+		return boarddao.mpclist(id);
+	}
+	public List<Good> goodlist(String id) {
+		return gooddao.goodlist(id);
+	}
+	public Board mpglist(int goodno) {
+		return boarddao.mpglist(goodno);
+	}
+	
 	
 	
 	

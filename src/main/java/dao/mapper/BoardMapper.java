@@ -11,6 +11,7 @@ import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
 import logic.Board;
+import logic.Comment;
 
 public interface BoardMapper {
 	String select =" select num,writer,pass,"
@@ -91,4 +92,16 @@ public interface BoardMapper {
 	
 	@Update("update board set likecnt = ifnull(likecnt,0)-1 where num = #{value}")
 	void likecntDown(Integer boardNum);
+
+	@Select("select * from board where boardid = #{value} order by readcnt desc limit 0,5")
+	List<Board> mainlist(int i);
+
+	@Select("select * from board where writer = #{value} order by regdate desc")
+	List<Board> mpblist(String id);
+
+	@Select("select * from comment where writer =#{value} order by regdate desc")
+	List<Comment> mpclist(String id);
+
+	@Select("select * from board where num =#{value}")
+	Board mpglist(int goodno);
 }

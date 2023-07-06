@@ -168,12 +168,12 @@
 					<th>좋아요</th>
 					<th>조회수</th>
 				</tr>
-				<c:forEach items="${boardlist}" var="b">
+				<c:forEach items="${mpblist}" var="b">
 					<tr>
 						<td>${b.title}</td>
 						<td>${b.writer}</td>
-						<td>${b.regdate}</td>
-						<td></td>
+						<td><fmt:formatDate value="${b.regdate}" pattern="yyyy-MM-dd HH:mm"/></td>
+						<td>${b.likecnt }</td>
 						<td>${b.readcnt}</td>
 					</tr>
 				</c:forEach>
@@ -191,10 +191,10 @@
 					<th>날짜</th>
 					<th>내용</th>
 				</tr>
-				<c:forEach items="${commentlist}" var="com">
+				<c:forEach items="${mpclist}" var="com">
 					<tr>
 						<td>${com.writer}</td>
-						<td>${com.regdate}</td>
+						<td><fmt:formatDate value="${com.regdate}" pattern="yyyy-MM-dd HH:mm"/></td>
 						<td>${com.content}</td>
 					</tr>
 				</c:forEach>
@@ -219,7 +219,7 @@
 						<td>${cam.facltNm}</td>
 						<td>${cam.tel}</td>
 						<td>${cam.addr1}</td>
-						<td>${cam.regdate}</td>
+						<td><fmt:formatDate value="${cam.regdate}" pattern="yyyy-MM-dd HH:mm"/></td>
 						<td>${cam.content}</td>
 					</tr>
 				</c:forEach>
@@ -233,21 +233,16 @@
 			</h3>
 			<table class="w3-table info-table w3-centered">
 				<tr style="background-color: #cddc39">
-					<th>좋아요</th>
 					<th>제목</th>
 					<th>글쓴이</th>
 					<th>날짜</th>
 					<th>조회수</th>
 				</tr>
-				<c:forEach items="${goodlist}" var="g">
-					<tr>
-						<td>${g.goodtype}</td>
-				</c:forEach>
 				<c:forEach items="${boardlist}" var="b">
-						<td>${g.title}</td>
+						<td>${b.title}</td>
 						<td>${b.writer}</td>
+						<td><fmt:formatDate value="${b.regdate}" pattern="yyyy-MM-dd HH:mm"/></td>
 						<td>${b.readcnt}</td>
-						<td>${b.regdate}</td>
 					</tr>
 				</c:forEach>
 			</table>

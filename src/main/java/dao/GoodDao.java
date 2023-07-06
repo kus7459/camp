@@ -1,6 +1,7 @@
 package dao;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
@@ -33,5 +34,9 @@ public class GoodDao {
 
 	public int count(Good good) {
 		return template.getMapper(cls).count(good);
+	}
+
+	public List<Good> goodlist(String id) {
+		return template.getMapper(cls).goodlist(id);
 	}
 }

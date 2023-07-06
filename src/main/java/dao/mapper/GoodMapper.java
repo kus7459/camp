@@ -1,5 +1,6 @@
 package dao.mapper;
 
+import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Delete;
@@ -25,6 +26,9 @@ public interface GoodMapper {
 	@Select("select ifnull(count(*),0) from good"
 			+ "	where goodno=#{goodno} and goodtype=#{goodtype}")
 	int count(Good good);
+
+	@Select("select * from good where userId = #{value} and goodtype=1")
+	List<Good> goodlist(String id);
 
 	
 }

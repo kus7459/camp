@@ -176,11 +176,12 @@ public class CartController {
 				mav.addObject("cartlist", saleitem);
 			} else {	// 장바구니 구매
 				List<Cart> cart = service.getuserCart(loginUser.getId(), itemid);
-				mav.addObject("cartlist", cart);
+				System.out.println(cart);
 				sum += cart.get(0).getPrice() * cart.get(0).getQuantity();
 				service.saleinsert(saleid, loginUser.getId(), cart.get(0).getItemid(), cart.get(0).getName(),
-						cart.get(0).getQuantity(), cart.get(0).getPictureUrl(), cart.get(0).getPrice() * cart.get(0).getQuantity(), 
+						cart.get(0).getQuantity(), cart.get(0).getPictureUrl(), (cart.get(0).getPrice() * cart.get(0).getQuantity()), 
 						Integer.parseInt(param.get("postcode")), param.get("address"), param.get("detailAddress"));
+				mav.addObject("cartlist", cart);
 			} 
 			
 		}

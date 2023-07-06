@@ -489,7 +489,6 @@ public class UserController {
 		// 주문내역 불러오기
 		List<Sale> salelist = service.saleSelect(loginUser.getId());
 		Integer size = salelist.size();
-		System.out.println("사이즈"+size);
 		
 		// 게시판 등록 글
 //		List<Board> boardlist = service.boardlist(id);
@@ -498,9 +497,18 @@ public class UserController {
 		
 		// 좋아요
 		
-		// 구매 내역
+		// 장바구니
 		List<Cart> cartlist = service.getuserCart(id, 0);
-
+		int total = 0;
+		if(cartlist.size() > 0) {
+			for(int i = 0; i<cartlist.size(); i++) {
+				total += cartlist.get(i).getPrice() * cartlist.get(i).getQuantity();
+			}
+		} else {
+			total = 0;
+		}
+		mav.addObject("total", total);
+		
 		// 총 금액
 		List<Integer> sumprice = new ArrayList<>();
 		Integer sum = 0;
@@ -519,6 +527,7 @@ public class UserController {
 		mav.addObject("sumprice", sumprice);
 		mav.addObject("cartlist", cartlist);
 		mav.addObject("user", user);
+		
 		List<Board> mpblist = bservice.mpblist(id);
 		List<Comment> mpclist = bservice.mpclist(id);
 		mav.addObject("mpblist", mpblist);

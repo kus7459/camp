@@ -145,30 +145,42 @@
 		let gunname = $("select[name='gu']").val();    //구군 선택값
 		let dongname = $("select[name='dong']").val();
 		let params = "si="+siname+"&gu="+gunname+"&dong="+dongname;
+		let html;
 		$.ajax({
 			url : "${path}/ajax2/selectXy",
 			type : "POST",
 			data : params,
 			success : function(data) {
-				let html;
 				let obj = JSON.parse(data);
-				let resultMsg = obj.response.header.resultMsg;
-			
-				if(resultMsg === "NO_DATA") {
-					html = "<p>검색 결과가 없습니다</p>";
-					$("#result").html(html);
-				} else if (resultMsg === "NORMAL_SERVICE") {
-					let items = obj.response.body.items;
-					html = "<h4 style='font-weight: bold'>"+siname+" "+gunname+" "+dongname+" 날씨</h4>";
-					console.log(items.item[0].category);
-					if(items.item[0].category == "TMP") { // 기온
-						html+= "<table><tr><th>"+this.fcstValue+"<th></tr>"
+				let dangi = obj[0].dangi
+				let rain = obj[1].rain
+				let temp = obj[2].temp
+	
+				for(i=0; i<=5; i++) {
+					let r = rain[i]
+					for(j=3; j<=7; j++) {
+						let p = "wf"+j+"Am"
+						console.log(r[p])
 					}
-					
-					
-					html += "</table>";
-					$("#result").html(html);
 				}
+				
+				let date = new Date();
+				let mon = date.getMonth() + 1;
+				let day = date.getDate();
+				
+				let html = "<table><tr>";
+				html += "<td><b>오늘</b><p>"+mon+"-"+(day+3)+"</p></td>"	// 날짜
+				html+= "<td>"+rain[0].wf3Am+"</td>"						// 오전
+				html+= "<td>"+rain[0].wf3Pm+"</td>"						// 오후
+				html+= "<td>"+"<b style='color:skyblue'>"+temp[0].taMin3+"</b>"
+				html+= "/ <b style='color:red'>"+temp[0].taMax3+"</b>"+"</td>"						// 최저 최고
+				html+= "<td></td>"
+				html+= "<td></td>"
+				html+= "<td></td>"
+				html+= "<td></td>"
+				html+="</tr></table>"
+				
+				$("#result").html(html);
 			}
 		})
 		

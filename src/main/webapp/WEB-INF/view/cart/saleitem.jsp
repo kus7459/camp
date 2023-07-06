@@ -45,11 +45,12 @@
 					<c:forEach items="${cartlist}" var="cart">
 						<input type="hidden" name="name" value="${cart.name}">
 						<input type="hidden" name="pictureUrl" value="${cart.pictureUrl}">
+						<input type="hidden" name="quantity" value="${cart.quantity}">
 						<c:if test="${itemid == 0}">
 							<input type="hidden" name="itemid" value="0">
 						</c:if>
 						<c:if test="${itemid == 1}">
-							<input type="hidden" name="itemid" value="${cart.itemid }">
+							<input type="hidden" name="itemid" value="${cart.itemid}">
 						</c:if>
 						<tr id="del${cart.itemid}">
 							<td style="width:10%">
@@ -77,7 +78,7 @@
 							<b style="color:#333">${saleitem.name}</b>
 						</td>
 						<td><fmt:formatNumber value="${saleitem.price}" pattern="###,###"/></td>
-						<td>${quantity}</td>
+						<td>${saleitem.quantity}</td>
 					</tr>
 					<tr>
 						<td colspan="4" class="w3-center">

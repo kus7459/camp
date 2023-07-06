@@ -69,11 +69,9 @@ public class BoardController {
 			return mav;
 		}
 		String boardid = (String)request.getSession().getAttribute("boardid");
-//		int secret = board.getSecret();
 		if(boardid == null) boardid = "1";
 		request.getSession().setAttribute("boardid", boardid);
 		board.setBoardid(boardid);
-//		board.setSecret(secret);
 		service.boardWrite(board, request);
 		mav.setViewName("redirect:list?boardid="+boardid);
 		return mav;
@@ -382,19 +380,19 @@ public class BoardController {
 	@PostMapping("delete")
 	public ModelAndView loginCheckdelete(Board board, BindingResult bresult) {
 		ModelAndView mav = new ModelAndView();
-		if(board.getPass() == null || board.getPass().trim().equals("")) {
-			bresult.reject("error.required.password");
+		if(board.getWriter() == null || board.getWriter().trim().equals("")) {
+			bresult.reject("error.required.userid");
 			return mav;
 		}
 		Board getboard = service.getBoard(board.getNum());
-		System.out.println(getboard.getPass() +"=="+ board.getNum());
+		System.out.println(getboard.getWriter().equals( board.getWriter()));
 		// 데이터베이스 비밀번호 == 입력된 비밀번호
-		if(!getboard.getPass().equals(board.getPass())) {
-			bresult.reject("error.board.password");
+		if(!getboard.getWriter().equals( board.getWriter())) {
+			bresult.reject("error.required.userid");
 			return mav;
 		}
 		try{
-			service.boardDelete(board.getNum()); //파일업로드,db게시글 수정
+			service.boardDelete(board.getNum()); 
 			mav.setViewName("redirect:list?boardid="+getboard.getBoardid());
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -443,10 +441,11 @@ public class BoardController {
 		return mav;
 	}
 	@RequestMapping("commdel")
-	public String commdel(int num, int seq,HttpSession session) {
+	public String commdel(int num, int seq, HttpSession session) {
 		// 현재 모든 댓글을 아무나 삭제가능=> 수정 필요
 		// 업무요건1 : 회원만 댓글 작성 가능 => 작성한 글만 삭제가능
 		// 업무요건2 : 로그아웃 상태에서 댓글 작성가능 => 비밀번호 추가. 비밀번호 검증필요
+		System.out.println("댓글삭제"+num+"dd"+seq);
 		Comment dbcomm = service.commSelectOne(num,seq);
 		User loginUser = (User)session.getAttribute("loginUser");
 		if(loginUser.getId().equals(dbcomm.getWriter()) 

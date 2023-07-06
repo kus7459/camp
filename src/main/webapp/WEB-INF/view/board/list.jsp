@@ -155,7 +155,7 @@
 		</tr>
 		<c:if test="${listcount>0}"> <!-- 등록된 게시물 건수  -->
 			<tr>
-				<td colspan="6" class="w3-right-align"><b>글 개수</b>: ${listcount}</td>
+				<td colspan="7" class="w3-right-align"><b>글 개수</b>: ${listcount}</td>
 			</tr>
 			<tr style="background-color:#cddc39; color:#000">
 				<th>번호</th>
@@ -166,7 +166,7 @@
 				<th>좋아요</th>
 			</tr>
 		 	<tr>
-	     	<th colspan="6" style="padding:10px 0px">
+	     	<th colspan="7" style="padding:10px 0px">
 	     		<hr style="margin:0; opacity:0">
 	     	</th>
 	     </tr>
@@ -208,7 +208,7 @@
 				<td>${board.likecnt}</td><%--좋아요 수 --%>
 			</tr>		
 		</c:forEach>
-			<tr><td colspan="6" class="w3-center">
+			<tr><td colspan="7" class="w3-center">
 			<c:if test="${pageNum > 1 }">
 				<a href="javascript:listpage('${pageNum-1}')">[이전]</a>
 			</c:if>
@@ -226,10 +226,10 @@
 			</td></tr>
 		</c:if><!-- 등록된 게시물이 있는 경우 끝 -->
 		<c:if test="${listcount == 0 }">
-			<tr><td colspan="6">등록된 게시물이 없습니다.</td></tr>
+			<tr><td colspan="7">등록된 게시물이 없습니다.</td></tr>
 		</c:if>
 		<tr>
-			<td colspan="6">
+			<td colspan="7">
 				<c:choose>
 	                <c:when test="${boardid == 1 && loginUser.id == 'admin'}">
 	            	<button onclick="location.href='write'" class="btn btn-lime w3-right">글쓰기</button>        

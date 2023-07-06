@@ -36,7 +36,6 @@ public class Board {
 	private int num;
 	@NotEmpty(message ="글쓴이를 입력하세요")
 	private String writer;
-	@NotEmpty(message ="비밀번호 입력하세요")
 	private String pass;
 	@NotEmpty(message ="제목 입력하세요")
 	private String title;

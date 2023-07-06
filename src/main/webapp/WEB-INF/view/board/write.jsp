@@ -32,11 +32,6 @@
 			</td>
 		</tr>
 		<tr>
-			<th>비밀번호</th>
-			<td><form:input path="pass" class="w3-input"/>
-			<font color="red"><form:errors path="pass"/></font></td>
-		</tr>
-		<tr>
 			<th>제목</th>
 			<td><form:input path="title" class="w3-input"/>
 			<font color="red"><form:errors path="title"/></font></td>

@@ -133,8 +133,8 @@
 						<td><fmt:formatDate value="${c.regdate }" pattern="yyyy-MM-dd HH:mm:ss"/> </td>
 						<td class="w3-right">
 							<form action="commdel" method="post" name="commdel${stat.index}">
-								<input type="hidden" id="num" value="${param.num}">
-								<input type="hidden" id="seq" value="${c.seq}">
+								<input type="hidden" id="num" name ="num" value="${board.num}">
+								<input type="hidden" id="seq" name ="seq" value="${c.seq}">
 								<c:if test="${loginUser.id == c.writer || loginUser.id eq 'admin'}">
 								<a class="w3-btn w3-border w3-blue up up${c.seq}" 
 											href="javascript:commupdate1(${c.seq})">수정</a>

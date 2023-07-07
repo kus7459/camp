@@ -562,5 +562,30 @@
 			}
 		})
 	</script>
+	<script>
+	/*const options = {
+		enableHighAccuracy: true,
+		maximumAge: 30000,
+		timeout: 27000
+	};*/
+	/*function error() {
+		  alert("죄송합니다. 위치 정보를 사용할 수 없습니다.");
+		}
+	
+    function success({ coords, timestamp }) {
+        const latitude = coords.latitude;   // 위도
+        const longitude = coords.longitude; // 경도
+        
+        alert("위도: "+latitude+", 경도: "+longitude+", 위치 반환 시간: "+timestamp);
+    }
+
+    function getUserLocation() {
+        if (!navigator.geolocation) {
+           throw "위치 정보가 지원되지 않습니다.";
+        }
+        navigator.geolocation.watchPosition(success,error);
+        }
+        getUserLocation();*/
+    </script>
 </body>
 </html>

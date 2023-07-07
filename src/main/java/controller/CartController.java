@@ -123,10 +123,10 @@ public class CartController {
 				}
 			}
 		}
-		
 		// 제품 detail 에서 바로 구매 시
 		Integer itemid = id;
 		Item Item = service.itemOne(itemid);
+		System.out.println(Item);
 		mav.addObject("saleitem", Item);
 		mav.addObject("quantity", quantity);
 		

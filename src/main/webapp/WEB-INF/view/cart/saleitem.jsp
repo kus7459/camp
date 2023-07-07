@@ -78,7 +78,7 @@
 							<b style="color:#333">${saleitem.name}</b>
 						</td>
 						<td><fmt:formatNumber value="${saleitem.price}" pattern="###,###"/></td>
-						<td>${saleitem.quantity}</td>
+						<td>${quantity}</td>
 					</tr>
 					<tr>
 						<td colspan="4" class="w3-center">

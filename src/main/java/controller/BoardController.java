@@ -131,7 +131,7 @@ public class BoardController {
 			case "3" : boardName = "QnA"; break;	
 		}
 		int limit = 10; // 한페이지당 보여줄 게시물 건수
-		int listcount = service.boardcount(boardid,column,find); //등록된 게시물 건수
+		int listcount = service.boardcount(boardid,column,find,cate); //등록된 게시물 건수
 		// boardlist : 현재 페이지에 보여줄 게시물 목록
 	
 		List<Board> boardlist = service.boardlist(pageNum,limit,boardid,column,find,cnt,cate);
@@ -392,7 +392,7 @@ public class BoardController {
 			return mav;
 		}
 		try{
-			service.boardDelete(board.getNum()); 
+			service.boardDelete(board.getNum());
 			mav.setViewName("redirect:list?boardid="+getboard.getBoardid());
 		} catch (Exception e) {
 			e.printStackTrace();

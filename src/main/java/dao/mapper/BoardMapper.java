@@ -31,7 +31,8 @@ public interface BoardMapper {
 
 	@Select({"<script>",
 			" select count(*) from board where boardid=#{boardid} ",
-			" <if test='column != null'> and ${column} like '%${find}%' </if> ",
+			" <if test='column != null'> and ${column} like '%${find}%' </if> "
+			+ "<if test='cate != null'> and cate = #{cate} </if>",
 			"</script>"})
 	int count(Map<String, Object> param);
 
@@ -39,11 +40,11 @@ public interface BoardMapper {
 	select ,
 	" <if test='num !=null '> where num = #{num}</if>",
 	" <if test='boardid != null'> where boardid =#{boardid} </if>",
-	" <if test='column != null'> and #{column} like '%#{find}%' </if> ",
+	" <if test='column != null'> and ${column} like '%${find}%' </if> ",
 	" <if test='cate != null '> and cate =#{cate}</if>",
 	//"<if test ='limit !=null'> grpstep asc limit #{startrow}, #{limit}</if>",
 	//" <if test ='cnt == null'> order by regdate desc </if>",
-	" <if test ='cnt != null '> order by #{cnt} desc </if>",
+	" <if test ='cnt != null '> order by ${cnt} desc </if>",
 	" <if test ='cnt == null '> order by regdate desc </if>",
 	" <if test ='limit !=null'> limit #{startrow}, #{limit} </if>",
 	" </script>"})

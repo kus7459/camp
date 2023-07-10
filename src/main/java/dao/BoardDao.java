@@ -37,11 +37,12 @@ public class BoardDao {
 		template.getMapper(cls).insert(board);
 		
 	}
-	public int count(String boardid,String column, String find) {
+	public int count(String boardid,String column, String find, String cate) {
 		param.clear();
 		param.put("boardid", boardid);
 		param.put("column", column);
 		param.put("find", find);
+		param.put("cate", cate);
 		return template.getMapper(cls).count(param);
 	}
 	
@@ -56,6 +57,7 @@ public class BoardDao {
 		param.put("find", find);
 		param.put("cnt", cnt);
 		param.put("cate", cate);
+		System.out.println(param);
 		return template.getMapper(cls).select(param);
 	}
 	public Board selectOne(Integer num) {

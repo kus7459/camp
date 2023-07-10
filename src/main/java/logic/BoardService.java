@@ -70,8 +70,8 @@ public class BoardService {
 		boarddao.insert(board);
 	}
 
-	public int boardcount(String boardid, String column, String find) {
-		return boarddao.count(boardid, column, find);
+	public int boardcount(String boardid, String column, String find, String cate) {
+		return boarddao.count(boardid, column, find, cate);
 	}
 
 	public List<Board> boardlist(Integer pageNum, int limit, String boardid, 

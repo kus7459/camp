@@ -4,6 +4,10 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <c:set var="path" value="${pageContext.request.contextPath}" />
+<c:set var="port" value="${pageContext.request.localPort}"/>
+<!-- IP주소 : localhost -->
+<c:set var="server" value="${pageContext.request.serverName}"/>
+<!--  -->
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,6 +16,33 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 <link rel="stylesheet" href="../css/main.css">
 <script src="https://kit.fontawesome.com/21a6628c62.js" crossorigin="anonymous"></script>
+<script type="text/javascript">
+	$(function(){ // 첫문장이 실행하자마자 
+		let user = $("#user").val();
+		let ws = new WebSocket("ws://${server}:${port}${path}/chatting")
+		ws.onopen = function(){ // 서버접속 완료
+			$("#chatStatus").text("info:connection opened")
+			$("input[name=chatInput]").on("keydown",function(evt){
+				if(evt.keyCode == 13){ // enter key
+					let msg = $("input[name=chatInput]").val()
+					ws.send(msg) //서버로 데이터 전송
+					$("input[name=chatInput]").val("")
+				}
+			})
+		}
+		// 서버로부터 메세지를 수신한 경우 
+		ws.onmessage = function(event){
+			//event.data : 수신된 메세지 정보
+			//prepend() : 앞쪽에 추가
+			//ap pend() : 뒤쪽에 추가
+			$("textarea").eq(0).prepend(user +" : "+event.data+"\n")
+		}
+		// 서버연결 해제 
+		ws.onclose = function(event){
+			$("#chatStatus").text("info:connection close")
+		}
+	})
+</script>
 <title>GOOD Camping 홈페이지</title>
 </head>
 <body>
@@ -100,15 +131,17 @@
          </div>
       </div>
       <div class="chat">
-         <h3>채팅</h3>         
-         <div class="chatting">
-         </div>
-         <div class="chatInput">
-            <input type="text" 
-            class="w3-input w3-border w3-round-large">
-            <button class="btn btn-lime">전송</button>
-         </div>
-      </div>
+			<p><input type="hidden" id="user" value="${sessionScope.loginUser.id}">
+			<div id="chatStatus"></div>
+			<textarea rows="15" cols="40" name="chatMsg" readonly="readonly"></textarea>
+			<br> 
+			<c:if test="${sessionScope.loginUser != null }">
+			메시지입력 : <input type="text" name="chatInput">
+			</c:if>
+			<c:if test="${sessionScope.loginUser == null }">
+			메시지입력 : <input type="text" readonly="readonly" value="로그인하세요">
+			</c:if>
+		</div>
    </div>
    <!-- 인기 캠핑장 -->
    <div class="page3 w3-center">

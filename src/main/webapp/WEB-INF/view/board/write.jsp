@@ -16,10 +16,9 @@
 			<th>카테고리</th>
 			<td>
 				<select name="cate" class="form-control" style="border: 1px solid #333;">
-					<option value="">선택안함</option>
+					<option value="[자유게시판]">자유게시판</option>
 					<option value="[여행팁]">여행팁</option>
 					<option value="[캠핑장후기]">캠핑장후기</option>
-					<option value="[자유게시판]">자유게시판</option>				
 				</select> 
 			</td>
 		</tr>

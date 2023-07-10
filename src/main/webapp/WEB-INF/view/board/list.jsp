@@ -97,67 +97,75 @@ h4 {
 	<br>
 	<div class="w3-center"
 		style="border: 1px solid #333; border-radius: 10px; padding: 10px; width: 95%; margin: 0 auto">
-		<h4>${boardName}목록</h4>
 		<table class="w3-table">
 			<tr>
 				<form action="list" method="post" name="searchform">
-
-					<td colspan="1"><input type="hidden" name="pageNum" value="1">
-						<input type="hidden" id="user" value="${loginUser.id}"> <input
-						type="hidden" name="boardid" value="${param.boardid}"> <select
-						name="searchtype" class="form-control"
-						style="border: 1px solid #333;">
+					<td>
+						<input type="hidden" name="pageNum" value="1">
+						<input type="hidden" id="user" value="${loginUser.id}">
+						<input	type="hidden" name="boardid" value="${param.boardid}">
+						<select name="searchtype" class="form-control" style="border: 1px solid #333;">
 							<option value="">선택하세요</option>
 							<option value="title">제목</option>
 							<option value="writer">작성자</option>
 							<option value="content">내용</option>
-					</select> <script type="text/javascript">
-						searchform.searchtype.value = "${param.searchtype}";
-					</script></td>
-					<td colspan="2"><input type="text" name="searchcontent"
-						value="${param.searchcontent}" class="form-control"></td>
-					<td colspan="2"><input type="submit" value="검색"
-						class="btn btn-lime"> <input type="button" value="전체게시물보기"
-						class="btn btn-gray"
-						onclick="location.href='list?boardid=${boardid}'"></td>
-					<td colspan="1"><select name="cnt" class="form-control"
-						style="border: 1px solid #333;">
+						</select>
+						<script type="text/javascript">
+							searchform.searchtype.value = "${param.searchtype}";
+						</script>
+					</td>
+					<td colspan="2">
+						<input type="text" name="searchcontent"	value="${param.searchcontent}" class="form-control">
+					</td>
+					<td colspan="2">
+						<input type="submit" value="검색" class="btn btn-lime"> 
+						<input type="button" value="전체게시물보기" class="btn btn-gray"
+						onclick="location.href='list?boardid=${boardid}'">
+					</td>
+					<td>
+						<select name="cnt" class="form-control"	style="border: 1px solid #333;">
 							<option value="">날짜순</option>
 							<option value="readcnt">조회순</option>
 							<option value="likecnt">좋아요</option>
-					</select> <script type="text/javascript">
-						searchform.cnt.value = "${param.cnt}";
-					</script></td>
-					<td colspan="1"><c:if test="${boardid == '2' }">
-							<select name="cate" class="form-control"
-								style="border: 1px solid #333;">
-								<option value="">선택하세요</option>
-								<option value="[캠핑장후기]">캠핑장후기</option>
-								<option value="[여행팁]">여행팁</option>
-								<option value="[자유게시판]">자유게시판</option>
-							</select>
-							<script type="text/javascript">
+						</select>
+						<script type="text/javascript">
+							searchform.cnt.value = "${param.cnt}";
+						</script>
+					</td>
+					<td>
+						<c:if test="${boardid == '2' }">
+						<select name="cate" class="form-control" style="border: 1px solid #333;">
+							<option value="">선택하세요</option>
+							<option value="[캠핑장후기]">캠핑장후기</option>
+							<option value="[캠핑팁]">캠핑팁</option>
+							<option value="[자유게시판]">자유게시판</option>
+						</select>
+						<script type="text/javascript">
 								searchform.cate.value = "${param.cate}";
-							</script>
-						</c:if></td>
+						</script>
+						</c:if>
+					</td>
+					<td>
+						<input type="submit" value="검색" class="btn btn-lime">  
+					</td>
 				</form>
 			</tr>
 			<c:if test="${listcount>0}">
 				<!-- 등록된 게시물 건수  -->
 				<tr>
-					<td colspan="7" class="w3-right-align"><b>글 개수</b>:
+					<td colspan="8" class="w3-right-align"><b>글 개수</b>:
 						${listcount}</td>
 				</tr>
 				<tr style="background-color: #cddc39; color: #000">
 					<th>번호</th>
-					<th>제목</th>
+					<th colspan="3">제목</th>
 					<th>글쓴이</th>
 					<th>날짜</th>
 					<th>조회수</th>
 					<th>좋아요</th>
 				</tr>
 				<tr>
-					<th colspan="7" style="padding: 10px 0px">
+					<th colspan="8" style="padding: 10px 0px">
 						<hr style="margin: 0; opacity: 0">
 					</th>
 				</tr>
@@ -168,7 +176,8 @@ h4 {
 						<%-- 화면의 출력할 가상의 게시물 번호  --%>
 						<c:set var="boardno" value="${boardno-1}" />
 
-						<td class="w3-left"><c:if test="${board.secret != 1 }">
+						<td	colspan="3" class="w3-left">
+						<c:if test="${board.secret != 1 }">
 
 								<c:if test="${! empty board.fileurl}">
 									<a href="file/${board.fileurl}">@</a>
@@ -185,23 +194,25 @@ h4 {
 									</c:when>
 									<c:otherwise>비밀글은 작성자와 관리자만 볼 수 있습니다.</c:otherwise>
 								</c:choose>
-							</c:if></td>
+							</c:if>
+						</td>
 
-						<td>${board.writer}</td>
+						<td colspan="3">${board.writer}</td>
 						<td><fmt:formatDate value="${board.regdate}"
 								pattern="yyyyMMdd" var="rdate" /> <c:if test="${today == rdate}">
 								<fmt:formatDate value="${board.regdate}" pattern="HH:mm:ss" />
 							</c:if> <c:if test="${today != rdate}">
 								<fmt:formatDate value="${board.regdate}"
 									pattern="yyyy-MM-dd HH:mm" />
-							</c:if></td>
+							</c:if>
+						</td>
 						<td>${board.readcnt}</td>
 						<td>${board.likecnt}</td>
 						<%--좋아요 수 --%>
 					</tr>
 				</c:forEach>
 				<tr>
-					<td colspan="7" class="w3-center"><c:if test="${pageNum > 1 }">
+					<td colspan="8" class="w3-center"><c:if test="${pageNum > 1 }">
 							<a href="javascript:listpage('${pageNum-1}')">[이전]</a>
 						</c:if> <c:if test="${pageNum <=1 }">[이전]</c:if> <c:forEach var="a"
 							begin="${startpage}" end="${endpage}">
@@ -217,11 +228,11 @@ h4 {
 			<!-- 등록된 게시물이 있는 경우 끝 -->
 			<c:if test="${listcount == 0 }">
 				<tr>
-					<td colspan="7">등록된 게시물이 없습니다.</td>
+					<td colspan="8">등록된 게시물이 없습니다.</td>
 				</tr>
 			</c:if>
 			<tr>
-				<td colspan="7"><c:choose>
+				<td colspan="8"><c:choose>
 						<c:when test="${boardid == 1 && loginUser.id == 'admin'}">
 							<button onclick="location.href='write'"
 								class="btn btn-lime w3-right">글쓰기</button>

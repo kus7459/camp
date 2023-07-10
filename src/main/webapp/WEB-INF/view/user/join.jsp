@@ -19,7 +19,6 @@
 			<font color="red" class="w3-center" style="display:block">
 				<c:forEach items="${errors.globalErrors}" var="error">
 					<spring:message code="${error.code}" />
-					<br>
 				</c:forEach>
 			</font>
 		</spring:hasBindErrors>

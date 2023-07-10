@@ -21,6 +21,8 @@
 		text-align: left; vertical-align: top; padding: 0px;}
 	h3 {font-weight: bold; width: 90%; margin:0 auto; margin-bottom:20px}
 	.btn-lime {background-color: #cddc39;}
+	.btn-gray {background-color: #dedede;}
+	a {color:#333}
 </style>
 </head>
 <body>
@@ -56,33 +58,27 @@
 				</td>
 			</tr>
 			<tr>
-				<td colspan="2">
+				<td colspan="2" class="w3-center" style="padding-top:20px">
 				<%--<a href="reply?num=${board.num }">[답변]</a>--%>
 					<c:if test="${loginUser.id == board.writer || loginUser.id eq 'admin'}">
 					<a href="update?num=${board.num }">[수정]</a>
 					<a href="delete?num=${board.num }">[삭제]</a>
 					</c:if>
-					<a href="list?boardid=${board.boardid }">[게시물목록]</a>
+					<a href="list?boardid=${board.boardid }" class="btn btn-lime">게시물 목록</a>
 				
 					<c:choose>
   						<c:when test="${goodselect == 0 }"> <!-- count가0이면 빈하트-->
         					<button class="btn btn-white"onclick="changeLike()" >
-							<i class="fas fa-heart" style="font-size:30px; color:white;" id="btn_like"></i>
+							<i class="fas fa-heart" style="font-size:18px; color:white;" id="btn_like"></i>
 							</button>
    						</c:when>
     					<c:otherwise> <!-- count가1이면 빨간 하트-->
        						<button class="btn btn-white"onclick="changeLike()" >
-							<i class="fas fa-heart" style="font-size:30px; color:red;" id="btn_like"></i>
+								<i class="fas fa-heart" style="font-size:18px; color:red;" id="btn_like"></i>
 							</button>
     					</c:otherwise>
 					</c:choose>
-					<input type="text"  id="count" readonly="true" value="${board.likecnt}">			
-					<%-- 
-					<button class="btn btn-white"onclick="changeLike()" >
-					<i class="glyphicon glyphicon-thumbs-up" id="btn_like" style="color:blue"></i>
-					<b>추천</b>
-					</button>
-					--%>
+					<b id="count">  ${board.likecnt}</b>
 				</td>
 			</tr>	
 		</table>

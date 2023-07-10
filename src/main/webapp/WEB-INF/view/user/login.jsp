@@ -25,7 +25,6 @@
 					<br>
 					<label for="pwd">Password</label>
 					<form:password path="pass" class="form-control" id="pwd" style="height:50px;"/>
-					<font color="red"><form:errors path="pass"/></font>
 				</div>
 				<spring:hasBindErrors name="user">
 					<font color="red" class="w3-center" style="display:block">

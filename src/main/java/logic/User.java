@@ -5,6 +5,7 @@ import java.util.Date;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
@@ -20,10 +21,11 @@ import lombok.ToString;
 public class User {
 	@NotEmpty(message="아이디를 입력하세요")
 	private String id;
-	@Pattern(regexp="[a-zA-Z0-9]{8,16}", message="비밀번호는 영어, 숫자가 포함 된 8~16자리 비밀번호여야합니다.")
+	@Pattern(regexp="^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,16}$", message="비밀번호는 영어, 숫자, 특수문자 !,@,#,$,%,^,&,* 가 포함 된 8~16자리 비밀번호여야합니다.")
 	private String pass;
 	@NotEmpty(message="이름을 입력하세요")
 	private String name;
+	@Past(message="생일은 과거의 날짜만 가능합니다.")
 	@DateTimeFormat(pattern="yyyy-MM-dd")
 	@NotNull(message="생일을 입력하세요.")
 	private Date birth;

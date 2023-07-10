@@ -92,4 +92,5 @@ public class UserDao {
 			return template.getMapper(cls).idsearch(email, tel);
 		}
 
+
 }

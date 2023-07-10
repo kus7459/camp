@@ -201,4 +201,8 @@ public class CampService {
 		return campDao.mpllist(goodno);
 	}
 
+	public List<Sale> salelist() {
+		return saleDao.salelist();
+	}
+
 }

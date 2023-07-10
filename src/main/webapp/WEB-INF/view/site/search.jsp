@@ -287,13 +287,17 @@
 		</c:if>
 		<c:if test="${!empty camplist}">
 			<c:forEach var="c" items="${camplist}">
-				<div class="listWrap">
+				<div class="listWrap" style="padding:20px 0px">
 					<div class="thumbImg">
 						<c:if test="${c.firstImageUrl != null}">
-							<img src="${c.firstImageUrl}">
+							<a href="${path}/site/detail?contentId=${c.contentId}">
+								<img src="${c.firstImageUrl}" style="width:90%">
+							</a>
 						</c:if>
 						<c:if test="${c.firstImageUrl == ''}">
-							<img src="${path}/img/campimg.jpg" width="279px" height="186px">
+							<a href="${path}/site/detail?contentId=${c.contentId}">
+								<img src="${path}/img/campimg.jpg" width="279px" height="186px">
+							</a>
 						</c:if>
 						<ul class="imgli">
 							<li style="margin-right: 5px">
@@ -369,19 +373,25 @@
 					</div>
 				</div>
 			</c:forEach>
-			<tr>
-				<td colspan="6" class="w3-center"><c:if test="${pageNum > 1 }">
+			<ul style="padding-bottom: 40px;">
+				<li class="w3-center">
+					<c:if test="${pageNum > 1 }">
 						<a href="javascript:listpage('${pageNum-1}','${search}')">[이전]</a>
-					</c:if> <c:if test="${pageNum <=1 }">[이전]</c:if> <c:forEach var="a"
+					</c:if>
+					 <c:if test="${pageNum <=1 }">[이전]</c:if>
+					 <c:forEach var="a"
 						begin="${startpage}" end="${endpage}">
 						<c:if test="${a==pageNum }">[${a}]</c:if>
 						<c:if test="${a != pageNum }">
 							<a href="javascript:listpage('${a}','${search}')">[${a}]</a>
 						</c:if>
-					</c:forEach> <c:if test="${pageNum < maxpage }">
+					</c:forEach> 
+					<c:if test="${pageNum < maxpage }">
 						<a href="javascript:listpage('${pageNum+1 }','${search}')">[다음]</a>
-					</c:if> <c:if test="${pageNum >= maxpage}">[다음]</c:if></td>
-			</tr>
+					</c:if> 
+					<c:if test="${pageNum >= maxpage}">[다음]</c:if>
+				</li>
+			</ul>
 		</c:if>
 	</div>
 	<script>
@@ -421,20 +431,24 @@
 						   // i : 인덱스. 첨자. 0부터시작
 						   //item : 배열의 요소
 						   $("select[name=si]").append(function(){
-							   return "<option>"+item+"</option>"
+							   let g1;
+							   if('${params.si}' == item){
+								   g1="<option selected>"+item+"</option>"
+							   }
+							   if('${params.si}' != item){
+								   g1="<option>"+item+"</option>"
+							   }
+							   return g1;
 						   })
 					   })
 				   }
 			   })
-				/*if('${params.gu}'!= ''){
-					$("select[name=gu]").val('${params.gu}')
-				}*/
+
 	   }
 		function getText(name) { //si
 			let city = $("select[name='si']").val();  //시도 선택값 
-//			let gu = $("select[name='gu']").val();    //구군 선택값
 			let disname;
-			let toptext="구군을 선택하세요";
+			let toptext="구군을선택하세요";
 			if('${params.gu}'!= ''){
 				toptext = '${params.gu}';
 			}
@@ -453,16 +467,16 @@
 			  success : function(arr) {
 				  $("select[name="+disname+"] option").remove(); //출력 select 태그의 option 제거
 				  $("select[name="+disname+"]").append(function(){
-					  return "<option value="+toptext+">"+toptext+"</option>"
+					  return "<option value=''>"+toptext+"</option>"
 				  })
 				  $.each(arr,function(i,item) {  //서버에서 전송 받은 배열값을 option 객체로 추가
 					  $("select[name="+disname+"]").append(function(){
 						  return "<option>"+item+"</option>"
 					  })
 				  })
-					/*if('${params.gu}' != ''){
+					if('${params.gu}' != ''){
 						$("select[name=gu]").val('${params.gu}')
-					}*/
+					}
 			  }
 		   })				
 		}

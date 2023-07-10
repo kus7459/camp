@@ -41,7 +41,7 @@
 					<th>상품 가격</th>
 					<th>개수</th>
 				</tr>
-				<c:if test="${!empty cartlist }">
+				<c:if test="${!empty cartlist}">
 					<c:forEach items="${cartlist}" var="cart">
 						<input type="hidden" name="name" value="${cart.name}">
 						<input type="hidden" name="pictureUrl" value="${cart.pictureUrl}">
@@ -60,7 +60,9 @@
 								<b style="color:#333">${cart.name}</b>
 							</td>
 							<td><fmt:formatNumber value="${cart.price}" pattern="###,###"/></td>
-							<td>${cart.quantity}</td>
+							<td>
+								${cart.quantity}
+							</td>
 						</tr>
 					</c:forEach>
 					<tr>

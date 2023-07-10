@@ -75,4 +75,8 @@ public class SaleDao {
 		template.getMapper(cls).saledelete(param);
 	}
 
+	public List<Sale> salelist() {
+		return template.getMapper(cls).salelist();
+	}
+
 }

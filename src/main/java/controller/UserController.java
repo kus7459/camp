@@ -16,7 +16,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.mail.FetchProfile.Item;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -58,6 +57,7 @@ import logic.CampingService;
 import logic.Cart;
 import logic.Comment;
 import logic.Good;
+import logic.Item;
 import logic.Sale;
 import logic.User;
 import util.CipherUtil;
@@ -74,6 +74,7 @@ public class UserController {
 	
 	@Autowired
 	private CampingService cservice;
+	
 	@Autowired
 	private CipherUtil util;
 	
@@ -92,6 +93,8 @@ public class UserController {
 		mav.addObject(new User());
 		List<Board> boardlist = bservice.mainlist(2);
 		List<Board> noticelist = bservice.mainlist(1);
+		List<Sale> itemlist = service.salelist();
+		mav.addObject("itemlist", itemlist);
 		mav.addObject("boardlist",boardlist);
 		mav.addObject("noticelist", noticelist);
 		List<Camp> maincamp = cservice.maincamp();
@@ -119,14 +122,13 @@ public class UserController {
 			user.setPass(passwordHash(user.getPass()));
 			service.userInsert(user); //db에 insert
 			mav.addObject("user",user);
+			throw new LoginException("회원 가입 되었습니다.", "login");
 		} catch(DataIntegrityViolationException e) {
 			e.printStackTrace();
 			bresult.reject("error.duplicate.user");
 			mav.getModel().putAll(bresult.getModel());
 			return mav;
 		}
-		mav.setViewName("redirect:login");
-		return mav;
 	}
 	
 	// naver로그인
@@ -438,7 +440,7 @@ public class UserController {
 
 	// 일반 로그인
 	@PostMapping("login")
-	public ModelAndView login(@Valid User user, BindingResult bresult, HttpServletRequest request, HttpSession session) {
+	public ModelAndView login(User user, BindingResult bresult, HttpServletRequest request, HttpSession session) {
 		ModelAndView mav = new ModelAndView();
 		if(bresult.hasErrors()) {
 			mav.getModel().putAll(bresult.getModel());
@@ -485,17 +487,10 @@ public class UserController {
 		ModelAndView mav = new ModelAndView();
 		User user = service.selectUserOne(id);
 		User loginUser = (User) session.getAttribute("loginUser");
-		
+
 		// 주문내역 불러오기
 		List<Sale> salelist = service.saleSelect(loginUser.getId());
 		Integer size = salelist.size();
-		
-		// 게시판 등록 글
-//		List<Board> boardlist = service.boardlist(id);
-		
-		// 등록 댓글
-		
-		// 좋아요
 		
 		// 장바구니
 		List<Cart> cartlist = service.getuserCart(id, 0);
@@ -555,6 +550,9 @@ public class UserController {
 	public ModelAndView idCheckUser(String id, HttpSession session) {
 		ModelAndView mav = new ModelAndView();
 		User user = service.selectUserOne(id);
+		if(user.getPass() == null || user.getPass().trim().equals("")) {
+			throw new LoginException("소셜 SNS 로그인 사용자는 정보 수정이 불가능합니다.", "mypage?id="+user.getId());
+		}
 		mav.addObject("user", user);
 		return mav;
 	}
@@ -570,6 +568,7 @@ public class UserController {
 		}
 		// 비밀번호 비교
 		User loginUser = (User)session.getAttribute("loginUser");
+		
 		if(!loginUser.getPass().equals(this.passwordHash(user.getPass()))) {
 			bresult.reject("error.login.password");
 			mav.getModel().putAll(bresult.getModel());

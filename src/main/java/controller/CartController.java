@@ -20,6 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.fasterxml.jackson.annotation.JsonCreator.Mode;
 
+import aop.CartAspect;
 import exception.ItemException;
 import logic.CampService;
 import logic.Cart;
@@ -108,11 +109,16 @@ public class CartController {
 	public ModelAndView loginChecksaleitem(String userid, Integer id, Integer quantity, HttpSession session) {
 		ModelAndView mav = new ModelAndView();
 		User loginUser = (User)session.getAttribute("loginUser");
+		if(loginUser.getId().equals("admin")) {
+			throw new ItemException("관리자는 주문이 불가능합니다.", "../shop/detail?id="+id);
+		}
 		// user의 cart 테이블에서 조회
+		Item Item = null;
 		List<Cart> cartlist = service.getuserCart(loginUser.getId(), id);
 		Integer total = 0;
 		Integer sum = 0;
-		if(cartlist.size() > 0) {
+		if(quantity == null) {
+		if(cartlist.size() > 0) {	// 카트
 			for(Cart c : cartlist) {
 				if(cartlist.size() == 1) { // 한 개의 아이템
 					total += c.getQuantity() * c.getPrice();
@@ -123,17 +129,20 @@ public class CartController {
 				}
 			}
 		}
-		// 제품 detail 에서 바로 구매 시
-		Integer itemid = id;
-		Item Item = service.itemOne(itemid);
-		System.out.println(Item);
-		mav.addObject("saleitem", Item);
-		mav.addObject("quantity", quantity);
-		
 		mav.addObject("total", total);
 		mav.addObject("user", loginUser);
 		mav.addObject("cartlist", cartlist);
 		return mav;
+		}else {
+			Item = service.itemOne(id);
+			mav.addObject("saleitem", Item);
+			mav.addObject("quantity", quantity);
+			return mav;
+		}
+	
+		// 제품 detail 에서 바로 구매 시
+		
+		
 	}
 	
 	@RequestMapping("order")

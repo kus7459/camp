@@ -71,10 +71,14 @@
 				</tr>
 				<tr style="border-bottom: none">
 					<td colspan="2" class="w3-center">
-						<a href="update?id=${user.id}" style="text-decoration: none; color: #000; margin-right:10px"
-						class="btn btn-lime">내 정보 변경</a>
-						<c:if test="${loginUser.id != 'admin'}">
+						<c:if test="${loginUser.id != 'amdin' && loginUser.pass == null }">
+							<p>소셜 SNS 로그인 이용자는 정보 수정이 불가능합니다.</p>
 							<a href="deleteForm?id=${user.id}" class="btn btn-gray" style="color:#000"">회원 탈퇴</a>
+						</c:if>
+						<c:if test="${loginUser.id != 'admin' && loginUser.pass != null}">
+							<a href="update?id=${user.id}" style="text-decoration: none; color: #000; margin-right:10px"
+							class="btn btn-lime">내 정보 변경</a>
+							<a href="delete?id=${user.id}" class="btn btn-gray" style="color:#000"">회원 탈퇴</a>
 						</c:if>
 						<c:if test="${loginUser.id == 'admin'}">
 							<a href="../admin/list" class="btn btn-gray" style="float:right; color:#000">회원 목록</a>

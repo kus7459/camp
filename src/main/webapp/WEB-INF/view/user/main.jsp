@@ -130,37 +130,38 @@
             </form>
          </div>
       </div>
-      <div class="chat">
-			<p><input type="hidden" id="user" value="${sessionScope.loginUser.id}">
-			<div id="chatStatus"></div>
-			<textarea rows="15" cols="40" name="chatMsg" readonly="readonly"></textarea>
-			<br> 
-			<c:if test="${sessionScope.loginUser != null }">
-			메시지입력 : <input type="text" name="chatInput">
-			</c:if>
-			<c:if test="${sessionScope.loginUser == null }">
-			메시지입력 : <input type="text" readonly="readonly" value="로그인하세요">
-			</c:if>
+     
+	     <div class="cart" style="width:45%">
+	       	<h3 style="padding-bottom:10px">Good Camping 인기 상품</h3>
+	       	<div style="display:flex; justify-content: space-between;">
+				<c:forEach items="${itemlist}" var="item" begin="0" end="1">
+					<div style="display:flex; flex-direction: column; width:48%">
+						<a href="../shop/detail?id=${item.itemid}">
+							<img src="../img/${item.pictureUrl}" style="width:100%">
+						</a>
+						<b><a href="../shop/detail?id=${item.itemid}"
+							style="color:#333; padding: 10px 0px; display:block">${item.name}</a></b>
+					</div>
+				</c:forEach>
+			</div>
 		</div>
-   </div>
+	</div>
    <!-- 인기 캠핑장 -->
    <div class="page3 w3-center">
       <h3>인기 캠핑장 Best 3</h3>
       <div class="popWrap">
-      <c:forEach items="${maincamp}" var="m">
-         <div class="popImg" style="background-image: url('${m.firstImageUrl}')"></div>
-      </c:forEach>
+	      <c:forEach items="${maincamp}" var="m">
+	      <div onclick="${path}/site/detail?contentId=${m.contentId}" style="width:30%">
+	         <div class="popImg" style="background-image: url('${m.firstImageUrl}'); width:100%"></div>
+	        	<b style="padding:12px 0px; display:block; font-size:16px">${m.facltNm}</b>
+	       </div>
+	      </c:forEach>
       </div>
-      <div class="popWrap2">
+   <!--  <div class="popWrap2">
        <c:forEach items="${maincamp}" var="m">
-         <a href="${path}/site/detail?contentId=${m.contentId}" style="color:black">${m.facltNm}</a>
+         
       </c:forEach>
-      </div>
-      <div class="popWrap2">
-       <c:forEach items="${maincamp}" var="m">
-         <div> ${m.homepage}</div>
-      </c:forEach>
-      </div>
+      </div> -->  
    </div>
    
    <!-- 테마별, 태그별 캠핑장 찾기 -->
@@ -228,29 +229,9 @@
    
    <!-- 게시물 -->
    <div class="page page5">
-      <div>
-         <h3>인기 게시물</h3>
-         <table class="w3-table">
-            <tr style="background-color: #cddc39;">
-               <th>게시판</th>
-               <th>작성자</th>
-               <th>제목</th>
-               <th>조회수</th>
-            </tr>
-            <c:forEach items="${boardlist}" var="b">
-            <tr>
-            	<td>자유게시판</td>
-            	<td>${b.writer}</td>
-            	<td>${b.title}</td>
-            	<td>${b.readcnt}</td>
-            </tr>
-            
-            </c:forEach>
-         </table>
-      </div>
-      <div>
-         <h3>공지사항<a href="" id="more">+</a></h3>
-         <table class="w3-table">
+    <div>
+         <h3>공지사항<a href="../board/list" id="more">+</a></h3>
+         <table class="w3-table w3-bordered">
             <tr style="background-color: #cddc39;">
                <th>게시판</th>
                <th>작성자</th>
@@ -261,12 +242,33 @@
             <tr>
             	<td>공지사항</td>
             	<td>${n.writer}</td>
-            	<td>${n.title}</td>
+            	<td><a href="../board/detail?num=${n.num}" style="color:#333"><b>${n.title}></b></a></td>
             	<td>${n.readcnt}</td>
             </tr>
             </c:forEach>
          </table>
       </div>
+      <div>
+         <h3>인기 게시물<a href="../board/list?boardid=2" id="more">+</a></h3>
+         <table class="w3-table w3-bordered">
+            <tr style="background-color: #cddc39;">
+               <th>게시판</th>
+               <th>작성자</th>
+               <th>제목</th>
+               <th>조회수</th>
+            </tr>
+            <c:forEach items="${boardlist}" var="b">
+            <tr>
+            	<td>자유게시판</td>
+            	<td>${b.writer}</td>
+            	<td><a href="../board/detail?num=${b.num}" style="color:#333"><b>${b.title}</b></a></td>
+            	<td>${b.readcnt}</td>
+            </tr>
+            
+            </c:forEach>
+         </table>
+      </div>
+     
    </div>
    
    <script>

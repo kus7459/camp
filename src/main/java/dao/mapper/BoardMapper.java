@@ -105,4 +105,5 @@ public interface BoardMapper {
 
 	@Select("select * from board where num =#{value}")
 	Board mpglist(int goodno);
+
 }

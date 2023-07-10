@@ -36,24 +36,22 @@
 					<table class="w3-table" style="margin-bottom: 10px">
 						<tr>
 							<th>지역</th>
-							<td id="si"><select name="si" onchange="getText('si')"
+							<td id="si"><select name="si" onchange="getText('si','2')"
 								class="w3-input w3-border w3-round-large">
 									<c:if test="${ empty params.si }">
 									<option value="">시,도 선택</option>
 									</c:if>
-									<c:if test="${!empty params.si }">
-									<option value="${param.si}">${param.si }</option>
+									<c:if test="${!empty params.si}">
+									<option value="${param.si}">${param.si}</option>
 									</c:if>
 
 							</select></td>
 							<td id="gi"><select name="gu"
 								class="w3-input w3-border w3-round-large">
-									<c:if test="${ empty params.gu }">
+									
 									<option value="">구,군 선택</option>
-									</c:if>
-									<c:if test="${!empty params.gu}">
-									<option value="${params.gu}">${params.gu}</option>
-									</c:if>
+									
+					
 							</select></td>
 						</tr>
 						<!-- sido ajax -->
@@ -417,7 +415,7 @@
 			
 			getSido()
 			if('${params.si}' != ''){
-				getText('si')
+				getText('si','1')
 			}
 		})
 		
@@ -427,9 +425,11 @@
 				   success : function(arr) {
 					   //arr : 서버에서 전달 받는 리스트 객체를 배열로 인식함
 					   console.log(arr)
+					   $("select[name=si] option").remove();
+					   $("select[name=si]").append(function(){
+								  return "<option value=''>"+'시,도 선택'+"</option>"
+							  })
 					   $.each(arr,function(i,item){
-						   // i : 인덱스. 첨자. 0부터시작
-						   //item : 배열의 요소
 						   $("select[name=si]").append(function(){
 							   let g1;
 							   if('${params.si}' == item){
@@ -445,13 +445,10 @@
 			   })
 
 	   }
-		function getText(name) { //si
+		function getText(name,num) { //si
 			let city = $("select[name='si']").val();  //시도 선택값 
 			let disname;
 			let toptext="구군을선택하세요";
-			if('${params.gu}'!= ''){
-				toptext = '${params.gu}';
-			}
 			let params = "";
 			if (name == "si") { //시도 선택한 경우
 				params = "si=" + city.trim();
@@ -471,12 +468,16 @@
 				  })
 				  $.each(arr,function(i,item) {  //서버에서 전송 받은 배열값을 option 객체로 추가
 					  $("select[name="+disname+"]").append(function(){
-						  return "<option>"+item+"</option>"
+						  let g1;
+						   if('${params.gu}' == item){
+							   g1="<option selected>"+item+"</option>"
+						   }
+						   if('${params.gu}' != item){
+							   g1="<option>"+item+"</option>"
+						   }
+						   return g1;
 					  })
 				  })
-					if('${params.gu}' != ''){
-						$("select[name=gu]").val('${params.gu}')
-					}
 			  }
 		   })				
 		}

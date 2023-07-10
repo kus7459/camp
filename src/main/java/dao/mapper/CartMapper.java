@@ -31,4 +31,7 @@ public interface CartMapper {
 			+ "<if test='itemid != 0'> and itemid=#{itemid} </if>"
 			+ "</script>"})
 	void delete(Map<String, Object> param);
+
+	@Select("select if(CHAR_LENGTH(NAME) > 4,substr(NAME,-5), name) as item, count(*) cnt from sale group by name order by date_format(saledate,'%Y-%m-%d') desc limit 0,7")
+	List<Map<String, Object>> graph();
 }

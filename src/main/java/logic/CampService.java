@@ -1,9 +1,11 @@
 package logic;
 
 import java.io.File;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -203,6 +205,20 @@ public class CampService {
 
 	public List<Sale> salelist() {
 		return saleDao.salelist();
+	}
+
+	public Map<String, Integer> graph() {
+		List<Map<String,Object>> list = cartDao.graph();
+		System.out.println(list);
+		//TreeMap : key값으로 요소들을 정렬
+		//Comparator.reverseOrder() : 내림차순 정렬로 설정.
+		Map<String,Integer> map = new TreeMap<>(Comparator.reverseOrder());
+		for(Map<String,Object> m : list) { 
+			String name =(String)m.get("item");
+			long cnt = (long)m.get("cnt"); 
+			map.put(name,(int)cnt);
+		}
+		return map; //{2023-06-07:10,....}
 	}
 
 }

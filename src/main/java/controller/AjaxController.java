@@ -7,6 +7,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
@@ -115,4 +116,10 @@ public class AjaxController {
 		List<Sale> salelist = service.saleSelect(userId);
 		return salelist;
 	}
+	@RequestMapping("graph2")
+	public List<Map.Entry<String, Integer>> graph2() {
+		 Map<String,Integer> map = service.graph();
+		 List<Map.Entry<String, Integer>> list =  new ArrayList<>(map.entrySet());
+		 return list;	               
+	}	
 }

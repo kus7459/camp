@@ -59,4 +59,8 @@ public class CartDao {
 		param.put("userid", userid);
 		template.getMapper(cls).delete(param);
 	}
+
+	public List<Map<String, Object>> graph() {
+		return template.getMapper(cls).graph();
+	}
 }

@@ -121,5 +121,6 @@ public class BoardDao {
 	public Board mpglist(int goodno) {
 		return template.getMapper(cls).mpglist(goodno);
 	}
+
 	
 }

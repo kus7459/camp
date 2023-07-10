@@ -86,6 +86,7 @@
 					</td>
 				</tr>
 			</table>
+			<c:if test="${loginUser.id != 'admin' }">
 			<table class="w3-table info-table w3-centered" style="width:49%">
 				<tr>
 					<th colspan="6" style="text-align:left; font-size:16px">장바구니</th>
@@ -149,6 +150,12 @@
 					</th>
 				</tr>
 			</table>
+			</c:if>
+			<c:if test="${loginUser.id == 'admin' }">
+			<div id="barcontainer" style="width:49%; border:1px solid #ffffff">
+            	<canvas id="canvas2" style="width:100%"></canvas>
+       		</div>
+			</c:if>
 		</div>
 	</div>
 	<!--  버튼 -->
@@ -309,7 +316,17 @@
 		</table>
 	</div>
 </div>
+<script type="text/javascript" 
+       src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
 	<script>
+	$(function() {
+		$("#etcInner").show();
+		$("#etcInner").siblings().hide();
+		$("#etc").addClass("select");
+		if('${loginUser.id == admin}'){
+			barlinegraph();
+		}
+	})
 		// 결제 내역 지우기
 		function saledelete(saleid) {
 			$.ajax({
@@ -389,11 +406,6 @@
 			document.deleteform.id.value=itemid;
 			document.deleteform.submit();
 		}
-		$(function() {
-			$("#etcInner").show();
-			$("#etcInner").siblings().hide();
-			$("#etc").addClass("select");
-		})
 
 		function btn_div(id, tab) {
 			$(".inner").each(function() {
@@ -404,6 +416,71 @@
 			})
 			$("#" + id).show();
 			$("#" + tab).addClass("select")
+		}
+		let randomColorFactor = function(){
+			return Math.round(Math.random() * 255) //0~255사이의 임의의 수 
+		}
+		let randomColor = function(opa) {
+			return "rgba(" + randomColorFactor() + ","
+			               + randomColorFactor() + ","
+			               + randomColorFactor() + ","
+			               + (opa || '.3') + ")"
+		}
+		function barlinegraph() { 
+		    $.ajax("${path}/ajax/graph2",{
+		   	 success : function(arr) { //arr : [{"2023-06-01":10},{"2023-05-30":20},....]
+		   		 let canvas = "<canvas id='canvas2' style='width:100%'></canvas>"
+		   		 $("#barcontainer").html(canvas)  //새로운 canvas 객체로 생성
+		   		 barlineGraphPrint(arr)  //그래프 작성
+		   	 },
+		   	 error : function(e) {
+		   		 alert("서버오류:" +e.status)
+		   	 }
+		    })	
+		}
+		function barlineGraphPrint(arr) {
+			let colors = []  //임의의 색상 설정
+			let regdates = [] //작성일자 목록 설정 
+			let datas = []   //글작성 건수 목록 설정
+			$.each(arr,function(index){
+				colors[index] = randomColor(0.5) //임의의 색상 설정
+				for(key in arr[index]) { //arr[index] : {"2023-06-01":10}
+					regdates.push(key) //작성일자
+					datas.push(arr[index][key]) //글작성건수
+				}
+			})
+			let ti="물품별 최근 7일 판매현황";
+			let config = {
+					type : 'bar',   //그래프 종류
+					data : {        //데이터 정보
+						datasets : [
+						  { type : "line",	borderWidth : 2,   borderColor : colors,
+							label :'건수',	fill : false,  	   data : datas },
+		                  {	type : "bar",  backgroundColor : colors,  label :'건수',	data : datas }
+		                 ],
+					     labels : regdates,
+					},
+					
+					options : {
+						responsive : true,
+						legend : {display:false},
+					    title : {
+					    	display : true, 	text : ti,
+					    	position : 'bottom'
+					    },
+					    scales : {
+					    	xAxes : [{ display : true,
+					    		       scaleLabel : {display : true, labelString : "상품명"}
+					    	         }],
+					    	yAxes : [{
+					    		scaleLabel : { display : true, labelString : "판매건수"  },
+					    		ticks : {beginAtZero : true}
+					    	  }]
+					    }
+					}
+			}
+			let ctx = document.getElementById("canvas2")
+			new Chart(ctx,config)
 		}
 	</script>
 	<hr>

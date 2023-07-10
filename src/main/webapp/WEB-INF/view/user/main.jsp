@@ -229,6 +229,7 @@
    
    <!-- 게시물 -->
    <div class="page page5">
+<<<<<<< HEAD
     <div>
          <h3>공지사항<a href="../board/list" id="more">+</a></h3>
          <table class="w3-table w3-bordered">
@@ -269,6 +270,47 @@
          </table>
       </div>
      
+=======
+         <h3>공지사항<a href="" id="more">+</a></h3>
+         <table class="w3-table">
+            <tr style="background-color: #cddc39;">
+               <th>게시판</th>
+               <th>작성자</th>
+               <th>내용</th>
+               <th>조회수</th>
+            </tr>
+            <c:forEach items="${noticelist}" var="n">
+            <tr>
+            	<td>공지사항</td>
+            	<td>${n.writer}</td>
+            	<td>${n.title}</td>
+            	<td>${n.readcnt}</td>
+            </tr>
+            </c:forEach>
+         </table>
+      </div>
+      <div>
+         <h3>인기 게시물</h3>
+         <table class="w3-table">
+            <tr style="background-color: #cddc39;">
+               <th>게시판</th>
+               <th>작성자</th>
+               <th>제목</th>
+               <th>조회수</th>
+            </tr>
+            <c:forEach items="${boardlist}" var="b">
+            <tr>
+            	<td>자유게시판</td>
+            	<td>${b.writer}</td>
+            	<td>${b.title}</td>
+            	<td>${b.readcnt}</td>
+            </tr>
+            
+            </c:forEach>
+         </table>
+      </div>
+      <div>
+>>>>>>> branch 'master' of https://github.com/kus7459/camp.git
    </div>
    
    <script>

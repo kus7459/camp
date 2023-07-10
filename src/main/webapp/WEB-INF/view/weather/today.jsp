@@ -196,14 +196,14 @@
 		let siname;
 		let gunname;
 		let dongname;
-		if(num==1){
+		if(num==1){	// 선택값
 			siname = $("select[name='si']").val();  //시도 선택값 
 			gunname = $("select[name='gu']").val();    //구군 선택값
 			dongname = $("select[name='dong']").val();
 		}
-		if(num==2){
-			siname = area1;  //시도 선택값 
-			gunname = area2;    //구군 선택값
+		if(num==2){	// api에서 제공하는 지역 이름
+			siname = area1;  	
+			gunname = area2;    
 			dongname = area3;
 		}
 		let params = "si="+siname+"&gu="+gunname+"&dong="+dongname;
@@ -214,7 +214,6 @@
 			data : params,
 			success : function(data) {
 				let obj = JSON.parse(data);
-				//console.log(data)
 				let dangi = obj[0].dangi
 				let rain = obj[1].rain
 				let temp = obj[2].temp
@@ -370,7 +369,7 @@
 					} 
 				}
 				html += html4;
-				html += "<td style='padding-right:20px'>"+lowTemp+"/"+highTemp+"</td>"
+				html += "<td style='padding-right:10px'>"+lowTemp+"/"+highTemp+"</td>"
 			
 				// 단기 - 2일 후
 				let lowTemp1;

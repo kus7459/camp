@@ -197,7 +197,8 @@ public class Ajax2Controller {
 			try {
 				while ((data = fr.readLine()) != null) {
 					String[] arr = data.split("\\s+");
-					if (arr[0].equals(si) && arr[1].equals(gu) && arr[2].equals(dong)) {
+					if (arr[0].equals(si) && arr[1].equals(gu) && arr[2].equals(dong)
+							|| arr[0].contains(si) && arr[1].contains(gu) && arr[3].contains(dong)) {
 						nx = arr[3].trim();
 						ny = arr[4].trim();
 					}

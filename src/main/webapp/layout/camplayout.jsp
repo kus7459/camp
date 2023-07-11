@@ -42,7 +42,7 @@ body, html {
 <!-- Navbar (sit on top) -->
 <div class="w3-top">
    <div class="w3-bar w3-white w3-card" id="myNavbar">
-      <a href="${path}/user/main" class="w3-bar-item w3-button w3-hover-light-grey" style="padding:20px 16px"><b>GUDEE</b> camping</a>
+      <a href="${path}/user/main" class="w3-bar-item w3-button w3-hover-light-grey" style="padding:20px 16px"><b>GOOD</b> camping</a>
       <!-- Right-sided navbar links -->
 	<div class="w3-right w3-hide-small">
 		<a href="${path}/user/main" class="w3-bar-item w3-button w3-hover-light-grey" style="padding:20px 16px"><i class="fa fa-home" style="color:plum"></i> 홈</a>
@@ -81,8 +81,9 @@ body, html {
   <a href="javascript:void(0)" onclick="w3_close()" class="w3-bar-item w3-button w3-large w3-padding-16">Close &times;</a>
   <a href="${path}/user/main" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-light-grey">홈</a>
   <a href="${path}/site/search" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-light-grey">캠핑장 찾기</a>
-  <a href="${path}/board/list" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-light-grey">커뮤니티</a>
   <a href="${path}/weather/today" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-light-grey">날씨</a>
+  <a href="${path}/board/list" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-light-grey">커뮤니티</a>
+  <a href="${path}/shop/list" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-light-grey">쇼핑</a>
   <a href="${path}/user/join" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-light-grey">회원가입</a>
 </nav>
 

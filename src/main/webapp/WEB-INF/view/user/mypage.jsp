@@ -164,7 +164,9 @@
 		<div id="info" class="debtn" onclick="javascript:btn_div('infoInner','info')">등록 댓글</div>
 		<div id="pic" class="debtn" onclick="javascript:btn_div('picInner','pic')">캠핌장 찜</div>
 		<div id="loc" class="debtn" onclick="javascript:btn_div('locInner','loc')">게시글 좋아요</div>
-		<div id="sale" class="debtn" onclick="javascript:btn_div('saleInner','sale')">주문내역</div>
+		<c:if test="${loginUser.id != 'admin'}">
+			<div id="sale" class="debtn" onclick="javascript:btn_div('saleInner','sale')">주문내역</div>
+		</c:if>
 	</div>
 	<div style="width: 90%; margin: 0 auto; margin-bottom: 80px">
 		<!-- 등록 게시글 목록 -->
@@ -172,7 +174,7 @@
 			<h3 style="margin-bottom: 20px">
 				<i class='far fa-file-alt'></i> 등록 게시글 목록
 			</h3>
-			<table class="w3-table info-table w3-centered">
+			<table class="w3-table w3-bordered w3-centered">
 				<tr style="background-color: #cddc39">
 					<th>제목</th>
 					<th>글쓴이</th>
@@ -197,7 +199,7 @@
 			<h3 style="margin-bottom: 20px">
 				<i class='far fa-comment-dots'></i> 등록 댓글 목록
 			</h3>
-			<table class="w3-table info-table w3-centered">
+			<table class="w3-table w3-bordered w3-centered">
 				<tr style="background-color: #cddc39">
 					<th>글쓴이</th>
 					<th>날짜</th>
@@ -218,7 +220,7 @@
 			<h3 style="margin-bottom: 20px">
 				<i class="fa fa-heart"></i> 캠핑장 찜 목록
 			</h3>
-			<table class="w3-table info-tabl w3-centered">
+			<table class="w3-table w3-bordered w3-centered">
 				<tr style="background-color: #cddc39">
 					<th>캠핑장 이름</th>
 					<th>전화번호</th>
@@ -243,7 +245,7 @@
 			<h3 style="margin-bottom: 20px">
 				<i class="glyphicon glyphicon-thumbs-up"></i> 게시글 좋아요 목록
 			</h3>
-			<table class="w3-table info-table w3-centered">
+			<table class="w3-table w3-bordered w3-centered">
 				<tr style="background-color: #cddc39">
 					<th>제목</th>
 					<th>글쓴이</th>
@@ -260,6 +262,7 @@
 			</table>
 		</div>
 			
+		<c:if test="${loginUser.id !='admin'}">
 		<!-- 결제 내역 목록 -->
 		<div id="saleInner" class="inner">
 			<h3 style="margin-bottom: 20px">
@@ -315,6 +318,7 @@
 			</c:choose>
 		</table>
 	</div>
+	</c:if>
 </div>
 <script type="text/javascript" 
        src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>

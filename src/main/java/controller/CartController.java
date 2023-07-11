@@ -47,13 +47,15 @@ public class CartController {
 	@RequestMapping("addcart")
 	public ModelAndView addcart(Integer id, Integer quantity, HttpSession session) {
 		ModelAndView mav = new ModelAndView();
+		// 로그인 유저
 		User loginUser = (User)session.getAttribute("loginUser");
 		if(loginUser == null) {		// 장바구니 기능 일반 로그인 사용자만 가능.
 			throw new ItemException("로그인이 필요한 서비스입니다.", "../user/login");
 		} else if (loginUser.getId().equals("admin")) {
-			throw new ItemException("관리자는 주문하실 수 없습니다.", "detail?id="+id);
+			throw new ItemException("관리자는 주문하실 수 없습니다.", "../shop/list");
 		}
 		
+		System.out.println("itemid: "+id);
 		// 장바구니에 넣을 아이템 정보
 		Item item = service.itemOne(id);
 		List<Cart> cartlist = service.getuserCart(loginUser.getId(), 0);
@@ -290,7 +292,6 @@ public class CartController {
 					Integer.parseInt(param.get("quantity")), item.getPictureUrl(), item.getPrice() * Integer.parseInt(param.get("quantity")), 
 				Integer.parseInt(param.get("postcode")), param.get("address"), param.get("detailAddress"));
 			List<Sale> saleitem = service.saleitemList(loginUser.getId(), saleid);
-			service.cartdelete(itemid, loginUser.getId());
 			mav.addObject("cartlist", saleitem);
 		}
 		throw new ItemException("결제되었습니다.", "../user/mypage?id="+loginUser.getId());

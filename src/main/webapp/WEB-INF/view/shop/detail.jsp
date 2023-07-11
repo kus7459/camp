@@ -21,7 +21,7 @@
 		<img src="../img/${item.pictureUrl}" style="width:25%;">
 		<div style="padding: 10px 0px; width:70%">
 		<form action="../cart/addcart" name="f" method="post">
-			<input type="hidden" name="itemid" value="${item.id}">
+			<input type="hidden" name="id" value="${item.id}">
 			<table class="w3-table">
 				<tr>
 					<th colspan="2"><b style="font-size:16px">${item.name}</b></th>

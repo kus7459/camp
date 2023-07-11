@@ -56,6 +56,7 @@ public class Camp {
 	private String mapX;
 	private String mapY;
 	private int cnt;
+	private int likecnt;
 	private int lovecnt;
 
 }

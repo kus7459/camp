@@ -301,10 +301,10 @@
 							<li style="margin-right: 5px">
 								<button class="btn btn-white">
 									<i class="glyphicon glyphicon-thumbs-up" style="color: blue"></i>
-									<b>추천</b>
+									<b>추천 : ${c.likecnt}</b>
 								</button>
 							</li>
-							<li><i class="fa fa-heart" style="color: red;"></i> <b>찜
+							<li><i class="fa fa-heart" style="color: red;"></i> <b>찜 : 
 									${c.lovecnt}&nbsp;&nbsp;</b></li>
 							<li><b>조회수 : ${c.cnt}</b></li>
 						</ul>
@@ -411,12 +411,25 @@
 				$(".campsearch").show();
 				$("#deBtn").addClass("btn-lime")
 				$("#deBtn").siblings().removeClass("btn-lime")
+				if('${params.oper}' != ''){
+					$("#toggleTable").show();
+				}
+				if('${params.theme}' != ''){
+					$("#toggleTable").show();
+				}
+				if('${params.add}' != ''){
+					$("#toggleTable").show();
+				}
+				if('${params.etc}' != ''){
+					$("#toggleTable").show();
+				}
 			}
 			
 			getSido()
 			if('${params.si}' != ''){
 				getText('si','1')
 			}
+			
 		})
 		
 		function getSido() {  //서버에서 리스트객체를 배열로 직접 전달 받음

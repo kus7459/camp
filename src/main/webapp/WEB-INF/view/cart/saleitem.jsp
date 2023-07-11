@@ -41,17 +41,20 @@
 					<th>상품 가격</th>
 					<th>개수</th>
 				</tr>
-				<c:if test="${!empty cartlist}">
+				<c:if test="${!empty cartlist}">		<!-- 장바구니 존재 -->
 					<c:forEach items="${cartlist}" var="cart">
 						<input type="hidden" name="name" value="${cart.name}">
 						<input type="hidden" name="pictureUrl" value="${cart.pictureUrl}">
 						<input type="hidden" name="quantity" value="${cart.quantity}">
-						<c:if test="${itemid == 0}">
-							<input type="hidden" name="itemid" value="0">
-						</c:if>
-						<c:if test="${itemid == 1}">
-							<input type="hidden" name="itemid" value="${cart.itemid}">
-						</c:if>
+						<input type="hidden" name="price" value="${cart.price}">
+						<c:choose>
+							<c:when test="${itemid == 0}"><!-- 전체 주문 -->
+								<input type="hidden" name="itemid" value="0">
+							</c:when>
+							<c:otherwise>	<!-- 한 개 주문 -->
+								<input type="hidden" name="itemid" value="${itemid}">
+							</c:otherwise>
+						</c:choose>
 						<tr id="del${cart.itemid}">
 							<td style="width:10%">
 								<img src="../img/${cart.pictureUrl}" style="width:90%">
@@ -69,8 +72,8 @@
 						<td colspan="4" class="w3-center"><b>총 주문 금액: <fmt:formatNumber value="${total}" pattern="###,###"/></b></td>
 					</tr>
 				</c:if>
-				<c:if test="${empty cartlist}">
-					<input type="hidden" name="itemid" value="${saleitem.id}">
+				<c:if test="${!empty param.quantity}">
+					<input type="hidden" name="itemid" value="${param.itemid}">
 					<input type="hidden" name="quantity" value="${quantity}">
 					<tr id="del${si.id}">
 						<td style="width:10%">
@@ -120,7 +123,7 @@
 					</td>
 				</tr>
 				<tr class="w3-center">
-					<td>
+					<td colspan="2">
 						<a href="javascript:chk()" class="btn btn-lime">다음</a>
 						<a href="../user/mypage?id=${user.id}" class="btn btn-gray">취소</a>
 					</td>

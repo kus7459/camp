@@ -33,8 +33,10 @@
 		<h3>상품 결제 전 확인</h3>
 	</header>
 	<div style="width:90%; margin: 0 auto; padding:60px 0px">
-		<form method="post" action="order" name="orderform">
-			<input type="hidden" name="saleid" value="${saleid}">
+		<form method="post" action="kakao" name="kakaoform">
+			<input type="hidden" name="postcode" value="${postcode}">
+			<input type="hidden" name="address" value="${address}">
+			<input type="hidden" name="detailAddress" value="${detailAddress}">
 			<table class="w3-table w3-striped">
 				<tr>
 					<th>상품</th>
@@ -42,25 +44,55 @@
 					<th>상품 가격</th>
 					<th>개수</th>
 				</tr>
-				<c:forEach items="${cartlist}" var="cart">
-					<input type="hidden" name="name" value="${cart.name}">
-					<input type="hidden" name="pictureUrl" value="${cart.pictureUrl}">
-					<tr id="del${cart.itemid}">
+				<c:if test="${size > 1}">	<!-- 장바구니 여러개 -->
+					<c:forEach items="${cartlist}" var="cart">
+						<input type="hidden" name="quantity" value="${cart.quantity}">
+						<tr id="del${cart.itemid}">
+							<td style="width:10%">
+								<img src="../img/${cart.pictureUrl}" style="width:90%">
+							</td>
+							<td>
+								<b style="color:#333">${cart.name}</b>
+							</td>
+							<td><fmt:formatNumber value="${cart.price}" pattern="###,###"/></td>
+							<td>${cart.quantity}</td>
+						</tr>
+					</c:forEach>
+				</c:if>
+				<c:if test="${size == 1}">
+					<input type="hidden" name="itemid" value="${itemid}">
+					<input type="hidden" name="quantity" value="${param.quantity}">
+					<tr id="del${itemid}">
 						<td style="width:10%">
-							<img src="../img/${cart.pictureUrl}" style="width:90%">
+							<img src="../img/${param.pictureUrl}" style="width:90%">
 						</td>
 						<td>
-							<b style="color:#333">${cart.name}</b>
+							<b style="color:#333">${param.name}</b>
 						</td>
-						<td><fmt:formatNumber value="${cart.price}" pattern="###,###"/></td>
-						<td>${cart.quantity}</td>
+						<td><fmt:formatNumber value="${param.price}" pattern="###,###"/></td>
+						<td>${param.quantity}</td>
 					</tr>
-				</c:forEach>
+				</c:if>
+				<c:if test="${size == 0}"> <!-- 바로구매 -->
+					<input type="hidden" name="itemid" value="${item.id}">
+					<input type="hidden" name="quantity" value="${quantity}">
+					<tr id="del${itemid}">
+						<td style="width:10%">
+							<img src="../img/${item.pictureUrl}" style="width:90%">
+						</td>
+						<td>
+							<b style="color:#333">${item.name}</b>
+						</td>
+						<td><fmt:formatNumber value="${item.price}" pattern="###,###"/></td>
+						<td>${quantity}</td>
+					</tr>
+				</c:if>
 				<tr>
 					<td colspan="4" class="w3-center">
 						<b>총 금액: <fmt:formatNumber value="${sum}" pattern="###,###"/></b>
 					</td>
 				</tr>
+				
 			</table>
 			<h4 style="padding-top:30px;">주문자 정보</h4>
 			<table class="w3-table">
@@ -83,27 +115,27 @@
 					<td>${address}, ${detailAddress}</td>
 				</tr>
 			</table>
-		</form>
-		<div class="w3-center">
-			<a href="javascript:kakaopay()" class="btn btn-lime">결제하기</a>
-			<a href="javascript:saledelete()" class="btn btn-gray">취소</a>
-		</div>
-		<form action="saledelete" name="saledeleteform" method="post">
-			<input type="hidden" name="saleid" value="${saleid}">
+			<div class="w3-center">
+				<a href="javascript:kakaopay()" class="btn btn-lime">결제하기</a>
+				<a href="javascript:history.back()" class="btn btn-gray">취소</a>
+			</div>
 		</form>
 	</div>
 	<script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.8.js"></script>
 	<script>
-		function saledelete() {
-			console.log("Aa")
-			document.saledeleteform.submit();
-		}
-	
 		let IMP = window.IMP
 		IMP.init("imp53355580")		// 가맹점 식별 코드
 		
 		function kakaopay() {
-			$.ajax("kakao", {
+			let postcode = document.kakaoform.postcode.value;
+			let address = document.kakaoform.address.value;
+			let detailAddress = document.kakaoform.detailAddress.value;
+			let quantity = document.kakaoform.quantity.value
+			let itemid = document.kakaoform.itemid.value;
+			$.ajax({
+				type:"post",
+				url: "${path}/camp/cart/kakao",
+				data: "addr="+address+"&postcode="+postcode+"&detailAddress="+detailAddress+"&itemid="+itemid+"&quantity="+quantity,
 				success : function(json) {
 					iamPay(json)
 				}
@@ -118,8 +150,8 @@
 				name : json.name,		// 주문 상품명. ex)사과 외 3건, 
 				amount : json.amount,	// 해당 주문의 전체 금액
 				// ↓ 주문자 정보
-				buyer_email : "miny2351@gmail.com",	//주문자 이메일인데 일단 그냥 내 이메일 넣기
-				buyer_name : json.buyer_name, 		// 주문자 이름
+				buyer_email : json.buyer_email,	//주문자 이메일
+				buyer_name : json.buyer_userid, 		// 주문자 이름
 				buyer_tel : json.buyer_tel,			// 주문자 전화번호
 				buyer_addr : json.buyer_addr,		// 주문자 주소
 				buyer_postcode : json.buyer_postcode	// 주문자 우편번호
@@ -130,9 +162,10 @@
 					msg += "\n:상점ID: " + rsp.merchant_uid
 					msg += "\n:결제금액: " + rsp.paid_amount
 					alert(msg)
-					location.href="salecheck";
+					document.kakaoform.action = "salecheck";
+					document.kakaoform.submit();	
 				} else {
-					alert("결제에 실패했습니다. " + res.error_msg)
+					alert("결제에 실패했습니다. " + rsp.error_msg)
 				}
 			})
 		}

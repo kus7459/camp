@@ -98,7 +98,6 @@ public class UserController {
 		mav.addObject("boardlist",boardlist);
 		mav.addObject("noticelist", noticelist);
 		List<Camp> maincamp = cservice.maincamp();
-		System.out.println(maincamp);
 		mav.addObject("maincamp", maincamp);
 		return mav;
 	}
@@ -669,7 +668,6 @@ public class UserController {
 		String result = null;
 		if(user.getId() == null) {	// 아이디 없는 경우 => 아이디 찾기
 			List<User> list = service.getUserlist(user.getTel(), user.getEmail());
-			System.out.println("아이디 찾기 list: "+list);
 			for(User u : list) {
 				if(u != null) {
 					result = u.getId();
@@ -701,8 +699,6 @@ public class UserController {
 	@RequestMapping("loginpass")
 	public String loginpass(String id, String pass) {
 		User dbUser = service.selectUserOne(id);
-		System.out.println(dbUser.getPass());
-		System.out.println(passwordHash(pass));
 		if(dbUser.getPass().equals(passwordHash(pass))) {
 			throw new LoginException("현재 비밀번호와 새로운 비밀번호가 같습니다.", "redirect:loginpass");
 		} else {

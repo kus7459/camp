@@ -21,7 +21,7 @@
 		<img src="../img/${item.pictureUrl}" style="width:25%;">
 		<div style="padding: 10px 0px; width:70%">
 		<form action="../cart/addcart" name="f" method="post">
-			<input type="hidden" name="id" value="${item.id}">
+			<input type="hidden" name="itemid" value="${item.id}">
 			<table class="w3-table">
 				<tr>
 					<th colspan="2"><b style="font-size:16px">${item.name}</b></th>
@@ -39,7 +39,7 @@
 				<tr>
 					<th>구매 수량</th>
 					<td>
-						<select name="quantity">
+						<select name="quantity" id="quantity">
 							<c:forEach begin="1" end="10" var="i">
 								<option>${i}</option>
 							</c:forEach>
@@ -48,7 +48,8 @@
 				</tr>
 				<tr>
 					<td colspan="2" class="w3-center" style="padding-top:40px">
-						<button type="submit" class="btn btn-gray"><i class='fas fa-shopping-cart'></i>장바구니에 넣기</button>&emsp;
+						<button type="submit" class="btn btn-gray">
+						<i class='fas fa-shopping-cart'></i>장바구니에 넣기</button>&emsp;
 						<a href="javascript:addcart()" class="btn btn-lime">바로 구매</a>
 					</td>
 				</tr>
@@ -62,10 +63,17 @@
 			<a href="../shop/delete?id=${item.id}" class="btn btn-gray">제품 삭제</a>
 		</div>
 	</c:if>
+	<form action="../cart/saleitem" name="saleitem" method="post">
+		<input type="hidden" name="name" value="${item.name}">
+		<input type="hidden" name="pictureUrl" value="${item.pictureUrl}">
+		<input type="hidden" name="price" value="${item.price}">
+		<input type="hidden" name="itemid" value="${item.id}">
+		<input type="hidden" name="quantity" value="">
+	</form>
 	<script>
-		function addcart() {
-			let qu = document.f.quantity.value;
-			location.href="../cart/saleitem?id=${item.id}&quantity="+qu;
+		function addcart(qu) {
+			document.saleitem.quantity.value= $("#quantity").val();
+			document.saleitem.submit();
 		}
 	</script>
 </body>

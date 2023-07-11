@@ -160,10 +160,8 @@ public class Ajax2Controller {
 	       JSONParser json_parse = new JSONParser();
 	       JSONObject obj = (JSONObject) json_parse.parse(response.toString());
 	       JSONArray parse_result = (JSONArray) obj.get("results");
-	       System.out.println(parse_result);
 	       JSONObject parse_region = (JSONObject) parse_result.get(0);
 	       JSONObject region = (JSONObject) parse_region.get("region");
-	       System.out.println(region);
 	       JSONObject area1 = (JSONObject) region.get("area1");
 	       JSONObject area2 = (JSONObject) region.get("area2");
 	       JSONObject area3 = (JSONObject) region.get("area3");
@@ -171,8 +169,6 @@ public class Ajax2Controller {
 	       String addresult = area1.get("name").toString();
 	       addresult += ","+area2.get("name").toString();
 	       addresult += ","+area3.get("name").toString();
-	       
-	       System.out.println("현재 위치: "+addresult);  
 	       
 	       return addresult; 
 	       

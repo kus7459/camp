@@ -103,7 +103,7 @@
 					<input type="hidden" name="id" value="">
 				</form>
 				<form action="../cart/saleitem" name="saleform" method="post">
-					<input type="hidden" name="id" value="">
+					<input type="hidden" name="itemid" value="">
 					<input type="hidden" name="userid" value="${user.id}">
 				</form>
 				<c:if test="${empty cartlist}">
@@ -395,11 +395,11 @@
 			})
 		}
 		function allsale(userid) {
-			document.saleform.id.value=0;
+			document.saleform.itemid.value=0;
 			document.saleform.submit();
 		}
 		function salelist(itemid, userid) {
-			document.saleform.id.value=itemid;
+			document.saleform.itemid.value=itemid;
 			document.saleform.submit();
 		}
 		function deletecart(itemid) {

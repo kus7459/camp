@@ -11,6 +11,10 @@
 </style>
 </head>
 <body>
+<style>
+	a {color:#333}
+	.btn-gray {background-color: #dedede}
+</style>
 <br><br><br><br><br>
 <form:form modelAttribute="board" action="write" enctype="multipart/form-data" name="f">
 	<table class="w3-table" style="width:90%; margin: 0 auto">
@@ -53,12 +57,15 @@
 					비밀글<input type="checkbox" name="secret" value="1"/>
 				</c:if>	
 				<br>
+				<br>
 				<a href="javascript:document.f.submit()" class="btn btn-lime">게시글등록</a>			
-				<a href="list?boardid=${boardid }" class="btn btn-lime">게시글목록</a>
+				<a href="list?boardid=${boardid }" class="btn btn-gray">게시글목록</a>
 			</td>
 		</tr>					
 	</table>
 </form:form>
-
+<br>
+<br>
+<br>
 </body>
 </html>

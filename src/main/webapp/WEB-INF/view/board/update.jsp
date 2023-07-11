@@ -27,8 +27,6 @@
 		<table class="w3-table">
 			<tr><td>작성자</td><td><form:input path="writer" class="form-control"/>
 			<font color="red"><form:errors path="writer"/></font></td></tr>
-			<tr><td>비밀번호</td><td><form:password path="pass" class="form-control"/>
-			<font color="red"><form:errors path="pass"/></font></td></tr>
 			<tr><td>제목</td><td><form:input path="title" class="form-control"/>
 			<font color="red"><form:errors path="title"/></font></td></tr>
 			<tr><td>내용</td><td><form:textarea path="content" rows="15" cols="80" style="width:100%"/>
@@ -44,7 +42,11 @@
 					</div>
 				</c:if>
 			<form:hidden path="fileurl"/><input type="file" name="file1"></td></tr>
-			<tr><td colspan="2" class="w3-center"><a href="javascript:document.f.submit()" class="btn btn-lime">게시글수정</a>
+			<tr><td colspan="2" class="w3-center">
+			<c:if test="${boardid == '3'}"> 
+					비밀글<input type="checkbox" name="secret" value="1"/>
+			</c:if>	
+			<a href="javascript:document.f.submit()" class="btn btn-lime">게시글수정</a>
 			<a href="list" class="btn btn-gray">게시글목록</a></td></tr> 		 
 		</table>
 	</form:form>

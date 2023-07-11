@@ -348,6 +348,9 @@ public class BoardController {
 			HttpServletRequest request, HttpSession session) {
 		ModelAndView mav = new ModelAndView();
 		//1
+		if(board.getSecret() != 1 ) {
+			board.setSecret(0);
+		}
 		if(bresult.hasErrors()) {
 			mav.getModel().putAll(bresult.getModel());
 			return mav;
@@ -356,8 +359,8 @@ public class BoardController {
 		Board getboard = service.getBoard(board.getNum());
 		System.out.println(getboard.getPass() +"=="+ board.getPass());
 		// 데이터베이스 비밀번호 == 입력된 비밀번호
-		if(!getboard.getPass().equals(board.getPass())) {
-			throw new BoardException("비밀번호 틀렸습니다.","update?num="+board.getNum());	
+		if(!getboard.getWriter().equals(board.getWriter())) {
+			throw new BoardException("작성자 ID 틀렸습니다.","update?num="+board.getNum());	
 		}
 		//3,4
 		try{
@@ -386,7 +389,7 @@ public class BoardController {
 		}
 		Board getboard = service.getBoard(board.getNum());
 		System.out.println(getboard.getWriter().equals( board.getWriter()));
-		// 데이터베이스 비밀번호 == 입력된 비밀번호
+		// 데이터베이스 작성자 == 입력된 작성자
 		if(!getboard.getWriter().equals( board.getWriter())) {
 			bresult.reject("error.required.userid");
 			return mav;

@@ -61,8 +61,8 @@
 				<td colspan="2" class="w3-center" style="padding-top:20px">
 				<%--<a href="reply?num=${board.num }">[답변]</a>--%>
 					<c:if test="${loginUser.id == board.writer || loginUser.id eq 'admin'}">
-					<a href="update?num=${board.num }">[수정]</a>
-					<a href="delete?num=${board.num }">[삭제]</a>
+					<a href="update?num=${board.num }" class="btn btn-lime">수정</a>
+					<a href="delete?num=${board.num }" class="btn btn-lime">삭제</a>
 					</c:if>
 					<a href="list?boardid=${board.boardid }" class="btn btn-lime">게시물 목록</a>
 				
@@ -132,13 +132,13 @@
 								<input type="hidden" id="num" name ="num" value="${board.num}">
 								<input type="hidden" id="seq" name ="seq" value="${c.seq}">
 								<c:if test="${loginUser.id == c.writer || loginUser.id eq 'admin'}">
-								<a class="w3-btn w3-border w3-blue up up${c.seq}" 
+								<a class="btn btn-lime up up${c.seq}" 
 											href="javascript:commupdate1(${c.seq})">수정</a>
-								<a class="w3-btn w3-border w3-blue go go${c.seq}" id="${c.seq}"
+								<a class="btn btn-lime go go${c.seq}" id="${c.seq}"
 											href="javascript:commupdate2(${c.seq})">확인</a>
-								<a class="w3-btn w3-border w3-blue del del${c.seq}" id="${c.seq}"
+								<a class="btn btn-lime del del${c.seq}" id="${c.seq}"
 											href="javascript:commupdatedel(${c.seq})">취소</a>
-								<a class="w3-btn w3-border w3-blue" 
+								<a class="btn btn-lime" 
 								href="javascript:document.commdel${stat.index}.submit()">삭제</a>
 								</c:if>
 							</form>

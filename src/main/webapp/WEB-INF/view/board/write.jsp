@@ -6,6 +6,9 @@
 <head>
 <meta charset="UTF-8">
 <title>게시판 글쓰기</title>
+<style type="text/css">
+.btn-lime {background-color: #cddc39;}
+</style>
 </head>
 <body>
 <br><br><br><br><br>
@@ -50,8 +53,8 @@
 					비밀글<input type="checkbox" name="secret" value="1"/>
 				</c:if>	
 				<br>
-				<a href="javascript:document.f.submit()">[게시글등록]</a>			
-				<a href="list?boardid=${boardid }">[게시글목록]</a>
+				<a href="javascript:document.f.submit()" class="btn btn-lime">게시글등록</a>			
+				<a href="list?boardid=${boardid }" class="btn btn-lime">게시글목록</a>
 			</td>
 		</tr>					
 	</table>

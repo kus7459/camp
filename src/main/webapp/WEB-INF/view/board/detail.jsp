@@ -78,7 +78,7 @@
 							</button>
     					</c:otherwise>
 					</c:choose>
-					<b id="count">  ${board.likecnt}</b>
+					<a id="count">  ${board.likecnt}</a>
 				</td>
 			</tr>	
 		</table>
@@ -204,18 +204,21 @@
 				data : "boardNum=" + boardNum + "&userId=" + userId,
 				success : function(jdata) {
 					console.log(jdata)
-					console.log(jdata.count)
+					console.log("좋아요 갯수 : "+jdata.count)
 					if (jdata.likecheck == 1) { // 좋아요
 						$("#btn_like").attr("style",
-								"font-size:30px;color:white;");
+								"color:white;");
 						alert("@@싫어요@@")
+					
 					}
 					if (jdata.likecheck == 0) { //안좋아요
 						$("#btn_like").attr("style",
-								"font-size:30px;color:red;");
+								"color:red;");
 						alert("@@좋아요@@")
+					
 					}
-					$("#count").val(jdata.count);
+					$("#count").html(jdata.count);
+					alert("증감")
 				}
 			})
 		}

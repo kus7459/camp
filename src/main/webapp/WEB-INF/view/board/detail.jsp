@@ -218,7 +218,6 @@
 					
 					}
 					$("#count").html(jdata.count);
-					alert("증감")
 				}
 			})
 		}

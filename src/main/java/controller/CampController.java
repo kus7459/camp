@@ -16,6 +16,7 @@ import javax.servlet.http.HttpSession;
 import org.hibernate.validator.internal.constraintvalidators.bv.number.bound.decimal.DecimalMaxValidatorForBigDecimal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -51,6 +52,8 @@ public class CampController {
 //		return mav;
 //	}
 
+	
+	
 	@RequestMapping("search")
 	public ModelAndView search(@RequestParam Map<String, Object> param, HttpSession session, HttpServletRequest request)
 			throws Exception {
@@ -340,6 +343,16 @@ public class CampController {
 		}
 		map.put("type", ty);
 		return map;
+	}
+	
+	@GetMapping("campupdate")
+	public ModelAndView campupdate(Integer id) {
+		ModelAndView mav = new ModelAndView();
+		Camp camp = service.selectOne(id);
+		System.out.println(id);
+		System.out.println(camp);
+		mav.addObject("camp", camp);
+		return mav;
 	}
 
 }

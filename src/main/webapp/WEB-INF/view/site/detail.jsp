@@ -96,6 +96,12 @@
 							<i class="fa fa-heart" style="color: red"></i> <b>찜하기</b>
 						</button>
 					</c:if>
+					<c:if test="${loginUser.id =='admin' }">
+						<button class="btn btn-white" onclick="location.href='campupdate?contentId=${camp.contentId}'" >
+							<i class='fas fa-tools'></i>
+							 <b>캠핑장 수정</b>
+						</button>
+					</c:if>
 
 				</div>
 			</div>

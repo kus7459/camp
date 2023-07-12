@@ -40,13 +40,32 @@
 	</div>
 	<script>
 		function chk(f) {
-			if(f.chgpass.value != f.chgpass2.value) {
-				alert("변경 비밀번호 입력값이 다릅니다.")
-				f.chgpass2.value = "";
-				f.chgpass2.focus();
+			let str = f.chgpass.value
+			let regpass = /[A-Za-z]/
+			let regnum = /[0-9]/
+			let regetc = /[~!@#$%^&*]/
+			if(f.pass.value == "") {
+				alert("현재 비밀번호를 입력하세요");
 				return false;
 			}
-			return true;
+			if(f.chgpass.value != f.chgpass2.value) {	// 입력값이 다를 때
+				alert("비밀번호 입력값이 다릅니다.");
+				f.chgpass.value="";
+				f.chgpass2.focus();
+				return false;
+			} else { //입력값이 같을 때 
+				if(str.length < 8 || str.length > 17 ) {	// 길이가 안 맞으면
+					alert("비밀번호는 8~16자리로 입력해야합니다.")
+					return false;
+				} else {	// 길이 맞을 때
+					if(!regpass.test(str) || !regnum.test(str) || !regetc.test(str)) {	// 영어 포함 여부
+						alert("비밀번호는 영어, 숫자, 특수문자를 포함한 8~16자리로 입력해주세요.")
+						return false;
+					} else {
+						return document.f.submit();
+					}
+				}  
+			}
 		}
 	</script>
 </body>

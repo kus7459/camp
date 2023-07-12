@@ -34,11 +34,11 @@ public class CountScheduler {
 	@Autowired
 	private CampService service;
 	
-	@Scheduled(cron="0 58 14 * * ?")
+	@Scheduled(cron="0 00 09 13 * ?")
 	public void campinsert() throws IOException {
 		String gongurl = "http://apis.data.go.kr/B551011/GoCamping/basedList"
 				+ "?serviceKey=nTEPXnPuEfFja%2B8NyIriI8RcoAj76sAB4Tl%2FW7vx2EEW1VjNsA8wczqlHhv6ocUsMNFbYnASilpAel15%2Fri3Jg%3D%3D"
-				+ "&numOfRows=1000&pageNo=1&MobileOS=ETC&MobileApp=AppTest";
+				+ "&numOfRows=4000&pageNo=1&MobileOS=ETC&MobileApp=AppTest";
 		URL url = new URL(gongurl);
 		HttpURLConnection conn = (HttpURLConnection) url.openConnection();	// 공공데이터 포털에 접속
 		conn.setRequestMethod("GET");

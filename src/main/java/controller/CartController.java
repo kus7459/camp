@@ -116,6 +116,7 @@ public class CartController {
 			throw new ItemException("관리자는 주문이 불가능합니다.", "../shop/detail?id="+itemid);
 		}
 		// user의 cart 테이블에서 조회
+		System.out.println(itemid);
 		Item item = null;
 		List<Cart> cartlist = service.getuserCart(loginUser.getId(), itemid);
 		System.out.println("saleitem의 itemid: "+ itemid);
@@ -172,6 +173,7 @@ public class CartController {
 				sum += c.getPrice() * c.getQuantity();
 			}
 			size = cartlist.size();
+			mav.addObject("itemid", 0);
 			mav.addObject("size", size);
 			mav.addObject("cartlist", cartlist);
 			mav.addObject("sum", sum);
@@ -210,7 +212,7 @@ public class CartController {
 		Item item = null;
 		int sum = 0;
 		System.out.println("param"+param);
-		if(param.get("itemid") == null) {	// 장바구니 여러 개
+		if(Integer.parseInt(param.get("itemid")) == 0) {	// 장바구니 여러 개
 			cartlist = service.getuserCart(loginUser.getId(), 0); 
 			for(Cart c : cartlist) {
 				sum += c.getPrice() * c.getQuantity();

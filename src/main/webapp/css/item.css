@@ -34,10 +34,13 @@
 		
 	.listitem {display:flex;}	
 	
-	.wrap-box {display: flex;
+	.wrap-box {
 		width: 90%; 
 		margin: 0 auto; 
 		padding:10px 0px;
 		padding-top:30px}
-	.box-inner {width:20%;
-	margin: 0% 2%}
+	
+	.wrap-box::after {display:block; content:""; clear:both;}	
+	.wrap-box>.box-inner {float:right; width:23%; margin-right:2%}
+	
+	

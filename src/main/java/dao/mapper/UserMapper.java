@@ -64,6 +64,5 @@ public interface UserMapper {
 
 	@Select("select id from user where tel=#{tel} and email=#{email}")
 	List<User> idsearch(@Param("tel") String tel, @Param("email") String email);
-
 	
 }

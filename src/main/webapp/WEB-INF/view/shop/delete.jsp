@@ -17,11 +17,12 @@
 	<div style="width:90%; margin: 0 auto; padding: 60px 0px">
 		<table class="w3-table">
 			<tr>
-				<td><img src="../img/${item.pictureUrl}"></td>
+				<td style="width:50%">
+					<img src="../img/${item.pictureUrl}" style="width:90%"></td>
 				<td>
-					<table>
+					<table class="w3-table">
 						<tr>
-							<th>상품 명</th>
+							<th style="width:16%">상품 명</th>
 							<td>${item.name}</td>
 						</tr>
 						<tr>

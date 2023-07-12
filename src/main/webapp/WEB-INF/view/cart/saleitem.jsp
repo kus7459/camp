@@ -49,7 +49,7 @@
 						<input type="hidden" name="price" value="${cart.price}">
 						<c:choose>
 							<c:when test="${itemid == 0}"><!-- 전체 주문 -->
-								<input type="hidden" name="itemid" value="0">
+								<input type="hidden" name="itemid" value="${itemid}">
 							</c:when>
 							<c:otherwise>	<!-- 한 개 주문 -->
 								<input type="hidden" name="itemid" value="${itemid}">

@@ -99,10 +99,10 @@ public class CampService {
 	public void userPasschg(String id, String passwordHash) {
 		userDao.chgpass(id, passwordHash);
 	}
-
-	public List<User> getUserlist(String tel, String email) {
-		return userDao.idsearch(email, tel);
-	}
+//
+//	public List<User> getUserlist(String tel, String email) {
+//		return userDao.idsearch(email, tel);
+//	}
 
 	// 쇼핑몰
 	public void itemadd(Item item, HttpServletRequest request) {
@@ -219,6 +219,10 @@ public class CampService {
 			map.put(name,(int)cnt);
 		}
 		return map; //{2023-06-07:10,....}
+	}
+
+	public List<User> getUserlist(String tel, String email) {
+		return userDao.idsearch(tel, email);
 	}
 
 }

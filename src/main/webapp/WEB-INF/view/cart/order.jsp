@@ -45,8 +45,9 @@
 					<th>개수</th>
 				</tr>
 				<c:if test="${size > 1}">	<!-- 장바구니 여러개 -->
+					<input type="hidden" name="quantity" value="${cart.quantity}">
+					<input type="hidden" name="itemid" value="0">
 					<c:forEach items="${cartlist}" var="cart">
-						<input type="hidden" name="quantity" value="${cart.quantity}">
 						<tr id="del${cart.itemid}">
 							<td style="width:10%">
 								<img src="../img/${cart.pictureUrl}" style="width:90%">
@@ -130,10 +131,11 @@
 			let postcode = document.kakaoform.postcode.value;
 			let address = document.kakaoform.address.value;
 			let detailAddress = document.kakaoform.detailAddress.value;
-			let quantity = document.kakaoform.quantity.value
+			let quantity = document.kakaoform.quantity.value;
 			let itemid = document.kakaoform.itemid.value;
+			console.log(itemid)
 			$.ajax({
-				type:"post",
+				type:"POST",
 				url: "${path}/camp/cart/kakao",
 				data: "addr="+address+"&postcode="+postcode+"&detailAddress="+detailAddress+"&itemid="+itemid+"&quantity="+quantity,
 				success : function(json) {

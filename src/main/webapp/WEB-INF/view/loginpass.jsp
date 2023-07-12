@@ -62,7 +62,7 @@
 		<tr>
 			<td colspan="2" >
 				<form:password path="pass" placeholder="비밀번호 8~16자 숫자,영어 포함" class="form-control"
-				style="margin:20px 0px"/>
+				style="margin:20px 0px" id="pass"/>
                 <font color="red"><form:errors path="pass" /></font>
 			</td>
 		</tr>

@@ -41,8 +41,8 @@
 		</c:forEach>
 	</div>
 	<div class="wrap-box">
-		<c:forEach items="${list}" var="item">
-			<div  class="box-inner">
+		<c:forEach items="${list}" var="item" varStatus="vs">
+			<div class="box-inner" style="padding-bottom:30px">
 				<a href="detail?id=${item.id}"><img src="../img/${item.pictureUrl}" style="width:100%"></a>
 				<ul style="padding:10px 0px">
 					<li><a href="detail?id=${item.id}"><b style="font-size:18px">${item.name}</b></a></li>
@@ -52,6 +52,8 @@
 			</div>
 		</c:forEach>
 	</div>
+	
+
 	<div class="w3-center" style="width:90%; margin: 0 auto; padding-bottom:60px">
 		<c:if test="${pageNum > 1 }">
 			<a href="javascript:listpage('${pageNum-1 }')">[이전]</a>

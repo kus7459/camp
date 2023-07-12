@@ -557,7 +557,7 @@ public class UserController {
 	}
 	
 	@PostMapping("update")
-	public ModelAndView update(@Valid User user, BindingResult bresult, String id, HttpSession session) {
+	public ModelAndView idCheckupdate(@Valid User user, BindingResult bresult, String id, HttpSession session) {
 		ModelAndView mav = new ModelAndView();
 		// 유효성 검사
 		if(bresult.hasErrors()) {
@@ -631,30 +631,18 @@ public class UserController {
 			return "redirect:../admin/list";
 		} else {
 			session.invalidate();
-			return "redirect:login";
+			throw new LoginException("탈퇴 되었습니다.", "login");
 		}
 	}
-
+	
 	@PostMapping("{url}search")
 	public ModelAndView search(User user, BindingResult bresult, @PathVariable String url) {
 		ModelAndView mav = new ModelAndView();
-		String code = "error.userid.search";
 		String title = "아이디";
 		if(url.equals("pw")) {	// 비밀번호 검증
 			title = "비밀번호";
-			code = "error.password.search";
-			if(user.getId() == null || user.getId().trim().equals("")) {
-				bresult.rejectValue("id","error.required");
-			}
 		}
-		//  email 없는 경우
-		if(user.getEmail() == null || user.getEmail().trim().equals("")) {
-			bresult.rejectValue("email", "error.required");
-		}
-		//  tel 없는 경우
-		if(user.getTel() == null || user.getTel().trim().equals("")) {
-			bresult.rejectValue("tel", "error.required");
-		}
+
 		if(bresult.hasErrors()) {
 			mav.getModel().putAll(bresult.getModel());
 			return mav;
@@ -663,11 +651,11 @@ public class UserController {
 		if(user.getId() != null && user.getId().trim().equals("")) {
 			user.setId(null);
 		}
-		
 		// 아이디 찾기
 		String result = null;
 		if(user.getId() == null) {	// 아이디 없는 경우 => 아이디 찾기
 			List<User> list = service.getUserlist(user.getTel(), user.getEmail());
+			System.out.println("아이디 찾기 list: "+list);
 			for(User u : list) {
 				if(u != null) {
 					result = u.getId();
@@ -675,22 +663,22 @@ public class UserController {
 			}
 		} else {	// 아이디 있는 경우 => 비밀번호 초기화 하기
 			result = service.getSearch(user);
-			if(result != null) {
+			System.out.println("비밀번호 result: "+result);
+			if(result != null) {	
 				String pass = null;
 			}
 			service.userPasschg(user.getId(), passwordHash(result));
-			mav.addObject("result");
+			mav.addObject("result", result);
 			mav.addObject("title", title);
 			mav.addObject("id", user.getId());
 			mav.setViewName("loginpass");
 			return mav;
 		}
 		if(result == null) {	// 아이디 또는 비밀번호 검색 실패
-			bresult.reject(code);
 			mav.getModel().putAll(bresult.getModel());
 			return mav;
 		}
-		mav.addObject("result");
+		mav.addObject("result", result);
 		mav.addObject("title", title);
 		mav.setViewName("search");
 		return mav;
@@ -699,12 +687,8 @@ public class UserController {
 	@RequestMapping("loginpass")
 	public String loginpass(String id, String pass) {
 		User dbUser = service.selectUserOne(id);
-		if(dbUser.getPass().equals(passwordHash(pass))) {
-			throw new LoginException("현재 비밀번호와 새로운 비밀번호가 같습니다.", "redirect:loginpass");
-		} else {
-			service.userPasschg(id, passwordHash(pass));
-			throw new LoginException("비밀번호가 변경 되었습니다.","login");
-		}
+		service.userPasschg(id, passwordHash(pass));
+		throw new LoginException("비밀번호가 변경 되었습니다.","login");
 	}
 	
 }

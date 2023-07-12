@@ -73,7 +73,7 @@
 					<td colspan="2" class="w3-center">
 						<c:if test="${loginUser.id != 'amdin' && loginUser.pass == null }">
 							<p>소셜 SNS 로그인 이용자는 정보 수정이 불가능합니다.</p>
-							<a href="deleteForm?id=${user.id}" class="btn btn-gray" style="color:#000"">회원 탈퇴</a>
+							<a href="delete?id=${user.id}" class="btn btn-gray" style="color:#000"">회원 탈퇴</a>
 						</c:if>
 						<c:if test="${loginUser.id != 'admin' && loginUser.pass != null}">
 							<a href="update?id=${user.id}" style="text-decoration: none; color: #000; margin-right:10px"
@@ -370,9 +370,9 @@
 							html+= "<tr> <td style='width:13%'><img src='../img/"+item.pictureUrl+"' style='width:80%'></td>"
 								+ "<td> <a href='../shop/detail?id="+item.itemid+"' style='color:#333'><b>"+item.name+"</b></a></td>"
 								+ "<td class='w3-center'>"+item.quantity+"</td>"
-								+ "<td>"+(item.price/item.quantity)+"</td>"
+								+ "<td>"+new Intl.NumberFormat('ko-KR').format(item.price/item.quantity)+"</td>"
 								+ "<td>"+year+"-"+mon+"-"+day+"</td>"
-								+ "<td> <b>"+item.price+"</b></td>";
+								+ "<td> <b>"+new Intl.NumberFormat('ko-KR').format(item.price)+"</b></td>";
 							if(i<(jdata.length-1)){
 								if(jdata[i].saleid != jdata[i+1].saleid){
 									total += (item.price*item.quantity)

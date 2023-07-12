@@ -259,20 +259,20 @@
 				<c:if test="${params.sort == null || params.sort == ''}">
 					<option value="기본순">기본순</option>
 					<option value="조회순">조회순</option>
-					<option value="추천순">추천순</option>
+					<option value="추천순">찜순</option>
 				</c:if>
 				<c:if test="${params.sort == '기본순' }">
 					<option value="기본순">기본순</option>
 					<option value="조회순">조회순</option>
-					<option value="추천순">추천순</option>
+					<option value="추천순">찜순</option>
 				</c:if>
 				<c:if test="${params.sort == '조회순' }">
 					<option value="조회순">조회순</option>
 					<option value="기본순">기본순</option>
-					<option value="추천순">추천순</option>
+					<option value="추천순">찜순</option>
 				</c:if>
 				<c:if test="${params.sort == '추천순' }">
-					<option value="추천순">추천순</option>
+					<option value="추천순">찜순</option>
 					<option value="기본순">기본순</option>
 					<option value="조회순">조회순</option>
 				</c:if>

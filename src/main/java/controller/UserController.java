@@ -138,7 +138,7 @@ public class UserController {
 		String clientId = "jtLAQzVD33dfD_4IxaXV";
 		String redirectURL = null;
 		try {
-			redirectURL = URLEncoder.encode("http://localhost:8080/camp/user/naverlogin","UTF-8");
+			redirectURL = URLEncoder.encode("http://14.36.141.71:10062/camp/user/naverlogin","UTF-8");
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
@@ -153,7 +153,7 @@ public class UserController {
 		String client_Id = "79d4f0b8f1a64393195daac005b9ecef";	// 카카오
 		String redirectURL2 = null;
 		try {
-			redirectURL2 = URLEncoder.encode("http://localhost:8080/camp/user/kakaologin","UTF-8");
+			redirectURL2 = URLEncoder.encode("http://14.36.141.71:10062/camp/user/kakaologin","UTF-8");
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
@@ -309,7 +309,7 @@ public class UserController {
 		String client_Id = "79d4f0b8f1a64393195daac005b9ecef";
 		String redirect_uri = null;
 		try {
-			redirect_uri = URLEncoder.encode("http://localhost:8080/camp/user/kakaologin", "UTF-8");
+			redirect_uri = URLEncoder.encode("http://14.36.141.71:10062/camp/user/kakaologin", "UTF-8");
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}

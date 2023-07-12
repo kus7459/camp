@@ -197,8 +197,7 @@ public class Ajax2Controller {
 			try {
 				while ((data = fr.readLine()) != null) {
 					String[] arr = data.split("\\s+");
-					if (arr[0].equals(si) && arr[1].equals(gu) && arr[2].equals(dong)
-							|| arr[0].contains(si) && arr[1].contains(gu) && arr[3].contains(dong)) {
+					if (arr[0].equals(si) && arr[1].equals(gu) && arr[2].equals(dong)) {
 						nx = arr[3].trim();
 						ny = arr[4].trim();
 					}
@@ -225,6 +224,9 @@ public class Ajax2Controller {
 //		else if (20 <= hour && hour < 23 ) setTime = "2000";
 //		else setTime = "2300";
 		
+		   System.out.println("nx: "+nx+", ny: "+ny);
+	        
+		
 		StringBuilder urlBuilder = new StringBuilder("http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst"); /*URL*/
         urlBuilder.append("?" + URLEncoder.encode("ServiceKey","UTF-8") + "=nY07X%2FnosUoRk5vTJtPdwtlLfVdD2WrLlSNhY3TYcPJdHHo7VHz7svJAp8N7fYhxqf48iOlhi11dRIqL7eg%2F9g%3D%3D"); /*Service Key*/
         urlBuilder.append("&" + URLEncoder.encode("pageNo","UTF-8") + "=" + URLEncoder.encode("1", "UTF-8")); /*페이지번호*/
@@ -235,6 +237,7 @@ public class Ajax2Controller {
         urlBuilder.append("&" + URLEncoder.encode("nx","UTF-8") + "=" + URLEncoder.encode(nx,"UTF-8"));
         urlBuilder.append("&" + URLEncoder.encode("ny","UTF-8") + "=" + URLEncoder.encode(ny,"UTF-8"));
        
+     
         URL url = new URL(urlBuilder.toString());
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("GET");

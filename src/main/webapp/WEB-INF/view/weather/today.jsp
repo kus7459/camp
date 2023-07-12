@@ -125,9 +125,9 @@
 					data: params,
 					success : function(data) {
 						let dataresult = data.split(",");
-						area1 = dataresult[0].substring(0,2);
-						area2 = dataresult[1].substring(0,2);
-						area3 = dataresult[2].substring(0,2);
+						area1 = dataresult[0];
+						area2 = dataresult[1];
+						area3 = dataresult[2];
 						getXy(2)
 					}
 				})

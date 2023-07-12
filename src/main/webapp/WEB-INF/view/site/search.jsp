@@ -299,7 +299,7 @@
 						</c:if>
 						<ul class="imgli">
 							<li style="margin-right: 5px">
-								<button class="btn btn-white">
+								<button class="btn btn-white" style="padding:0">
 									<i class="glyphicon glyphicon-thumbs-up" style="color: blue"></i>
 									<b>추천 : ${c.likecnt}</b>
 								</button>

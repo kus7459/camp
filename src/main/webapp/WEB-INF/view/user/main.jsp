@@ -151,7 +151,7 @@
       <h3>인기 캠핑장 Best 3</h3>
       <div class="popWrap">
 	      <c:forEach items="${maincamp}" var="m">
-	      <div onclick="${path}/site/detail?contentId=${m.contentId}" style="width:30%">
+	      <div onclick="location.href='${path}/site/detail?contentId=${m.contentId}'" style="width:30%; cursor: pointer;">
 	         <div class="popImg" style="background-image: url('${m.firstImageUrl}'); width:100%"></div>
 	        	<b style="padding:12px 0px; display:block; font-size:16px">${m.facltNm}</b>
 	       </div>
@@ -228,31 +228,7 @@
    </div>
    
    <!-- 게시물 -->
-<<<<<<< HEAD
    <div class="page page5">
-=======
-   <div class="page page5">
-<<<<<<< HEAD
->>>>>>> refs/heads/master
-    <div>
-         <h3>공지사항<a href="../board/list" id="more">+</a></h3>
-         <table class="w3-table w3-bordered">
-            <tr style="background-color: #cddc39;">
-               <th>게시판</th>
-               <th>작성자</th>
-               <th>내용</th>
-               <th>조회수</th>
-            </tr>
-            <c:forEach items="${noticelist}" var="n">
-            <tr>
-            	<td>공지사항</td>
-            	<td>${n.writer}</td>
-            	<td><a href="../board/detail?num=${n.num}" style="color:#333"><b>${n.title}></b></a></td>
-            	<td>${n.readcnt}</td>
-            </tr>
-            </c:forEach>
-         </table>
-      </div>
       <div>
          <h3>인기 게시물<a href="../board/list?boardid=2" id="more">+</a></h3>
          <table class="w3-table w3-bordered">
@@ -273,12 +249,9 @@
             </c:forEach>
          </table>
       </div>
-<<<<<<< HEAD
-=======
-     
-=======
-         <h3>공지사항<a href="" id="more">+</a></h3>
-         <table class="w3-table">
+      <div>
+         <h3>공지사항<a href="../board/list?boardid=1" id="more">+</a></h3>
+         <table class="w3-table w3-bordered">
             <tr style="background-color: #cddc39;">
                <th>게시판</th>
                <th>작성자</th>
@@ -289,36 +262,13 @@
             <tr>
             	<td>공지사항</td>
             	<td>${n.writer}</td>
-            	<td>${n.title}</td>
+            	<td><a href="../board/detail?num=${n.num}">${n.title}</a></td>
             	<td>${n.readcnt}</td>
             </tr>
             </c:forEach>
          </table>
       </div>
-      <div>
-         <h3>인기 게시물</h3>
-         <table class="w3-table">
-            <tr style="background-color: #cddc39;">
-               <th>게시판</th>
-               <th>작성자</th>
-               <th>제목</th>
-               <th>조회수</th>
-            </tr>
-            <c:forEach items="${boardlist}" var="b">
-            <tr>
-            	<td>자유게시판</td>
-            	<td>${b.writer}</td>
-            	<td>${b.title}</td>
-            	<td>${b.readcnt}</td>
-            </tr>
-            
-            </c:forEach>
-         </table>
-      </div>
-      <div>
->>>>>>> branch 'master' of https://github.com/kus7459/camp.git
->>>>>>> refs/heads/master
-   </div>
+     </div>
    <script>
       $(function(){
     	   let winHeight = $(window).height();

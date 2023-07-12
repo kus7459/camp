@@ -38,7 +38,6 @@ public class AdminController {
 		if(param.get("pageNum") != null) { // 값이 있는 경우
 			pageNum = Integer.parseInt(param.get("pageNum"));
 		}
-		
 		// 휴면 계정 - admin이 등록, 해제
 		String id = param.get("userid");
 		Integer rest = null;

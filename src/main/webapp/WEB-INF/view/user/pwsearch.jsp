@@ -25,7 +25,7 @@
 			<table class="w3-table">
 				<tr>
 					<td>
-	               		<input type="text" name="id" id="userid" class="form-control" placeholder="id를 입력하세요.">
+	               		<input type="text" name="id" id="id" class="form-control" placeholder="id를 입력하세요.">
 	               		<font color="red"><form:errors path="id"/></font>
 	               </td>
 				</tr>
@@ -49,5 +49,8 @@
 			</table>
 		</form:form>
 	</div>
+	<script>
+	
+	</script>
 </body>
 </html>

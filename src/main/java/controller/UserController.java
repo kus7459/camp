@@ -1,7 +1,9 @@
 package controller;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.net.HttpURLConnection;
@@ -17,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
@@ -29,6 +32,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.format.datetime.joda.DateTimeParser;
 import org.springframework.http.ResponseEntity;
+import org.springframework.jdbc.datasource.init.ScriptUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StreamUtils;
@@ -642,7 +646,16 @@ public class UserController {
 		if(url.equals("pw")) {	// 비밀번호 검증
 			title = "비밀번호";
 		}
-
+		// 비밀번호 찾기 input에 값이 없을 때
+		if(user.getId() == null || user.getId().trim().equals("")) {
+			bresult.rejectValue("id", "error.required");
+		}
+		if(user.getEmail() == null || user.getEmail().trim().equals("")) {
+			bresult.rejectValue("email", "error.required");
+		}
+		if(user.getTel() == null || user.getTel().trim().equals("")) {
+			bresult.rejectValue("tel", "error.required");
+		}
 		if(bresult.hasErrors()) {
 			mav.getModel().putAll(bresult.getModel());
 			return mav;
@@ -663,7 +676,6 @@ public class UserController {
 			}
 		} else {	// 아이디 있는 경우 => 비밀번호 초기화 하기
 			result = service.getSearch(user);
-			System.out.println("비밀번호 result: "+result);
 			if(result != null) {	
 				String pass = null;
 			}
@@ -683,12 +695,18 @@ public class UserController {
 		mav.setViewName("search");
 		return mav;
 	}
-	
 	@RequestMapping("loginpass")
-	public String loginpass(String id, String pass) {
+	public ModelAndView loginpass(String id, String pass, HttpServletResponse response) throws IOException {
+		ModelAndView mav = new ModelAndView();
+		System.out.println("loginpass id:"+id);
+		System.out.println("loginpass pass:"+pass);
+		PrintWriter out = response.getWriter();
+		if(pass.toString().trim().equals("")|| pass == null || pass.length() > 8 || pass.length() < 17) {
+		}
 		User dbUser = service.selectUserOne(id);
 		service.userPasschg(id, passwordHash(pass));
 		throw new LoginException("비밀번호가 변경 되었습니다.","login");
 	}
+	
 	
 }

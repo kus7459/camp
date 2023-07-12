@@ -24,4 +24,14 @@ public class AdminAspect {
 		}
 		return joinPoint.proceed();
 	}
+	@Around("execution(* controller.CampController.admincheck*(..)) && args(.., session)")
+	public Object adminCheck2(ProceedingJoinPoint joinPoint, HttpSession session) throws Throwable {
+		User loginUser = (User)session.getAttribute("loginUser");
+		if(loginUser == null) {
+			throw new LoginException("[adminCheck] 로그인이 필요한 서비스입니다.","../user/login");
+		} else if(!loginUser.getId().equals("admin")) {
+			throw new LoginException("[adminCheck] 관리자만 가능합니다.","../user/mypage?userid="+loginUser.getId());
+		}
+		return joinPoint.proceed();
+	}
 }

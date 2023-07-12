@@ -346,13 +346,19 @@ public class CampController {
 	}
 	
 	@GetMapping("campupdate")
-	public ModelAndView campupdate(Integer id) {
+	public ModelAndView admincheckcampupdate(Integer contentId) {
 		ModelAndView mav = new ModelAndView();
-		Camp camp = service.selectOne(id);
-		System.out.println(id);
+		Camp camp = service.selectOne(contentId);
+		System.out.println(contentId);
 		System.out.println(camp);
 		mav.addObject("camp", camp);
 		return mav;
+	}
+	@PostMapping("campupdate")
+	public String campupdate(Camp camp) {
+		System.out.println(camp);
+		service.campupdate(camp);
+		return "redirect:detail?contentId="+camp.getContentId();
 	}
 
 }

@@ -93,4 +93,10 @@ public class CampDao {
 		return template.getMapper(cls).maincamp();
 	}
 
+
+	public void update(Camp camp) {
+		template.getMapper(cls).update(camp);
+		
+	}
+
 }

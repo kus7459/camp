@@ -52,4 +52,9 @@ public class CampingService {
 		return campDao.maincamp();
 	}
 
+	public void campupdate(Camp camp) {
+		campDao.update(camp);
+		
+	}
+
 }

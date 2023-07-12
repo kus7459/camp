@@ -122,6 +122,10 @@ public interface CampMapper {
 			+ " on t1.contentId = t2.goodno order by t2.cnt desc limit 0,3")
 	List<Camp> maincamp();
 
+	@Update("update campdetail set addr1=#{addr1} ,tel=#{tel} , lctCl=#{lctCl} ,facltDivNm=#{facltDivNm}, "
+			+ " induty=#{induty}, operPdCl=#{operPdCl}, operDeCl=#{operDeCl}, homepage=#{homepage} where contentId=#{contentId}")
+	void update(Camp camp);
+
 //	@Select("<script>"
 //			+ "select * from campdetail where themaEnvrnCl regexp #{themelist} "
 //			+ " and posblFcltyCl regexp #{aroundlist} "

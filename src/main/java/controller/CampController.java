@@ -159,6 +159,13 @@ public class CampController {
 		for(Camp c : camplist) {
 			Good good = new Good();
 			good.setGoodno(c.getContentId());
+			good.setGoodtype(2);
+			int likecnt=bservice.goodcount(good);
+			c.setLikecnt(likecnt);
+		}
+		for(Camp c : camplist) {
+			Good good = new Good();
+			good.setGoodno(c.getContentId());
 			good.setGoodtype(3);
 			int lovecnt=bservice.goodcount(good);
 			c.setLovecnt(lovecnt);
@@ -241,6 +248,13 @@ public class CampController {
 			}
 		}catch(NullPointerException e) {
 			e.printStackTrace();
+		}
+		for(Camp c : camplist) {
+			Good good = new Good();
+			good.setGoodno(c.getContentId());
+			good.setGoodtype(2);
+			int likecnt=bservice.goodcount(good);
+			c.setLikecnt(likecnt);
 		}
 		for(Camp c : camplist) {
 			Good good = new Good();

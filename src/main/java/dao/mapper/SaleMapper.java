@@ -32,7 +32,7 @@ public interface SaleMapper {
 	@Select("delete from sale where userid=#{userid} and saleid=#{saleid}")
 	void saledelete(Map<String, Object> param);
 
-	@Select("SELECT *, COUNT(*) cnt from sale GROUP BY itemid ORDER BY cnt DESC")
+	@Select("SELECT *, COUNT(*)*quantity cnt from sale GROUP BY itemid ORDER BY cnt DESC")
 	List<Sale> salelist();
 
 

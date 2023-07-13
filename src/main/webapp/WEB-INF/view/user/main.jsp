@@ -262,7 +262,7 @@
             <tr>
             	<td>공지사항</td>
             	<td>${n.writer}</td>
-            	<td><a href="../board/detail?num=${n.num}">${n.title}</a></td>
+            	<td><a href="../board/detail?num=${n.num}" style="color:#333"><b>${n.title}</b></a></td>
             	<td>${n.readcnt}</td>
             </tr>
             </c:forEach>

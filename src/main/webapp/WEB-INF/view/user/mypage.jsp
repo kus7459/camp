@@ -184,7 +184,7 @@
 				</tr>
 				<c:forEach items="${mpblist}" var="b">
 					<tr>
-						<td>${b.title}</td>
+						<td><a href="../board/detail?num=${b.num}" style="color:#333">${b.title}</a></td>
 						<td>${b.writer}</td>
 						<td><fmt:formatDate value="${b.regdate}" pattern="yyyy-MM-dd HH:mm"/></td>
 						<td>${b.likecnt }</td>
@@ -207,7 +207,7 @@
 				</tr>
 				<c:forEach items="${mpclist}" var="com">
 					<tr>
-						<td>${com.writer}</td>
+						<td><a href="../board/detail?num=${com.num}" style="color:#333">${com.writer}</a></td>
 						<td><fmt:formatDate value="${com.regdate}" pattern="yyyy-MM-dd HH:mm"/></td>
 						<td>${com.content}</td>
 					</tr>
@@ -230,7 +230,7 @@
 				</tr>
 				<c:forEach items="${camplist}" var="cam">
 					<tr>
-						<td>${cam.facltNm}</td>
+						<td><a href="../site/detail?contentId=${cam.contentId}" style="color:#333">${cam.facltNm}</a></td>
 						<td>${cam.tel}</td>
 						<td>${cam.addr1}</td>
 						<td>${cam.homepage}</td>
@@ -253,7 +253,7 @@
 					<th>조회수</th>
 				</tr>
 				<c:forEach items="${boardlist}" var="b">
-						<td>${b.title}</td>
+						<td><a href="../board/detail?num=${b.num}" style="color:#333">${b.title}</a></td>
 						<td>${b.writer}</td>
 						<td><fmt:formatDate value="${b.regdate}" pattern="yyyy-MM-dd HH:mm"/></td>
 						<td>${b.readcnt}</td>
@@ -460,7 +460,7 @@
 						datasets : [
 						  { type : "line",	borderWidth : 2,   borderColor : colors,
 							label :'건수',	fill : false,  	   data : datas },
-		                  {	type : "bar",  backgroundColor : colors,  label :'건수',	data : datas }
+		                  {	type : "bar",  backgroundColor : colors,  label :'판매량',	data : datas }
 		                 ],
 					     labels : regdates,
 					},
@@ -477,7 +477,7 @@
 					    		       scaleLabel : {display : true, labelString : "상품명"}
 					    	         }],
 					    	yAxes : [{
-					    		scaleLabel : { display : true, labelString : "판매건수"  },
+					    		scaleLabel : { display : true, labelString : "판매량"  },
 					    		ticks : {beginAtZero : true}
 					    	  }]
 					    }

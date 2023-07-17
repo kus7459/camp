@@ -385,7 +385,7 @@ public class Ajax2Controller {
         JSONObject parse_items = (JSONObject) parse_body.get("items");
         JSONArray parse_item = (JSONArray) parse_items.get("item");
         JSONObject weather = new JSONObject();
-        
+        System.out.println("parse_body"+sb.toString());
         int dataSize = parse_item.size();	
         List<Object> itemlist = new ArrayList<>();
       

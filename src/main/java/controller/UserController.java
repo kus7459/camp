@@ -112,27 +112,99 @@ public class UserController {
 		return mav;
 	}
 	
-	@PostMapping("join")
-	public ModelAndView userAdd(@Valid User user, BindingResult bresult) {
+	@GetMapping("join") 
+	public ModelAndView join() {
 		ModelAndView mav = new ModelAndView();
-		if(bresult.hasErrors()) {
-			mav.getModel().putAll(bresult.getModel());
-			bresult.reject("error.input.user");
-			bresult.reject("error.input.check");
-			return mav;
-		}
-		try {
-			user.setPass(passwordHash(user.getPass()));
-			service.userInsert(user); //db에 insert
-			mav.addObject("user",user);
-			throw new LoginException("회원 가입 되었습니다.", "login");
-		} catch(DataIntegrityViolationException e) {
-			e.printStackTrace();
-			bresult.reject("error.duplicate.user");
-			mav.getModel().putAll(bresult.getModel());
-			return mav;
-		}
+		return mav;
 	}
+	
+	@PostMapping("join") 
+	public ModelAndView join(@RequestParam Map<String, String> param) {
+		ModelAndView mav = new ModelAndView();
+		//{chkid=1, id=test3, pass=a123456789!, chgpass=a123456789!, name=테스트3, year=1947, 
+		// month=4, day=17, firstnum=010, tel=33333333, gender=1, emailid=test3, emailAddr=@naver.com}
+		String id = param.get("id");
+		String pass = param.get("pass");
+		String name = param.get("name");
+		Integer gender = Integer.parseInt(param.get("gender"));
+		
+		String phone = param.get("tel");
+		String phoneNum = null;
+		if(phone.length() == 7) {
+			phoneNum = phone.substring(0,3)+"-"+phone.substring(3);
+		} else if(phone.length() == 8) {
+			phoneNum = phone.substring(0,4)+"-"+phone.substring(4);
+		}
+		String tel = param.get("firstnum")+"-"+phoneNum;
+		String email = param.get("emailid")+param.get("emailAddr");
+		
+		Date nowDate = new Date();
+		SimpleDateFormat dateparse = new SimpleDateFormat("yyyy-MM-dd");
+		
+		String lastlog = dateparse.format(nowDate);
+		
+		String paramMon = param.get("month");
+		String mon = null;
+		if(paramMon.length() == 1) {
+			mon = "0"+paramMon;
+		} else {
+			mon = paramMon;
+		}
+		
+		String paramDay = param.get("day");
+		String day = null;
+		if(paramDay.length() == 1) {
+			day = "0"+paramDay;
+		} else {
+			day = paramDay;
+		}
+		String birth = param.get("year")+"-"+mon+"-"+day;
+		Integer rest = 1;
+		
+		service.insertUser(id, passwordHash(pass), name, gender, tel, email, lastlog, birth, rest);
+		throw new LoginException("회원 가입되었습니다.", "login");
+	}
+	
+	@RequestMapping(value="joinCheck", produces="text/plain; charset=utf-8")
+	@ResponseBody
+	public String userAdd(@RequestParam Map<String, String> param, HttpServletRequest request) {
+		String idCheck = null;
+		String telCheck = null;
+	
+		// 아이디
+		if(param.get("id") != null) {
+			String userid = service.getUserOne(param.get("id"));
+			if(userid == null || userid.trim().equals("")) {
+				idCheck = "사용";		// 사용 가능
+				return idCheck;
+			} else {
+				idCheck = "불가";
+				return idCheck;
+			}
+		}
+		
+		String phone = param.get("tel");
+		String phoneNum = null;
+		if(phone.length() == 10) {
+			phoneNum = phone.substring(0,3)+"-"+phone.substring(3,6)+"-"+phone.substring(6);
+		} else if(phone.length() == 11) {
+			phoneNum = phone.substring(0,3)+"-"+phone.substring(3,7)+"-"+phone.substring(7);
+		}
+		
+		if(param.get("tel") != null) {
+			// 전화번호
+			String usertel = service.getTel(phoneNum);
+			if(usertel == null || usertel.trim().equals("")) {
+				telCheck = "사용";		// 사용 가능
+				return telCheck;
+			} else {
+				telCheck = "불가";
+				return telCheck;
+			}	
+		}
+		return null;
+	}
+	
 	
 	// naver로그인
 	@GetMapping("login")

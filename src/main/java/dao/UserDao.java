@@ -92,5 +92,32 @@ public class UserDao {
 			return template.getMapper(cls).idsearch(email, tel);
 		}
 
+		public void insertUser(String id, String passwordHash, String name, Integer gender, String tel, String email,
+				String lastlog, String birth, Integer rest) {
+			param.clear();
+			param.put("id", id);
+			param.put("pass", passwordHash);
+			param.put("name", name);
+			param.put("gender", gender);
+			param.put("tel", tel);
+			param.put("email", email);
+			param.put("lastlog", lastlog);
+			param.put("birth", birth);
+			param.put("rest", rest);
+			template.getMapper(cls).insertUser(param);
+		}
+
+		public String selectUser(String paramid) {
+			param.clear();
+			param.put("id", paramid);
+			return template.getMapper(cls).userinto(param);
+		}
+
+		public String selectTel(String telCheck) {
+			param.clear();
+			param.put("tel", telCheck);
+			return template.getMapper(cls).usertel(param);
+		}
+
 
 }

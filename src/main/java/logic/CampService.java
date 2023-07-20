@@ -225,4 +225,18 @@ public class CampService {
 		return userDao.idsearch(tel, email);
 	}
 
+	public void insertUser(String id, String passwordHash, String name, Integer gender, String tel, String email,
+			String lastlog, String birth, Integer rest) {
+		userDao.insertUser(id, passwordHash, name, gender, tel, email, lastlog, birth,rest);
+		
+	}
+
+	public String getUserOne(String paramid) {
+		return userDao.selectUser(paramid);
+	}
+
+	public String getTel(String telCheck) {
+		return userDao.selectTel(telCheck);
+	}
+
 }

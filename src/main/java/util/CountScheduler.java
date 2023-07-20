@@ -27,8 +27,6 @@ import logic.Camp;
 import logic.CampService;
 import logic.User;
 
-
-
 public class CountScheduler {
 	
 	@Autowired
